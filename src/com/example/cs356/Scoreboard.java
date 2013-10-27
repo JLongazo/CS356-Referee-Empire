@@ -18,8 +18,8 @@ public class Scoreboard {
 	private int teamCount;
 	private boolean hasNeutral;
 	private int gridCount;
-	private Button[] teamButtons;
-	private Button[] neutralButtons;
+	private RButton[] teamButtons;
+	private RButton[] neutralButtons;
 	private ScoreCounter[] scores;
 	public RuleSheet rules;
 	
@@ -41,16 +41,16 @@ public class Scoreboard {
 	public void setTeamCount(int teamCount) {
 		this.teamCount = teamCount;
 	}
-	public Button[] getTeamButtons() {
+	public RButton[] getTeamButtons() {
 		return teamButtons;
 	}
-	public void setTeamButtons(Button[] teamButtons) {
+	public void setTeamButtons(RButton[] teamButtons) {
 		this.teamButtons = teamButtons;
 	}
-	public Button[] getNeutralButtons() {
+	public RButton[] getNeutralButtons() {
 		return neutralButtons;
 	}
-	public void setNeutralButtons(Button[] neutralButtons) {
+	public void setNeutralButtons(RButton[] neutralButtons) {
 		this.neutralButtons = neutralButtons;
 	}
 }
