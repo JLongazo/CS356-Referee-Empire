@@ -1,4 +1,4 @@
-package com.example.refereebuttons;
+package com.example.cs356;
 
 import android.graphics.Path.Direction;
 import android.widget.GridLayout;
