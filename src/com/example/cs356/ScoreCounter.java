@@ -1,38 +1,56 @@
 package com.example.cs356;
 public class ScoreCounter extends RButton{
 	private int score;
-	private int increment;
 	private int digits;
-	
+	private int increment;
+	private int initial;
+	private String name;
+
 	public ScoreCounter(){
-		
+		initial = 0;
+		score = initial;
+		digits = 2;
+		increment = 1;		
+	}
+	
+	public ScoreCounter(int ini, int increment, int digits){
+		this.score = ini;
+		this.digits = digits;	
+		this.increment = increment;
+	}
+	public void setInitial(int ini){
+		initial = ini;
 	}
 	public void increment(){
-		
+		score += increment;
 	}
 	public void decrement(){
-		
+//if(rulesheet allows score to be negative || (score - increment) >= 0))
+		score -= increment;		
 	}
 	public void reset(){
-		
+		//if(rulesheet allows)
+		score = initial;
 	}
-	public void setScore(int s){
-		score = s;
+   // NO Need	---------------------
+	public void setScore(int sc){
+		score = sc;
 	}
-	public void setIncrement(int i){
-		increment = i;
+	public void setIncrement(int inc){
+		increment = inc;
 	}
-	public void setDigits(int d){
-		digits = d;
+	
+	public void setDigits(int dig){
+		digits = dig;
 	}
+	public int getDigits(){
+		return digits;
+	}
+	
 	public int getScore(){
 		return score;
 	}
 	public int getIncrement(){
 		return increment;
 	}
-	public int getDigits(){
-		return digits;
-	}
-
 }

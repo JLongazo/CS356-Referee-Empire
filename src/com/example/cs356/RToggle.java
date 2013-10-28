@@ -8,8 +8,8 @@ public class RToggle extends RButton{
 	public void changeToggle(){
 		
 	}
-	public void setIsOn(boolean on){
-		isOn = on;
+	public void setIsOn(boolean tog){
+		isOn = tog;
 	}
 	public boolean getIsOn(){
 		return isOn;
