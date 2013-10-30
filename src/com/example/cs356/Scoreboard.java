@@ -18,9 +18,6 @@ import android.widget.LinearLayout;
  */
 public class Scoreboard extends Activity{
 
-	public Scoreboard() {
-	}
-	
 	LinearLayout Teams;
 	LinearLayout Scores;
 	LinearLayout Tbuttons;
@@ -47,8 +44,7 @@ public class Scoreboard extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.scoreboard);
-		//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		Teams = (LinearLayout) this.findViewById(R.id.Teams);
 		Scores = (LinearLayout) this.findViewById(R.id.Scores);
 		Tbuttons = (LinearLayout) this.findViewById(R.id.Tbuttons);

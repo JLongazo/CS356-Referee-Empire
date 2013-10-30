@@ -26,7 +26,9 @@ public class MainActivity extends Activity {
 		aButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				aButton.setText("You Clicked Me");
-				setContentView(R.layout.scoreboard);
+				Intent myIntent = new Intent(getApplicationContext(), Scoreboard.class);
+				startActivity(myIntent);
+				//setContentView(R.layout.scoreboard);
 					
 				}});
 		

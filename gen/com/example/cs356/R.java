@@ -50,10 +50,12 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int scoreboard=0x7f030001;
+        public static final int activity_test=0x7f030001;
+        public static final int scoreboard=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f080000;
+        public static final int test=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -63,9 +65,11 @@ public final class R {
         public static final int hello_world=0x7f050002;
         public static final int option=0x7f05000a;
         public static final int resumegame=0x7f050006;
+        public static final int scoreboard=0x7f05000c;
         public static final int selectscoreboard=0x7f050007;
         public static final int testbuttonpress=0x7f05000b;
         public static final int testing=0x7f050005;
+        public static final int title_activity_test=0x7f05000d;
         public static final int viewsavedgames=0x7f050004;
         public static final int viewscores=0x7f050008;
     }
