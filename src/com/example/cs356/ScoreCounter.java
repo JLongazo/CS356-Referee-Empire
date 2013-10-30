@@ -25,17 +25,14 @@ public class ScoreCounter extends RButton{
 		score += increment;
 	}
 	public void decrement(){
-//if(rulesheet allows score to be negative || (score - increment) >= 0))
+		if((score - increment) >= 0){
 		score -= increment;		
+		}
 	}
 	public void reset(){
-		//if(rulesheet allows)
 		score = initial;
 	}
-   // NO Need	---------------------
-	public void setScore(int sc){
-		score = sc;
-	}
+   
 	public void setIncrement(int inc){
 		increment = inc;
 	}

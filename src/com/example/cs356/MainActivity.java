@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 		aButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				aButton.setText("You Clicked Me");
-				setContentView(R.layout.tototo);
+				setContentView(R.layout.scoreboard);
 					
 				}});
 		
