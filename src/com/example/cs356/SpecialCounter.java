@@ -34,9 +34,6 @@ public class SpecialCounter extends ScoreCounter{
 	public void reset(int i){
 		spCounter[i].reset();
 	}
-	public void setSpScore(int i, int sc){
-		spCounter[i].setScore(sc);
-	}
 	public int getSpScore(int i){
 		return spCounter[i].getScore();
 	}

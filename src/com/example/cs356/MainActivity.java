@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
 	//@Override
 	Button aButton;
 	Button bButton;
+	Button counterButton;//for test
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
 		
 		aButton = (Button) this.findViewById(R.id.button1);
 		bButton = (Button) this.findViewById(R.id.button2);
+		counterButton = (Button) this.findViewById(R.id.button7);
 
 
 		
@@ -36,6 +38,11 @@ public class MainActivity extends Activity {
 				bButton.setText("You Clicked Me");
 				//setContentView(R.layout.tototo);
 					
+				}});
+		counterButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				ScoreCounter sc = new ScoreCounter();
+		//		sc.onCreate(null);
 				}});
 	}
 
