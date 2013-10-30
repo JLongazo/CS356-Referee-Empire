@@ -12,9 +12,9 @@ public class ScoreCounter extends RButton{
 		digits = 2;
 		increment = 1;		
 	}
-	
 	public ScoreCounter(int ini, int increment, int digits){
-		this.score = ini;
+		initial = ini;
+		this.score = initial;
 		this.digits = digits;	
 		this.increment = increment;
 	}
