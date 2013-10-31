@@ -14,6 +14,18 @@ public class MainActivity extends Activity {
 	Button aButton;
 	Button bButton;
 	
+	
+	public void sendMessage(View view) 
+	{
+		Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
+		//MainActivity.this.startActivity(myIntent);
+		startActivity(myIntent);
+		//setContentView(R.layout.scoreboard);
+	}
+	
+	
+	
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -22,13 +34,17 @@ public class MainActivity extends Activity {
 		bButton = (Button) this.findViewById(R.id.button2);
 
 
-		
+		/**
 		aButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				aButton.setText("You Clicked Me");
-				setContentView(R.layout.tototo);
+				//Intent myIntent = new Intent(MainActivity.this, Scoreboard.class);
+				//MainActivity.this.startActivity(myIntent);
+				//startActivity(myIntent);
+				//setContentView(R.layout.scoreboard);
 					
 				}});
+				*/
 		
 		
 		bButton.setOnClickListener(new OnClickListener() {
