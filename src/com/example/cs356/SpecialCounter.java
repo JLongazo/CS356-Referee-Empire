@@ -6,7 +6,11 @@ public class SpecialCounter extends ScoreCounter{
 //	private String name;
 	private ScoreCounter[] spCounter;
 	private int spScore;
+<<<<<<< HEAD
 	
+=======
+	/*
+>>>>>>> Empire_Rafik
 	public SpecialCounter(){
 		counter_number = 1;
 		spCounter = new ScoreCounter[counter_number];
@@ -34,7 +38,10 @@ public class SpecialCounter extends ScoreCounter{
 	public void reset(int i){
 		spCounter[i].reset();
 	}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> Empire_Rafik
 	public int getSpScore(int i){
 		return spCounter[i].getScore();
 	}
@@ -44,4 +51,8 @@ public class SpecialCounter extends ScoreCounter{
 	public String getName(int i){
 		return spCounter[i].getName();
 	}
+<<<<<<< HEAD
+=======
+	*/
+>>>>>>> Empire_Rafik
 }

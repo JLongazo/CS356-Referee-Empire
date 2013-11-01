@@ -1,5 +1,10 @@
 package com.example.cs356;
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> Empire_Rafik
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +18,7 @@ public class MainActivity extends Activity {
 	//@Override
 	Button aButton;
 	Button bButton;
+<<<<<<< HEAD
 	
 	
 	public void sendMessage(View view) 
@@ -25,11 +31,15 @@ public class MainActivity extends Activity {
 	
 	
 	
+=======
+	Button counterButton;//for test
+>>>>>>> Empire_Rafik
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+<<<<<<< HEAD
 		aButton = (Button) this.findViewById(R.id.button1);
 		bButton = (Button) this.findViewById(R.id.button2);
 
@@ -47,6 +57,27 @@ public class MainActivity extends Activity {
 				*/
 		
 		
+=======
+		aButton = (Button) this.findViewById(R.id.scoreID);
+		bButton = (Button) this.findViewById(R.id.button2);
+		counterButton = (Button) this.findViewById(R.id.button7);
+		
+		counterButton.setOnClickListener(new OnClickListener() {
+
+	        @Override
+	        public void onClick(View v) {
+	            Intent intent = new Intent(MainActivity.this,ScoreCounter.class);
+	            startActivity(intent);
+	        }
+	    });
+
+		aButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				aButton.setText("You Clicked Me");
+				setContentView(R.layout.tototo);
+				}});
+
+>>>>>>> Empire_Rafik
 		bButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				bButton.setText("You Clicked Me");
@@ -54,8 +85,11 @@ public class MainActivity extends Activity {
 					
 				}});
 	}
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Empire_Rafik
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

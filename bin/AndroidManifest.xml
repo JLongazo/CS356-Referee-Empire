@@ -12,7 +12,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+<<<<<<< HEAD
         android:theme="@android:style/Theme.NoTitleBar" >
+=======
+        android:theme="@style/AppTheme" >
+>>>>>>> Empire_Rafik
         <activity
             android:name="com.example.cs356.MainActivity"
             android:label="@string/app_name" >
@@ -23,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity
+<<<<<<< HEAD
             android:name="com.example.cs356.ScoreboardUI"
             android:label="@string/title_activity_scoreboard_ui"
             android:screenOrientation="landscape" >
@@ -30,6 +35,14 @@
         <activity
             android:name="com.example.cs356.DummyTester"
             android:label="@string/title_activity_dummy_tester" >
+=======
+            android:name="com.example.cs356.ScoreCounter"
+            android:label="@string/title_activity_score_counter"
+            android:parentActivityName="com.example.cs356.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cs356.MainActivity" />
+>>>>>>> Empire_Rafik
         </activity>
     </application>
 

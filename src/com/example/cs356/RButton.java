@@ -1,11 +1,23 @@
 package com.example.cs356;
 
+<<<<<<< HEAD
 import android.graphics.Path.Direction;
+=======
+import android.app.Activity;
+import android.graphics.Path.Direction;
+import android.view.View;
+import android.view.View.OnClickListener;
+>>>>>>> Empire_Rafik
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+<<<<<<< HEAD
 public class RButton {
+=======
+
+public class RButton extends Activity implements OnClickListener  {
+>>>>>>> Empire_Rafik
 	private String name;
 	private ImageView image;
 	private int gridLayout;
@@ -39,6 +51,14 @@ public class RButton {
 	public int getGrid(){
 		return gridLayout;		
 	}
+<<<<<<< HEAD
+=======
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+>>>>>>> Empire_Rafik
 	
 
 }

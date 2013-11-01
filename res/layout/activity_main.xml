@@ -10,7 +10,11 @@
     tools:context=".MainActivity" >
 
     <Button
+<<<<<<< HEAD
         android:id="@+id/button1"
+=======
+        android:id="@+id/scoreID"
+>>>>>>> Empire_Rafik
         style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +22,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/button2"
         android:layout_marginTop="111dp"
+<<<<<<< HEAD
         android:onClick="sendMessage"
+=======
+>>>>>>> Empire_Rafik
         android:text="@string/createscoreboard" />
 
     <Button
@@ -44,9 +51,15 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_alignLeft="@+id/button1"
         android:layout_alignRight="@+id/button1"
         android:layout_below="@+id/button1"
+=======
+        android:layout_alignLeft="@+id/scoreID"
+        android:layout_alignRight="@+id/scoreID"
+        android:layout_below="@+id/scoreID"
+>>>>>>> Empire_Rafik
         android:text="@string/selectscoreboard" />
 
     <Button
@@ -67,4 +80,17 @@
         android:layout_below="@+id/button6"
         android:text="@string/option" />
 
+<<<<<<< HEAD
+=======
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button5"
+        android:layout_alignRight="@+id/button5"
+        android:layout_below="@+id/button5"
+        android:layout_marginTop="18dp"
+        android:text="to test counter" />
+
+>>>>>>> Empire_Rafik
 </RelativeLayout>

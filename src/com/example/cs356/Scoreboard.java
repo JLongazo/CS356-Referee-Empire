@@ -1,5 +1,6 @@
 package com.example.cs356;
 
+<<<<<<< HEAD
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.pm.ActivityInfo;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+=======
+>>>>>>> Empire_Rafik
 
 /**
  * 
@@ -19,6 +22,7 @@ import android.widget.LinearLayout;
  */
 public class Scoreboard {
 
+<<<<<<< HEAD
 	//LinearLayout Teams;
 	//LinearLayout Scores;
 	//LinearLayout Tbuttons;
@@ -33,11 +37,21 @@ public class Scoreboard {
 	private boolean hasNeutral;
 	private int gridCount;
 	private String[] teamNames = new String[4];
+=======
+	public Scoreboard() {
+	}
+	
+	private String name;
+	private int teamCount;
+	private boolean hasNeutral;
+	private int gridCount;
+>>>>>>> Empire_Rafik
 	private RButton[] teamButtons;
 	private RButton[] neutralButtons;
 	private ScoreCounter[] scores;
 	public RuleSheet rules;
 	
+<<<<<<< HEAD
 	
 	/**
 	@Override
@@ -81,6 +95,19 @@ public class Scoreboard {
 	public String getName(){
 		return name;
 	}
+=======
+	public void saveScore(){}
+	
+	public void endGame(){}
+	
+	public void options(){}
+	
+	public void mainMenu(){}
+	
+	public void ruleSheet(){}
+	
+	public void tournament(){}
+>>>>>>> Empire_Rafik
 	
 	public int getTeamCount() {
 		return teamCount;

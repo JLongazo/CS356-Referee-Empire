@@ -16,6 +16,7 @@
     <string name="createtournament">Create Tournament</string>
     <string name="option">Options</string>
     <string name="testbuttonpress">Testing Button Press</string>
+<<<<<<< HEAD
 
     <color name="red">#FF0000</color>
     <color name="blue">#0000FF</color>
@@ -27,5 +28,8 @@
     <string name="title_activity_scoreboard1">Scoreboard1</string>
     <string name="title_activity_scoreboard_ui">ScoreboardUI</string>
     <string name="title_activity_dummy_tester">DummyTester</string>
+=======
+    <string name="title_activity_score_counter">Score Counter</string>
+>>>>>>> Empire_Rafik
 
 </resources>
