@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.cs356.ScoreCounter"
+            android:label="@string/title_activity_score_counter"
+            android:parentActivityName="com.example.cs356.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cs356.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

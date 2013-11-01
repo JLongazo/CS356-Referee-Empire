@@ -3,24 +3,31 @@ package com.example.cs356;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ScoreCounter extends RButton{
-	private int score;
+	private int score = 0;
 	private int digits;
 	private int increment;
 	private int initial;
 	private String name;
-    private TextView scoreView;
-    private int count = 1;
-	
+    private int count = 1;//number of scores
+    
+    
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scorecounter);
-        scoreView = (TextView) findViewById(R.id.score);
-        scoreView.setOnClickListener(this);
-    }
+        setContentView(R.layout.activity_score_counter);
+        
+        final Button orderButton = (Button) findViewById(R.id.scoreID);
+        orderButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+         public void onClick(View v) {
+     			orderButton.setText(Integer.toString(++score));
+         }});
+    } 
 
 	public ScoreCounter(){
 		initial = 0;
@@ -65,11 +72,6 @@ public class ScoreCounter extends RButton{
 	public int getIncrement(){
 		return increment;
 	}
-	@Override
-	public void onClick(View v) {
-		if(v.getId() == R.id.score) {
-			score++;
-			scoreView.setText(Integer.toString(score));
-		}
-	}
+
 }
+

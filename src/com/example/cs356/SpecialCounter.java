@@ -6,7 +6,7 @@ public class SpecialCounter extends ScoreCounter{
 //	private String name;
 	private ScoreCounter[] spCounter;
 	private int spScore;
-	
+	/*
 	public SpecialCounter(){
 		counter_number = 1;
 		spCounter = new ScoreCounter[counter_number];
@@ -43,4 +43,5 @@ public class SpecialCounter extends ScoreCounter{
 	public String getName(int i){
 		return spCounter[i].getName();
 	}
+	*/
 }

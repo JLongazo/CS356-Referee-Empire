@@ -6,7 +6,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="createscoreboard">Create Scoreboard</string>
     <string name="viewsavedgames">View Saved Scores</string>
+
     <color name="black">#000000</color>
+
     <string name="testing">testing</string>
     <string name="resumegame">Resume Current Game</string>
     <string name="selectscoreboard">Select Scoreboard</string>
@@ -14,5 +16,6 @@
     <string name="createtournament">Create Tournament</string>
     <string name="option">Options</string>
     <string name="testbuttonpress">Testing Button Press</string>
+    <string name="title_activity_score_counter">Score Counter</string>
 
 </resources>

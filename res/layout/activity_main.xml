@@ -10,7 +10,7 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/scoreID"
         style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,9 +43,9 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
+        android:layout_alignLeft="@+id/scoreID"
+        android:layout_alignRight="@+id/scoreID"
+        android:layout_below="@+id/scoreID"
         android:text="@string/selectscoreboard" />
 
     <Button
