@@ -26,5 +26,6 @@
     <string name="title_activity_test">Test</string>
     <string name="title_activity_scoreboard1">Scoreboard1</string>
     <string name="title_activity_scoreboard_ui">ScoreboardUI</string>
+    <string name="title_activity_dummy_tester">DummyTester</string>
 
 </resources>
