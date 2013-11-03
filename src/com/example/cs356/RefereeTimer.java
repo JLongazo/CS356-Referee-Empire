@@ -1,13 +1,15 @@
 package com.example.cs356;
 import java.util.Timer;
 
+import android.content.Context;
+
 public class RefereeTimer extends RButton{
 	private int countUp;
 	private boolean hasHours, hasMinutes;
 	private Timer startTime, currentTime;
 	
-	public RefereeTimer(){
-		
+	public RefereeTimer(Context c){
+		super(c);
 	}
 	public void start(){
 		

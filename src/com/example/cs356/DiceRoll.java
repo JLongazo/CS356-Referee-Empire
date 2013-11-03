@@ -1,11 +1,13 @@
 package com.example.cs356;
 
+import android.content.Context;
+
 public class DiceRoll extends NeutralButton{
 	private int diceSides;
 	private int diceNum;
 	
-	public DiceRoll(){
-		
+	public DiceRoll(Context c){
+		super(c);
 	}
 	public void roll(){
 		

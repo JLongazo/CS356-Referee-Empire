@@ -1,27 +1,64 @@
 package com.example.cs356;
+
+import android.content.Context;
+import android.view.View;
+
 public class ScoreCounter extends RButton{
 	private int score;
 	private int digits;
 	private int increment;
 	private int initial;
-	private String name;
-
-	public ScoreCounter(){
-		initial = 0;
-		score = initial;
-		digits = 2;
-		increment = 1;		
-	}
+	private int max;
+	private CharSequence display;
 	
-	public ScoreCounter(int ini, int increment, int digits){
+	public ScoreCounter(int ini, int increment, int digits, Context c){
+		super(c);
 		this.score = ini;
 		this.digits = digits;	
 		this.increment = increment;
+		adjustText();
+		switch(digits){
+		case 1:
+			max = 9;
+			break;
+		case 2:
+			max = 99;
+			break;
+		case 3:
+			max = 999;
+			break;
+		case 4:
+			max = 9999;
+			break;
+		}
 	}
+	
+	public void adjustText(){
+		display = String.valueOf(score);
+		while(display.length() < digits){
+			display = "0" + display;
+		}
+		setText(display);
+	}
+	
+	@Override
+	public void onClick(View v) {
+		increment();
+		adjustText();
+	}
+	
+	@Override
+	public boolean onLongClick(View arg0) {
+		decrement();
+		adjustText();
+		return true;
+	}
+	
 	public void setInitial(int ini){
 		initial = ini;
 	}
 	public void increment(){
+		if((score + increment) <= max)
 		score += increment;
 	}
 	public void decrement(){
