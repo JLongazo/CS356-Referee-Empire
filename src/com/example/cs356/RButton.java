@@ -1,30 +1,26 @@
 package com.example.cs356;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Path.Direction;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.GridLayout;
+import android.view.View.OnLongClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-
-public class RButton extends Activity implements OnClickListener  {
+public class RButton extends Button implements OnClickListener, OnLongClickListener{
 	private String name;
 	private ImageView image;
-	private int gridLayout;
+	private int grid;
 	
-	public RButton(){
-		
+	public RButton(Context c){
+		super(c);
+		setOnClickListener(this);
+		setOnLongClickListener(this);
 	}
-	public void onTap(){
-		
-	}
-	public void onHold(){	
-	}
-	public void onSwipe(Direction dir){
-		
-	}
+	
+	
 	public void setName(String n){
 		name = n;		
 	}
@@ -32,7 +28,7 @@ public class RButton extends Activity implements OnClickListener  {
 		image = i;		
 	}
 	public void setGrid(int g){
-		gridLayout = g;		
+		grid = g;		
 	}
 	public String getName(){
 		return name;		
@@ -41,12 +37,17 @@ public class RButton extends Activity implements OnClickListener  {
 		return image;		
 	}
 	public int getGrid(){
-		return gridLayout;		
+		return grid;		
 	}
+
+
 	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onClick(View v) {
+	}
+
+	@Override
+	public boolean onLongClick(View arg0) {
+		return true;
 	}
 	
 

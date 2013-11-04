@@ -1,10 +1,12 @@
 package com.example.cs356;
 
+import android.content.Context;
+
 public class NeutralButton extends RButton{
 	private String name;
 	
-	public NeutralButton(){
-		
+	public NeutralButton(Context c){
+		super(c);
 	}
 	public void displayGraphic(){
 		
