@@ -3,6 +3,7 @@ package com.example.cs356;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -15,17 +16,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import java.io.*;
 
 public class ScoreboardUI extends Activity {
 	
 	Button whistle;
+	private Button save;
 	private Scoreboard sb;
+	private ContinueData cd;
 	private TextView name;
 	private LinearLayout teams;
 	private LinearLayout scores;
-	private LinearLayout tNames;
 	private LinearLayout tbuttons;
-	private LinearLayout bNames;
 	private LinearLayout bbuttons;
 	private int id = 1;
 	private int teamid[] = new int[4];
@@ -51,18 +53,28 @@ public class ScoreboardUI extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scoreboard_ui);
+		save = (Button) this.findViewById(R.id.button1);
 		name = (TextView) this.findViewById(R.id.textView1);
 		teams = (LinearLayout) this.findViewById(R.id.Teams);
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
-		tNames = (LinearLayout) this.findViewById(R.id.tNames);
 		tbuttons = (LinearLayout) this.findViewById(R.id.Tbuttons);
-		bNames = (LinearLayout) this.findViewById(R.id.bNames);
 		bbuttons = (LinearLayout) this.findViewById(R.id.Bbuttons);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		params.gravity = Gravity.CENTER;
 		params.weight = 1;
 		LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		bparams.gravity = Gravity.CENTER;
+		//get scoreboard file and continue data
+		Bundle extras = getIntent().getExtras();
+		String cont = "l";
+		//String cont = extras.getString("CONT");
+		//String file = extras.getString("FILE");
+		boolean contin = false;
+		if(cont.equals("true")){
+			//load continue data
+			cd = new ContinueData();
+			contin = true;
+		}
 		sb = new Scoreboard(); //load scoreboard
 		initializeScoreboard();
 		name.setText(sb.getName());
@@ -74,27 +86,24 @@ public class ScoreboardUI extends Activity {
 			team.setId(id++);
 			LinearLayout score = new LinearLayout(this);
 			score.setId(id++);
-			LinearLayout tnrow = new LinearLayout(this);
-			tnrow.setId(id++);
 			LinearLayout trow = new LinearLayout(this);
 			trow.setId(id++);
-			LinearLayout bnrow = new LinearLayout(this);
-			bnrow.setId(id++);
 			LinearLayout brow = new LinearLayout(this);
 			brow.setId(id++);
 			team.setOrientation(LinearLayout.VERTICAL);
 			score.setOrientation(LinearLayout.VERTICAL);
 			teams.addView(team,params);
 			scores.addView(score,params);
-			tNames.addView(tnrow,params);
 			tbuttons.addView(trow,params);
-			bNames.addView(bnrow,params);
-			bbuttons.addView(brow,params);
+			if(!sb.isHasNeutral()){
+				bbuttons.addView(brow,params);
+			}
 			trow.setGravity(Gravity.CENTER);
-			tnrow.setGravity(Gravity.CENTER);
 			brow.setGravity(Gravity.CENTER);
-			bnrow.setGravity(Gravity.CENTER);
 			ScoreCounter scoreC = new ScoreCounter(0,1,sb.getDigits(),this);
+			if(contin){
+				scoreC.setInitial(cd.getScore(j));
+			}
 			scoreid[j]=id;
 			scoreC.setId(id++);
 			TextView name1 = new TextView(this);
@@ -112,16 +121,24 @@ public class ScoreboardUI extends Activity {
 			char tbuttons[] = sb.getTopButtons();
 			String tnames[] = sb.gettNames();
 			for(int i = 0; i < sb.getTCount(); i++){
+				LinearLayout tbutton = new LinearLayout(this);
+				tbutton.setId(id++);
+				tbutton.setOrientation(LinearLayout.VERTICAL);
+				tbutton.setGravity(Gravity.CENTER);
+				trow.addView(tbutton,params);
 				switch(tbuttons[i]){
 				case 'c':
 					SpecialCounter sp = new SpecialCounter(this,tnames[i]);
+					if(contin){
+						sp.setCount(Integer.parseInt(cd.getTButton(i+j)));
+					}
 					TextView name2 = new TextView(this);
 					name2.setText(sp.getName());
 					tbutid[i+j]=id;
 					sp.setId(id++);
 					name2.setId(id++);
-					trow.addView(sp,bparams);
-					tnrow.addView(name2,bparams);
+					tbutton.addView(name2,bparams);
+					tbutton.addView(sp,bparams);
 					break;
 				}
 			}
@@ -129,24 +146,56 @@ public class ScoreboardUI extends Activity {
 				char bbuttons[] = sb.getBottomButtons();
 				String bnames[] = sb.getbNames();
 				for(int i = 0; i < sb.getBCount(); i++){
+					LinearLayout bbutton = new LinearLayout(this);
+					bbutton.setId(id++);
+					bbutton.setOrientation(LinearLayout.VERTICAL);
+					bbutton.setGravity(Gravity.CENTER);
+					brow.addView(bbutton,params);
 					switch(bbuttons[i]){
 					case 'c':
 						SpecialCounter sp = new SpecialCounter(this,bnames[i]);
+						if(contin){
+							sp.setCount(Integer.parseInt(cd.getTButton(i+j)));
+						}
 						TextView name2 = new TextView(this);
 						name2.setText(sp.getName());
 						bbutid[i+j]=id;
 						sp.setId(id++);
 						name2.setId(id++);
-						brow.addView(sp,bparams);
-						bnrow.addView(name2,bparams);
+						bbutton.addView(name2,bparams);
+						bbutton.addView(sp,bparams);
 						break;
 					}
 				}
 			}
 		}
 		if(sb.isHasNeutral()){
+			char nbuttons[] = sb.getBottomButtons();
+			String nnames[] = sb.getbNames();
+			for(int i = 0; i < sb.getBCount(); i++){
+				LinearLayout nbutton = new LinearLayout(this);
+				nbutton.setId(id++);
+				nbutton.setOrientation(LinearLayout.VERTICAL);
+				nbutton.setGravity(Gravity.CENTER);
+				bbuttons.addView(nbutton,params);
+				switch(nbuttons[i]){
+				case 'c':
+					SpecialCounter sp = new SpecialCounter(this,nnames[i]);
+					if(contin){
+						sp.setCount(Integer.parseInt(cd.getTButton(i)));
+					}
+					TextView name2 = new TextView(this);
+					name2.setText(sp.getName());
+					bbutid[i]=id;
+					sp.setId(id++);
+					name2.setId(id++);
+					nbutton.addView(name2,bparams);
+					nbutton.addView(sp,bparams);
+					break;
+				}
 			
 		}
+	}
 		
 		
 		/**
@@ -160,6 +209,24 @@ public class ScoreboardUI extends Activity {
 					
 				}});
 		*/
+		
+		save.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				try {
+					FileOutputStream fos = new FileOutputStream("fafae");
+					ObjectOutputStream os = new ObjectOutputStream(fos);
+					os.writeObject(sb);
+					os.flush();
+					os.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					System.out.println("nope");
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		
 		
 		
@@ -180,7 +247,7 @@ public class ScoreboardUI extends Activity {
 		sb.setbNames(bnames);
 		sb.setHasNeutral(false);
 		sb.setTeamNames(names);
-		sb.setTeams(3);
+		sb.setTeams(4);
 		sb.setDigits(2);
 		sb.setName("test");
 	}

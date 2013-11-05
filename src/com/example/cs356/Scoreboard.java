@@ -1,5 +1,7 @@
 package com.example.cs356;
 
+import java.io.Serializable;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.pm.ActivityInfo;
@@ -17,7 +19,7 @@ import android.widget.LinearLayout;
  * @author Longazo1
  *
  */
-public class Scoreboard {
+public class Scoreboard implements Serializable{
 
 	//LinearLayout Teams;
 	//LinearLayout Scores;

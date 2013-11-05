@@ -38,6 +38,10 @@ public class SpecialCounter extends RButton{
 	public int getSpScore(){
 		return count;
 	}
+	
+	public void setCount(int count){
+		this.count = count;
+	}
 	public void setName(String n){
 		name = n;
 	}
