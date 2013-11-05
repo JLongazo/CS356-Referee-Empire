@@ -1,10 +1,12 @@
 package com.example.cs356;
 
+import android.content.Context;
+
 public class CoinToss extends NeutralButton{
 	private int teamCount;
 	
-	public CoinToss(){
-		
+	public CoinToss(Context c){
+		super(c);
 	}
 	public void chooseTeam(){
 		

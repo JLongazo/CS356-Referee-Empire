@@ -1,9 +1,12 @@
 package com.example.cs356;
+
+import android.content.Context;
+
 public class RToggle extends RButton{
 	private boolean isOn;
 	
-	public RToggle(){
-		
+	public RToggle(Context c){
+		super(c);
 	}
 	public void changeToggle(){
 		

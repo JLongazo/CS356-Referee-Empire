@@ -34,17 +34,17 @@ public class MainActivity extends Activity {
 		bButton = (Button) this.findViewById(R.id.button2);
 
 
-		/**
+
 		aButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				aButton.setText("You Clicked Me");
-				//Intent myIntent = new Intent(MainActivity.this, Scoreboard.class);
+				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
 				//MainActivity.this.startActivity(myIntent);
-				//startActivity(myIntent);
+				startActivity(myIntent);
 				//setContentView(R.layout.scoreboard);
 					
 				}});
-				*/
+
 		
 		
 		bButton.setOnClickListener(new OnClickListener() {

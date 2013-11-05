@@ -1,5 +1,7 @@
 package com.example.cs356;
 
+import java.io.Serializable;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.pm.ActivityInfo;
@@ -17,7 +19,7 @@ import android.widget.LinearLayout;
  * @author Longazo1
  *
  */
-public class Scoreboard {
+public class Scoreboard implements Serializable {
 
 	//LinearLayout Teams;
 	//LinearLayout Scores;
@@ -28,14 +30,15 @@ public class Scoreboard {
 	
 	private String name;
 	private int teams;
-	private int teamCount;
-	private int nCount;
+	private int tCount;
+	private int bCount;
+	private int digits;
 	private boolean hasNeutral;
-	private int gridCount;
 	private String[] teamNames = new String[4];
-	private RButton[] teamButtons;
-	private RButton[] neutralButtons;
-	private ScoreCounter[] scores;
+	private String[] tNames = new String[16];
+	private String[] bNames = new String[16];
+	private char[] topButtons = new char[16];
+	private char[] bottomButtons = new char[16];
 	public RuleSheet rules;
 	
 	
@@ -82,22 +85,82 @@ public class Scoreboard {
 		return name;
 	}
 	
-	public int getTeamCount() {
-		return teamCount;
+	public void setName(String name){
+		this.name = name;
 	}
-	public void setTeamCount(int teamCount) {
-		this.teamCount = teamCount;
+	
+	public int getTCount() {
+		return tCount;
 	}
-	public RButton[] getTeamButtons() {
-		return teamButtons;
+	public void setTCount(int tCount) {
+		this.tCount = tCount;
 	}
-	public void setTeamButtons(RButton[] teamButtons) {
-		this.teamButtons = teamButtons;
+	public char[] getTopButtons() {
+		return topButtons;
 	}
-	public RButton[] getNeutralButtons() {
-		return neutralButtons;
+	public void setTopButtons(char[] topButtons) {
+		this.topButtons = topButtons;
 	}
-	public void setNeutralButtons(RButton[] neutralButtons) {
-		this.neutralButtons = neutralButtons;
+	public char[] getBottomButtons() {
+		return bottomButtons;
+	}
+	public void setBottomButtons(char[] bottomButtons) {
+		this.bottomButtons = bottomButtons;
+	}
+
+	public int getTeams() {
+		return teams;
+	}
+
+	public void setTeams(int teams) {
+		this.teams = teams;
+	}
+
+	public int getBCount() {
+		return bCount;
+	}
+
+	public void setBCount(int bCount) {
+		this.bCount = bCount;
+	}
+
+	public boolean isHasNeutral() {
+		return hasNeutral;
+	}
+
+	public void setHasNeutral(boolean hasNeutral) {
+		this.hasNeutral = hasNeutral;
+	}
+
+	public String[] getTeamNames() {
+		return teamNames;
+	}
+
+	public void setTeamNames(String[] teamNames) {
+		this.teamNames = teamNames;
+	}
+
+	public int getDigits() {
+		return digits;
+	}
+
+	public void setDigits(int digits) {
+		this.digits = digits;
+	}
+
+	public String[] gettNames() {
+		return tNames;
+	}
+
+	public void settNames(String[] tNames) {
+		this.tNames = tNames;
+	}
+
+	public String[] getbNames() {
+		return bNames;
+	}
+
+	public void setbNames(String[] bNames) {
+		this.bNames = bNames;
 	}
 }
