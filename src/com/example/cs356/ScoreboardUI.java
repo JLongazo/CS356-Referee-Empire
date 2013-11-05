@@ -3,9 +3,9 @@ package com.example.cs356;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -16,17 +16,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import java.io.*;
 
 public class ScoreboardUI extends Activity {
 	
 	Button whistle;
-	Scoreboard sb;
-	LinearLayout teams;
-	LinearLayout scores;
-	LinearLayout tNames;
-	LinearLayout tbuttons;
-	LinearLayout bNames;
-	LinearLayout bbuttons;
+	private Button save;
+	private Scoreboard sb;
+	private ContinueData cd;
+	private TextView name;
+	private LinearLayout teams;
+	private LinearLayout scores;
+	private LinearLayout tbuttons;
+	private LinearLayout bbuttons;
+	private int id = 1;
+	private int teamid[] = new int[4];
+	private int scoreid[] = new int[4];
+	private int tbutid[] = new int[8];
+	private int bbutid[] = new int[8];
 
 	public void whistlesound(View view) 
 	{
@@ -45,286 +52,163 @@ public class ScoreboardUI extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scoreboard_ui);
+		save = (Button) this.findViewById(R.id.button1);
+		name = (TextView) this.findViewById(R.id.textView1);
 		teams = (LinearLayout) this.findViewById(R.id.Teams);
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
-		tNames = (LinearLayout) this.findViewById(R.id.tNames);
 		tbuttons = (LinearLayout) this.findViewById(R.id.Tbuttons);
-		bNames = (LinearLayout) this.findViewById(R.id.bNames);
 		bbuttons = (LinearLayout) this.findViewById(R.id.Bbuttons);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		params.gravity = Gravity.CENTER;
 		params.weight = 1;
 		LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		bparams.gravity = Gravity.CENTER;
+		//get scoreboard file and continue data
+		Bundle extras = getIntent().getExtras();
+		String cont = "l";
+		//String cont = extras.getString("CONT");
+		//String file = extras.getString("FILE");
+		boolean contin = false;
+		if(cont.equals("true")){
+			//load continue data
+			cd = new ContinueData();
+			contin = true;
+		}
 		sb = new Scoreboard(); //load scoreboard
 		initializeScoreboard();
+		name.setText(sb.getName());
 		//Build Scoreboard Sequence
 		int teamCount = sb.getTeams();
 		String teamNames[] = sb.getTeamNames();
-		switch(teamCount){
-		case 4:
-			LinearLayout team4 = new LinearLayout(this);
-			LinearLayout scores4 = new LinearLayout(this);
-			LinearLayout tnrow4 = new LinearLayout(this);
-			LinearLayout trow4 = new LinearLayout(this);
-			LinearLayout bnrow4 = new LinearLayout(this);
-			LinearLayout brow4 = new LinearLayout(this);
-			team4.setOrientation(LinearLayout.VERTICAL);
-			scores4.setOrientation(LinearLayout.VERTICAL);
-			teams.addView(team4,params);
-			scores.addView(scores4,params);
-
-			tNames.addView(tnrow4,params);
-			tbuttons.addView(trow4,params);
-			bNames.addView(bnrow4,params);
-			bbuttons.addView(brow4,params);
-			trow4.setGravity(Gravity.CENTER);
-			tnrow4.setGravity(Gravity.CENTER);
-			brow4.setGravity(Gravity.CENTER);
-			bnrow4.setGravity(Gravity.CENTER);
-			ScoreCounter score4 = new ScoreCounter(0,1,sb.getDigits(),this);
-			TextView name4 = new TextView(this);
-			name4.setTextColor(Color.RED);
-			name4.setTextSize(25);
-			score4.setBackgroundColor(Color.YELLOW);
-			score4.setWidth(150);
-			score4.setHeight(150);
-			score4.setTextSize(50);
-			name4.setText(teamNames[3]);
-			team4.addView(name4,params);
-			scores4.addView(score4,params);
-			char tbuttons4[] = sb.getTopButtons();
-			String tnames4[] = sb.gettNames();
-			for(int i = 0; i < sb.getTCount(); i++){
-				switch(tbuttons4[i]){
-				case 'c':
-					SpecialCounter sp = new SpecialCounter(this,tnames4[i]);
-					TextView name = new TextView(this);
-					name.setTextColor(Color.RED);
-					name.setText(sp.getName());
-					sp.setId(i + 40);
-					name.setId(i + 44);
-					trow4.addView(sp,bparams);
-					tnrow4.addView(name,bparams);
-					break;
-				}
-			}
+		for(int j = 0; j < teamCount; j++){
+			LinearLayout team = new LinearLayout(this);
+			team.setId(id++);
+			LinearLayout score = new LinearLayout(this);
+			score.setId(id++);
+			LinearLayout trow = new LinearLayout(this);
+			trow.setId(id++);
+			LinearLayout brow = new LinearLayout(this);
+			brow.setId(id++);
+			team.setOrientation(LinearLayout.VERTICAL);
+			score.setOrientation(LinearLayout.VERTICAL);
+			teams.addView(team,params);
+			scores.addView(score,params);
+			tbuttons.addView(trow,params);
 			if(!sb.isHasNeutral()){
-				char bbuttons4[] = sb.getBottomButtons();
-				String bnames4[] = sb.getbNames();
-				for(int i = 0; i < sb.getBCount(); i++){
-					switch(bbuttons4[i]){
-					case 'c':
-						SpecialCounter sp = new SpecialCounter(this,bnames4[i]);
-						TextView name = new TextView(this);
-						name.setTextColor(Color.RED);
-						name.setText(sp.getName());
-						sp.setId(i + 400);
-						name.setId(i + 404);
-						brow4.addView(sp,bparams);
-						bnrow4.addView(name,bparams);
-						break;
-					}
-				}
+				bbuttons.addView(brow,params);
 			}
-		case 3:
-			LinearLayout team3 = new LinearLayout(this);
-			LinearLayout scores3 = new LinearLayout(this);
-			LinearLayout tnrow3 = new LinearLayout(this);
-			LinearLayout trow3 = new LinearLayout(this);
-			LinearLayout bnrow3 = new LinearLayout(this);
-			LinearLayout brow3 = new LinearLayout(this);
-			team3.setOrientation(LinearLayout.VERTICAL);
-			scores3.setOrientation(LinearLayout.VERTICAL);
-			teams.addView(team3,params);
-			scores.addView(scores3,params);
-			tNames.addView(tnrow3,params);
-			tbuttons.addView(trow3,params);
-			bNames.addView(bnrow3,params);
-			bbuttons.addView(brow3,params);
-			trow3.setGravity(Gravity.CENTER);
-			tnrow3.setGravity(Gravity.CENTER);
-			brow3.setGravity(Gravity.CENTER);
-			bnrow3.setGravity(Gravity.CENTER);
-			ScoreCounter score3 = new ScoreCounter(0,1,sb.getDigits(),this);
-			TextView name3 = new TextView(this);
-			name3.setTextColor(Color.RED);
-			name3.setTextSize(25);
-			score3.setBackgroundColor(Color.YELLOW);
-			score3.setWidth(150);
-			score3.setHeight(150);
-			score3.setTextSize(50);
-			name3.setText(teamNames[2]);
-			team3.addView(name3,params);
-			scores3.addView(score3,params);
-			char tbuttons3[] = sb.getTopButtons();
-			String tnames3[] = sb.gettNames();
-			for(int i = 0; i < sb.getTCount(); i++){
-				switch(tbuttons3[i]){
-				case 'c':
-					SpecialCounter sp = new SpecialCounter(this,tnames3[i]);
-					TextView name = new TextView(this);
-					name.setText(sp.getName());
-					name.setTextColor(Color.RED);
-					sp.setId(i + 30);
-					name.setId(i + 34);
-					trow3.addView(sp,bparams);
-					tnrow3.addView(name,bparams);
-					break;
-				}
+			trow.setGravity(Gravity.CENTER);
+			brow.setGravity(Gravity.CENTER);
+			ScoreCounter scoreC = new ScoreCounter(0,1,sb.getDigits(),this);
+			if(contin){
+				scoreC.setInitial(cd.getScore(j));
 			}
-			if(!sb.isHasNeutral()){
-				char bbuttons3[] = sb.getBottomButtons();
-				String bnames3[] = sb.getbNames();
-				for(int i = 0; i < sb.getBCount(); i++){
-					switch(bbuttons3[i]){
-					case 'c':
-						SpecialCounter sp = new SpecialCounter(this,bnames3[i]);
-						TextView name = new TextView(this);
-						name.setTextColor(Color.RED);
-						name.setText(sp.getName());
-						sp.setId(i + 300);
-						name.setId(i + 304);
-						brow3.addView(sp,bparams);
-						bnrow3.addView(name,bparams);
-						break;
-					}
-				}
-			}
-		case 2:
-			LinearLayout team2 = new LinearLayout(this);
-			LinearLayout scores2 = new LinearLayout(this);
-			LinearLayout tnrow2 = new LinearLayout(this);
-			LinearLayout trow2 = new LinearLayout(this);
-			LinearLayout bnrow2 = new LinearLayout(this);
-			LinearLayout brow2 = new LinearLayout(this);
-			team2.setOrientation(LinearLayout.VERTICAL);
-			scores2.setOrientation(LinearLayout.VERTICAL);
-			teams.addView(team2,params);
-			scores.addView(scores2,params);
-			tNames.addView(tnrow2,params);
-			tbuttons.addView(trow2,params);
-			bNames.addView(bnrow2,params);
-			bbuttons.addView(brow2,params);
-			trow2.setGravity(Gravity.CENTER);
-			tnrow2.setGravity(Gravity.CENTER);
-			brow2.setGravity(Gravity.CENTER);
-			bnrow2.setGravity(Gravity.CENTER);
-			ScoreCounter score2 = new ScoreCounter(0,1,sb.getDigits(),this);
-			TextView name2 = new TextView(this);
-			name2.setTextColor(Color.RED);
-			name2.setTextSize(25);
-			score2.setBackgroundColor(Color.YELLOW);
-			score2.setWidth(150);
-			score2.setHeight(150);
-			score2.setTextSize(50);
-			name2.setText(teamNames[1]);
-			team2.addView(name2,params);
-			scores2.addView(score2,params);
-			char tbuttons2[] = sb.getTopButtons();
-			String tnames2[] = sb.gettNames();
-			for(int i = 0; i < sb.getTCount(); i++){
-				switch(tbuttons2[i]){
-				case 'c':
-					SpecialCounter sp = new SpecialCounter(this,tnames2[i]);
-					TextView name = new TextView(this);
-					name.setTextColor(Color.RED);
-					name.setText(sp.getName());
-					sp.setId(i + 20);
-					name.setId(i + 24);
-					trow2.addView(sp,bparams);
-					tnrow2.addView(name,bparams);
-					break;
-				}
-			}
-			if(!sb.isHasNeutral()){
-				char bbuttons2[] = sb.getBottomButtons();
-				String bnames2[] = sb.getbNames();
-				for(int i = 0; i < sb.getBCount(); i++){
-					switch(bbuttons2[i]){
-					case 'c':
-						SpecialCounter sp = new SpecialCounter(this,bnames2[i]);
-						TextView name = new TextView(this);
-						name.setTextColor(Color.RED);
-						name.setText(sp.getName());
-						sp.setId(i + 200);
-						name.setId(i + 204);
-						brow2.addView(sp,bparams);
-						bnrow2.addView(name,bparams);
-						break;
-					}
-				}
-			}
-		case 1:
-			LinearLayout team1 = new LinearLayout(this);
-			LinearLayout scores1 = new LinearLayout(this);
-			LinearLayout tnrow1 = new LinearLayout(this);
-			LinearLayout trow1 = new LinearLayout(this);
-			LinearLayout bnrow1 = new LinearLayout(this);
-			LinearLayout brow1 = new LinearLayout(this);
-			team1.setOrientation(LinearLayout.VERTICAL);
-			scores1.setOrientation(LinearLayout.VERTICAL);
-			trow1.setOrientation(LinearLayout.HORIZONTAL);
-			brow1.setOrientation(LinearLayout.HORIZONTAL);
-			teams.addView(team1,params);
-			scores.addView(scores1,params);
-			tNames.addView(tnrow1,params);
-			tbuttons.addView(trow1,params);
-			bNames.addView(bnrow1,params);
-			bbuttons.addView(brow1,params);
-			trow1.setGravity(Gravity.CENTER);
-			tnrow1.setGravity(Gravity.CENTER);
-			brow1.setGravity(Gravity.CENTER);
-			bnrow1.setGravity(Gravity.CENTER);
-			ScoreCounter score = new ScoreCounter(0,1,sb.getDigits(),this);
+			scoreid[j]=id;
+			scoreC.setId(id++);
 			TextView name1 = new TextView(this);
+			teamid[j]=id;
+			name1.setId(id++);
+			name1.setText(teamNames[j]);
 			name1.setTextColor(Color.RED);
-			name1.setTextSize(25);
-			score.setBackgroundColor(Color.YELLOW);
-			score.setWidth(150);
-			score.setHeight(150);
-			score.setTextSize(50);
-			name1.setText(teamNames[0]);
-			team1.addView(name1,params);
-			scores1.addView(score,params);
-			char tbuttons1[] = sb.getTopButtons();
-			String tnames1[] = sb.gettNames();
+            name1.setTextSize(25);
+            scoreC.setBackgroundColor(Color.YELLOW);
+            scoreC.setWidth(150);
+            scoreC.setHeight(150);
+            scoreC.setTextSize(30);
+			team.addView(name1,params);
+			score.addView(scoreC,params);
+			char tbuttons[] = sb.getTopButtons();
+			String tnames[] = sb.gettNames();
 			for(int i = 0; i < sb.getTCount(); i++){
-				switch(tbuttons1[i]){
+				LinearLayout tbutton = new LinearLayout(this);
+				tbutton.setId(id++);
+				tbutton.setOrientation(LinearLayout.VERTICAL);
+				tbutton.setGravity(Gravity.CENTER);
+				trow.addView(tbutton,params);
+				switch(tbuttons[i]){
 				case 'c':
-					SpecialCounter sp = new SpecialCounter(this,tnames1[i]);
-					TextView name = new TextView(this);
-					name.setTextColor(Color.RED);
-					name.setText(sp.getName());
-					sp.setId(i + 10);
-					name.setId(i + 14);
-					trow1.addView(sp,bparams);
-					tnrow1.addView(name,bparams);
+					SpecialCounter sp = new SpecialCounter(this,tnames[i]);
+					if(contin){
+						sp.setCount(Integer.parseInt(cd.getTButton(i+j)));
+					}
+					TextView name2 = new TextView(this);
+					name2.setText(sp.getName());
+				//	name2.setTextColor(Color.BLACK);
+					tbutid[i+j]=id;
+					sp.setId(id++);
+					name2.setId(id++);
+					tbutton.addView(name2,bparams);
+					tbutton.addView(sp,bparams);
+		//			break;
+				case 't':
+					RToggle rt = new RToggle(this,tnames[i]);
+					TextView name3 = new TextView(this);
+					name3.setText(rt.getName());
+			//		name3.setTextColor(Color.BLACK);
+					tbutid[i+j]=id;
+					rt.setId(id++);
+					name3.setId(id++);
+					trow.addView(rt,bparams);
+					tbutton.addView(name3,bparams);
+					rt.setIsOn(false);
+					rt.changeToggle();
 					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
-				char bbuttons1[] = sb.getBottomButtons();
-				String bnames1[] = sb.getbNames();
+				char bbuttons[] = sb.getBottomButtons();
+				String bnames[] = sb.getbNames();
 				for(int i = 0; i < sb.getBCount(); i++){
-					switch(bbuttons1[i]){
+					LinearLayout bbutton = new LinearLayout(this);
+					bbutton.setId(id++);
+					bbutton.setOrientation(LinearLayout.VERTICAL);
+					bbutton.setGravity(Gravity.CENTER);
+					brow.addView(bbutton,params);
+					switch(bbuttons[i]){
 					case 'c':
-						SpecialCounter sp = new SpecialCounter(this,bnames1[i]);
-						TextView name = new TextView(this);
-						name.setTextColor(Color.RED);
-						name.setText(sp.getName());
-						sp.setId(i + 100);
-						name.setId(i + 104);
-						brow1.addView(sp,bparams);
-						bnrow1.addView(name,bparams);
+						SpecialCounter sp = new SpecialCounter(this,bnames[i]);
+						if(contin){
+							sp.setCount(Integer.parseInt(cd.getTButton(i+j)));
+						}
+						TextView name2 = new TextView(this);
+						name2.setText(sp.getName());
+						bbutid[i+j]=id;
+						sp.setId(id++);
+						name2.setId(id++);
+						bbutton.addView(name2,bparams);
+						bbutton.addView(sp,bparams);
 						break;
 					}
 				}
 			}
 		}
 		if(sb.isHasNeutral()){
+			char nbuttons[] = sb.getBottomButtons();
+			String nnames[] = sb.getbNames();
+			for(int i = 0; i < sb.getBCount(); i++){
+				LinearLayout nbutton = new LinearLayout(this);
+				nbutton.setId(id++);
+				nbutton.setOrientation(LinearLayout.VERTICAL);
+				nbutton.setGravity(Gravity.CENTER);
+				bbuttons.addView(nbutton,params);
+				switch(nbuttons[i]){
+				case 'c':
+					SpecialCounter sp = new SpecialCounter(this,nnames[i]);
+					if(contin){
+						sp.setCount(Integer.parseInt(cd.getTButton(i)));
+					}
+					TextView name2 = new TextView(this);
+					name2.setText(sp.getName());
+					bbutid[i]=id;
+					sp.setId(id++);
+					name2.setId(id++);
+					nbutton.addView(name2,bparams);
+					nbutton.addView(sp,bparams);
+					break;
+				}
 			
 		}
+	}
 		
 		
 		/**
@@ -338,15 +222,31 @@ public class ScoreboardUI extends Activity {
 					
 				}});
 		*/
-
 		
+		save.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				try {
+					FileOutputStream fos = new FileOutputStream("fafae");
+					ObjectOutputStream os = new ObjectOutputStream(fos);
+					os.writeObject(sb);
+					os.flush();
+					os.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					System.out.println("nope");
+					e.printStackTrace();
+				}
+				
+			}
+		});
 	}
 	
 
 	public void initializeScoreboard(){
 		String names[] = {"team1", "team2", "team3", "team4"};
 		String tnames[] = {"tc1", "tc2"};
-		String bnames[] = {"tc3", "tc3"};
+		String bnames[] = {"tc3", "tc4"};
 		char trow[] = {'c','c'};
 		char brow[] = {'c','c'};
 		sb.setTopButtons(trow);
@@ -359,6 +259,8 @@ public class ScoreboardUI extends Activity {
 		sb.setTeamNames(names);
 		sb.setTeams(4);
 		sb.setDigits(2);
+		sb.setName("test");
+
 	}
 	
 	@Override

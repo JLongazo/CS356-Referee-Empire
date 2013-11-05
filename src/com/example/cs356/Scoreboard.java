@@ -1,5 +1,7 @@
 package com.example.cs356;
 
+import java.io.Serializable;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.pm.ActivityInfo;
@@ -17,7 +19,7 @@ import android.widget.LinearLayout;
  * @author Longazo1
  *
  */
-public class Scoreboard {
+public class Scoreboard implements Serializable{
 
 	//LinearLayout Teams;
 	//LinearLayout Scores;
@@ -32,7 +34,7 @@ public class Scoreboard {
 	private int bCount;
 	private int digits;
 	private boolean hasNeutral;
-	private String[] teamNames = new String[3];
+	private String[] teamNames = new String[4];
 	private String[] tNames = new String[16];
 	private String[] bNames = new String[16];
 	private char[] topButtons = new char[16];
@@ -81,6 +83,10 @@ public class Scoreboard {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
 	}
 	
 	public int getTCount() {

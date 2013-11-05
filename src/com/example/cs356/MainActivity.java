@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 
 		aButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-	//			aButton.setText("You Clicked Me");
+				aButton.setText("You Clicked Me");
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
 				//MainActivity.this.startActivity(myIntent);
 				startActivity(myIntent);
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 		
 		bButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-		//		bButton.setText("You Clicked Me");
+				bButton.setText("You Clicked Me");
 				//setContentView(R.layout.tototo);
 					
 				}});
