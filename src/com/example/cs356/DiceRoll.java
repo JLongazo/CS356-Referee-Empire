@@ -1,21 +1,36 @@
 package com.example.cs356;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
-
 import java.util.Random;
 
 public class DiceRoll extends NeutralButton{
 	private int diceSides;
 	private int diceNum;
+	private String name;
+	private boolean rolled = false;
 	
-	public DiceRoll(Context c){
+	public DiceRoll(Context c, String name){
 		super(c);
+		this.name = name;
+		adjustCoin("roll the die");
 	}
-	public int roll(){
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void roll(){
 		Random generator = new Random();
-		int random = generator.nextInt(diceSides) + 1;	
-		return random;
+		int random = generator.nextInt(diceSides) + 1;		
+		if(rolled)
+			setBackgroundColor(Color.CYAN);
+		else
+			setBackgroundColor(Color.MAGENTA);//WILL BE replaced by image
+		adjustDice(random);
+		rolled = !rolled;
 	}   
 	public void setDiceSide(int ds){
 		diceSides = ds;
@@ -31,6 +46,7 @@ public class DiceRoll extends NeutralButton{
 	}
 	@Override
 	public void onClick(View arg0) {
-		setScore(roll());
+		diceSides = 6;
+		roll();
 	}
 }

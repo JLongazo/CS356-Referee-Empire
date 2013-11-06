@@ -46,7 +46,14 @@ public class ScoreCounter extends RButton{
 		}
 		setText(display);
 	}
-	
+	public void adjustDice(int random){//for dice and coin
+		display = String.valueOf(random);
+		setText(display);
+	}
+	public void adjustCoin(String random){//for dice and coin
+		display = String.valueOf(random);
+		setText(display);
+	}
 	public void setScore(int s){//for dice and coin
 		score = s;
 	}

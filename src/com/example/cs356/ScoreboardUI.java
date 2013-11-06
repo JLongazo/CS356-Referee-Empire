@@ -186,9 +186,9 @@ public class ScoreboardUI extends Activity {
 			char nbuttons[] = sb.getBottomButtons();
 			String nnames[] = sb.getbNames();
 			for(int i = 0; i < sb.getBCount(); i++){
-				LinearLayout nbutton = new LinearLayout(this);
+				LinearLayout nbutton = new LinearLayout(this);//neutral button
 				nbutton.setId(id++);
-				nbutton.setOrientation(LinearLayout.VERTICAL);
+				nbutton.setOrientation(LinearLayout.HORIZONTAL);
 				nbutton.setGravity(Gravity.CENTER);
 				bbuttons.addView(nbutton,params);
 				switch(nbuttons[i]){
@@ -204,6 +204,35 @@ public class ScoreboardUI extends Activity {
 					name2.setId(id++);
 					nbutton.addView(name2,bparams);
 					nbutton.addView(sp,bparams);
+			//		break;
+				case 'd':
+					DiceRoll dr = new DiceRoll(this, nnames[i]);
+		/*			if(contin){
+						sp.setCount(Integer.parseInt(cd.getTButton(i)));
+					}
+					*/
+					TextView name3 = new TextView(this);
+					name3.setText(dr.getName());
+					bbutid[i]=id;
+					dr.setId(id++);
+					name3.setId(id++);
+					nbutton.addView(name3,bparams);
+					nbutton.addView(dr,bparams);
+					dr.setWidth(50);
+				case 'e':
+					CoinToss ct = new CoinToss(this, nnames[i]);
+		/*			if(contin){
+						sp.setCount(Integer.parseInt(cd.getTButton(i)));
+					}
+					*/
+					TextView name4 = new TextView(this);
+					name4.setText(ct.getName());
+					bbutid[i]=id;
+					ct.setId(id++);
+					name4.setId(id++);
+					nbutton.addView(name4,bparams);
+					nbutton.addView(ct,bparams);
+					ct.setWidth(70);
 					break;
 				}
 			
@@ -255,7 +284,7 @@ public class ScoreboardUI extends Activity {
 		sb.setBCount(2);
 		sb.settNames(tnames);
 		sb.setbNames(bnames);
-		sb.setHasNeutral(false);
+		sb.setHasNeutral(true);
 		sb.setTeamNames(names);
 		sb.setTeams(4);
 		sb.setDigits(2);
