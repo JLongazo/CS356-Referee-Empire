@@ -41,6 +41,7 @@ public class SpecialCounter extends RButton{
 	
 	public void setCount(int count){
 		this.count = count;
+		adjustText();
 	}
 	public void setName(String n){
 		name = n;

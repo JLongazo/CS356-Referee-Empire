@@ -30,8 +30,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		aButton = (Button) this.findViewById(R.id.button1);
-		bButton = (Button) this.findViewById(R.id.button2);
+		aButton = (Button) this.findViewById(R.id.options);
+		bButton = (Button) this.findViewById(R.id.rules);
 
 
 

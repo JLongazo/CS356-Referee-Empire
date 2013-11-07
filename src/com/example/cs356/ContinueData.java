@@ -3,11 +3,13 @@
  */
 package com.example.cs356;
 
+import java.io.Serializable;
+
 /**
  * @author Longazo1
  *
  */
-public class ContinueData {
+public class ContinueData implements Serializable{
 	
 	private boolean check;
 	

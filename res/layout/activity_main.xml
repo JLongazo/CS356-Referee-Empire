@@ -10,19 +10,19 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/options"
         style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
+        android:layout_alignLeft="@+id/rules"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/button2"
+        android:layout_alignRight="@+id/rules"
         android:layout_marginTop="111dp"
         android:onClick="sendMessage"
         android:text="@string/createscoreboard" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -32,30 +32,30 @@
         android:text="@string/resumegame" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/rules"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_alignRight="@+id/button3"
-        android:layout_below="@+id/button3"
+        android:layout_alignLeft="@+id/end"
+        android:layout_alignRight="@+id/end"
+        android:layout_below="@+id/end"
         android:text="@string/viewsavedgames" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
+        android:layout_alignLeft="@+id/options"
+        android:layout_alignRight="@+id/options"
+        android:layout_below="@+id/options"
         android:text="@string/selectscoreboard" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button4"
-        android:layout_alignRight="@+id/button4"
-        android:layout_below="@+id/button4"
+        android:layout_alignLeft="@+id/home"
+        android:layout_alignRight="@+id/home"
+        android:layout_below="@+id/home"
         android:text="@string/createtournament" />
 
     <Button

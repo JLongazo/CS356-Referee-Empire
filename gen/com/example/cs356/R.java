@@ -43,12 +43,12 @@ public final class R {
         public static final int Tbuttons=0x7f0a000b;
         public static final int Teams=0x7f0a0009;
         public static final int action_settings=0x7f0a000d;
-        public static final int button1=0x7f0a0000;
-        public static final int button2=0x7f0a0001;
-        public static final int button3=0x7f0a0002;
-        public static final int button4=0x7f0a0003;
         public static final int button5=0x7f0a0005;
         public static final int button6=0x7f0a0004;
+        public static final int end=0x7f0a0002;
+        public static final int home=0x7f0a0003;
+        public static final int options=0x7f0a0000;
+        public static final int rules=0x7f0a0001;
         public static final int textView1=0x7f0a0008;
     }
     public static final class layout {
@@ -68,6 +68,10 @@ public final class R {
         public static final int whistle=0x7f040000;
     }
     public static final class string {
+        public static final int End=0x7f060013;
+        public static final int Home=0x7f060016;
+        public static final int Options=0x7f060014;
+        public static final int Rules=0x7f060015;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int bNames=0x7f060012;
