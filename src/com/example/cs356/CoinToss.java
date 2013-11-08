@@ -24,9 +24,9 @@ public class CoinToss extends NeutralButton{
                 else
                         setBackgroundColor(Color.GREEN);
                 if(random == 1)
-                        adjustCoin("Head");
+                        adjustCoin("H");
                 else
-                        adjustCoin("Tail");
+                        adjustCoin("T");
                 tossed = !tossed;
         }   
         

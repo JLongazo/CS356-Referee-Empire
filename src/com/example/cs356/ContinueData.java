@@ -25,8 +25,8 @@ public class ContinueData implements Serializable{
 		return check;
 	}
 	
-	public void changeCheck(){
-		check = !check;
+	public void setCheck(boolean c){
+		check = c;
 	}
 	
 	public void reset(){

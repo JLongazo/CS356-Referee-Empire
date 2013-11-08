@@ -56,8 +56,8 @@ public class ScoreboardUI extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scoreboard_ui);
-		end = (Button) this.findViewById(R.id.end);
-		home = (Button) this.findViewById(R.id.home);
+		end = (Button) this.findViewById(R.id.resume);
+		home = (Button) this.findViewById(R.id.select);
 		name = (TextView) this.findViewById(R.id.textView1);
 		teams = (LinearLayout) this.findViewById(R.id.Teams);
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
@@ -70,15 +70,15 @@ public class ScoreboardUI extends Activity {
 		bparams.gravity = Gravity.CENTER;
 		//get scoreboard file and continue data
 		Bundle extras = getIntent().getExtras();
-		String cont = "true";
-		//String file = extras.getString("FILE");
+		String file = extras.getString("FILE");
+		String type = extras.getString("TYPE");
 		boolean contin = false;
 		sb = new Scoreboard();
-		if(cont.equals("true")){
+		if(type.equals("continue")){
 			//load continue data
 			try 
 	        { 
-	            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/test1.bin")); 
+	            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file)); 
 	            cd = (ContinueData) ois.readObject();  
 	        } 
 			catch(Exception e){
@@ -87,7 +87,7 @@ public class ScoreboardUI extends Activity {
 			sb = cd.getSb();
 			contin = true;
 		}else{
-			initializeScoreboard();//load scoreboard
+			initializeScoreboard();//load new scoreboard
 		}
 		name.setText(sb.getName());
 		//Build Scoreboard Sequence
@@ -290,6 +290,7 @@ public class ScoreboardUI extends Activity {
 					e.printStackTrace();
 				}
 				saveGame();
+				resetContinue();
 				endgame = true;
 				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
 				startActivity(myIntent);
@@ -320,9 +321,28 @@ public class ScoreboardUI extends Activity {
 		
 	}
 	
+	public void resetContinue(){
+		ContinueData cd = new ContinueData();
+		cd.setCheck(false);
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/continue.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(cd); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        }
+	}
+	
 	public void saveContinue(){
 		ContinueData cd = new ContinueData();
 		cd.setSb(sb);
+		cd.setCheck(true);
 		int tcount = 0;
 		int bcount = 0;
 		for(int i = 0; i < sb.getTeams(); i++){
@@ -375,7 +395,7 @@ public class ScoreboardUI extends Activity {
 		}
 		try 
         { 
-           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/test1.bin"))); 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/continue.bin"))); 
            //Select where you wish to save the file... 
            oos.writeObject(cd); // write the class as an 'object' 
            oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 

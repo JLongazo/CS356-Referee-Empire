@@ -10,19 +10,19 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/options"
+        android:id="@+id/create"
         style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/rules"
+        android:layout_alignLeft="@+id/scores"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/rules"
+        android:layout_alignRight="@+id/scores"
         android:layout_marginTop="111dp"
         android:onClick="sendMessage"
         android:text="@string/createscoreboard" />
 
     <Button
-        android:id="@+id/end"
+        android:id="@+id/resume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -32,39 +32,39 @@
         android:text="@string/resumegame" />
 
     <Button
-        android:id="@+id/rules"
+        android:id="@+id/scores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/end"
-        android:layout_alignRight="@+id/end"
-        android:layout_below="@+id/end"
+        android:layout_alignLeft="@+id/resume"
+        android:layout_alignRight="@+id/resume"
+        android:layout_below="@+id/resume"
         android:text="@string/viewsavedgames" />
 
     <Button
-        android:id="@+id/home"
+        android:id="@+id/select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/options"
-        android:layout_alignRight="@+id/options"
-        android:layout_below="@+id/options"
+        android:layout_alignLeft="@+id/create"
+        android:layout_alignRight="@+id/create"
+        android:layout_below="@+id/create"
         android:text="@string/selectscoreboard" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/tournament"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/home"
-        android:layout_alignRight="@+id/home"
-        android:layout_below="@+id/home"
+        android:layout_alignLeft="@+id/select"
+        android:layout_alignRight="@+id/select"
+        android:layout_below="@+id/select"
         android:text="@string/createtournament" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button6"
-        android:layout_alignRight="@+id/button6"
-        android:layout_below="@+id/button6"
+        android:layout_alignLeft="@+id/tournament"
+        android:layout_alignRight="@+id/tournament"
+        android:layout_below="@+id/tournament"
         android:text="@string/option" />
 
 </RelativeLayout>

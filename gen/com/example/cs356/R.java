@@ -44,18 +44,16 @@ public final class R {
         public static final int Teams=0x7f0a0009;
         public static final int action_settings=0x7f0a000d;
         public static final int button5=0x7f0a0005;
-        public static final int button6=0x7f0a0004;
-        public static final int end=0x7f0a0002;
-        public static final int home=0x7f0a0003;
-        public static final int options=0x7f0a0000;
-        public static final int rules=0x7f0a0001;
+        public static final int create=0x7f0a0000;
+        public static final int resume=0x7f0a0002;
+        public static final int scores=0x7f0a0001;
+        public static final int select=0x7f0a0003;
         public static final int textView1=0x7f0a0008;
+        public static final int tournament=0x7f0a0004;
     }
     public static final class layout {
-        public static final int activity_dummy_tester=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_scoreboard_ui=0x7f030002;
-        public static final int activity_test=0x7f030003;
+        public static final int activity_main=0x7f030000;
+        public static final int activity_scoreboard_ui=0x7f030001;
     }
     public static final class menu {
         public static final int dummy_tester=0x7f090000;
