@@ -37,6 +37,7 @@ public class ScoreboardUI extends Activity {
 	private int scoreid[] = new int[4];
 	private int tbutid[] = new int[8];
 	private int bbutid[] = new int[8];
+	private int timerCount = 0;
 	
 
 	public void whistlesound(View view) 
@@ -168,6 +169,17 @@ public class ScoreboardUI extends Activity {
 					tbutton.addView(name3,bparams);
 					tbutton.addView(tog,bparams);
 					break;
+				case 'm':
+					long start = sb.getTimerTime(timerCount);
+					boolean tType = sb.getTimerType(timerCount++);
+					RefereeTimer time = new RefereeTimer(this,start,tType);
+					if(contin){
+						time.setMillis(Long.parseLong(cd.getTButton(tcount)));
+					}
+					tbutid[tcount++]=id;
+					time.setId(id++);
+					tbutton.addView(time,bparams);
+					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
@@ -205,6 +217,17 @@ public class ScoreboardUI extends Activity {
 						name3.setId(id++);
 						bbutton.addView(name3,bparams);
 						bbutton.addView(tog,bparams);
+						break;
+					case 'm':
+						long start = sb.getTimerTime(timerCount);
+						boolean tType = sb.getTimerType(timerCount++);
+						RefereeTimer time = new RefereeTimer(this,start,tType);
+						if(contin){
+							time.setMillis(Long.parseLong(cd.getBButton(bcount)));
+						}
+						bbutid[bcount++]=id;
+						time.setId(id++);
+						bbutton.addView(time,bparams);
 						break;
 					}
 				}
@@ -245,6 +268,17 @@ public class ScoreboardUI extends Activity {
 					name3.setId(id++);
 					nbutton.addView(name3,bparams);
 					nbutton.addView(tog,bparams);
+					break;
+				case 'm':
+					long start = sb.getTimerTime(timerCount);
+					boolean tType = sb.getTimerType(timerCount++);
+					RefereeTimer time = new RefereeTimer(this,start,tType);
+					if(contin){
+						time.setMillis(Long.parseLong(cd.getBButton(i)));
+					}
+					bbutid[i]=id;
+					time.setId(id++);
+					nbutton.addView(time,bparams);
 					break;
 				case 'd':
 					DiceRoll dice = new DiceRoll(this, "");
@@ -359,6 +393,13 @@ public class ScoreboardUI extends Activity {
 					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
 					cd.setTButton(Boolean.toString(t.getIsOn()), tcount++);
 					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
+					String type = Boolean.toString(m.getCountUp());
+					String time = Long.toString(m.getMillis());
+					String save = type + "/" + time;
+					cd.setTButton(save,tcount++);
+					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
@@ -372,6 +413,13 @@ public class ScoreboardUI extends Activity {
 					case 't':
 						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
 						cd.setBButton(Boolean.toString(t.getIsOn()), bcount++);
+						break;
+					case 'm':
+						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
+						String type = Boolean.toString(m.getCountUp());
+						String time = Long.toString(m.getMillis());
+						String save = type + "/" + time;
+						cd.setBButton(save,bcount++);
 						break;
 					}
 				}
@@ -389,6 +437,11 @@ public class ScoreboardUI extends Activity {
 				case 't':
 					RToggle t = (RToggle) this.findViewById(bbutid[j]);
 					cd.setBButton(Boolean.toString(t.getIsOn()), j);
+					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[j]);
+					String time = Long.toString(m.getMillis());
+					cd.setBButton(time,j);
 					break;
 				}
 			}
@@ -413,7 +466,9 @@ public class ScoreboardUI extends Activity {
 		String tnames[] = {"tc1", "tc2"};
 		String bnames[] = {"tc3", "tc4"};
 		char trow[] = {'c','t'};
-		char brow[] = {'c','t','f','d'};
+		char brow[] = {'c','t','f','m'};
+		long times[] = {50000};
+		boolean types[] = {true};
 		sb.setTopButtons(trow);
 		sb.setBottomButtons(brow);
 		sb.setTCount(2);
@@ -422,6 +477,8 @@ public class ScoreboardUI extends Activity {
 		sb.setbNames(bnames);
 		sb.setHasNeutral(true);
 		sb.setTeamNames(names);
+		sb.setTimerTimes(times);
+		sb.setTimerTypes(types);
 		sb.setTeams(4);
 		sb.setDigits(2);
 		sb.setName("test");

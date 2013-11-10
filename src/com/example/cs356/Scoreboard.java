@@ -39,6 +39,8 @@ public class Scoreboard implements Serializable{
 	private String[] bNames = new String[16];
 	private char[] topButtons = new char[16];
 	private char[] bottomButtons = new char[16];
+	private long[] timerTimes = new long [16];
+	private boolean[] timerTypes = new boolean[16];
 	public RuleSheet rules;
 	
 	
@@ -108,6 +110,22 @@ public class Scoreboard implements Serializable{
 		this.bottomButtons = bottomButtons;
 	}
 
+	public void setTimerTimes(long[] times){
+		timerTimes = times;
+	}
+	
+	public long getTimerTime(int loc){
+		return timerTimes[loc];
+	}
+	
+	public boolean getTimerType(int loc){
+		return timerTypes[loc];
+	}
+	
+	public void setTimerTypes(boolean[] types){
+		timerTypes = types;
+	}
+	
 	public int getTeams() {
 		return teams;
 	}

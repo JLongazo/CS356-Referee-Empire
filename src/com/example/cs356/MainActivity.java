@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 		
 		scores.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				scores.setText("Not Yet Implemented");					
+				scores.setText("Not Yet Implemented");	
 				}});
 		
 		select.setOnClickListener(new OnClickListener() {
