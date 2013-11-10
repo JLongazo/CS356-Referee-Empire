@@ -2,7 +2,7 @@ package com.example.cs356;
 
 import android.content.Context;
 
-public class NeutralButton extends ScoreCounter{
+public class NeutralButton extends RButton{
 	private String name;
 	
 	public NeutralButton(Context c){

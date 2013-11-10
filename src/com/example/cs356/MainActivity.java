@@ -1,8 +1,12 @@
 package com.example.cs356;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,48 +14,71 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-	//@Override
-	Button aButton;
-	Button bButton;
-	
-	
-	public void sendMessage(View view) 
-	{
-		Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
-		//MainActivity.this.startActivity(myIntent);
-		startActivity(myIntent);
-		//setContentView(R.layout.scoreboard);
-	}
-	
-	
+	Button create;
+	Button scores;
+	Button resume;
+	Button select;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		aButton = (Button) this.findViewById(R.id.button1);
-		bButton = (Button) this.findViewById(R.id.button2);
+		resume = (Button) this.findViewById(R.id.resume);
+		create = (Button) this.findViewById(R.id.create);
+		scores = (Button) this.findViewById(R.id.scores);
+		select = (Button) this.findViewById(R.id.select);
 
 
 
-		aButton.setOnClickListener(new OnClickListener() {
+		create.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				aButton.setText("You Clicked Me");
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
-				//MainActivity.this.startActivity(myIntent);
-				startActivity(myIntent);
-				//setContentView(R.layout.scoreboard);
+				String type = "null";
+				myIntent.putExtra("TYPE",type);
+				String file = "null";
+				myIntent.putExtra("FILE",file);
+				startActivity(myIntent);					
+				}});
+		
+		resume.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				ContinueData cd;
+				String type;
+				try 
+		        { 
+		            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/continue.bin")); 
+		            cd = (ContinueData) ois.readObject();
+		            if(cd.isCheck()){
+		            	Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
+						type = "continue";
+						myIntent.putExtra("TYPE",type);
+						String file = "/data/data/com.example.cs356/continue.bin";
+						myIntent.putExtra("FILE",file);
+						startActivity(myIntent);
+		            }
+		            else{
+		            	resume.setText("No Game Saved");
+		            }
+		            
+		        } 
+				catch(Exception e){
+					Log.v("Serialization Read Error : ",e.getMessage());
+					resume.setText("No Game Saved");
+				}
 					
 				}});
 
 		
 		
-		bButton.setOnClickListener(new OnClickListener() {
+		scores.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				bButton.setText("You Clicked Me");
-				//setContentView(R.layout.tototo);
-					
+				scores.setText("Not Yet Implemented");					
+				}});
+		
+		select.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				select.setText("Not Yet Implemented");					
 				}});
 	}
 

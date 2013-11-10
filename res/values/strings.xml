@@ -29,5 +29,9 @@
     <string name="title_activity_dummy_tester">DummyTester</string>
     <string name="tNames">tNames</string>
     <string name="bNames">bNames</string>
+    <string name="End">End</string>
+    <string name="Options">Options</string>
+    <string name="Rules">Rules</string>
+    <string name="Home">Home</string>
 
 </resources>

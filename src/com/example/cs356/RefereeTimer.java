@@ -10,7 +10,6 @@ public class RefereeTimer extends RButton{
 	
 	public RefereeTimer(Context c){
 		super(c);
-
 	}
 	public void start(){
 		

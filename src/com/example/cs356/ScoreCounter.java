@@ -11,7 +11,6 @@ public class ScoreCounter extends RButton{
 	private int max;
 	private CharSequence display;
 	
-	
 	public ScoreCounter(int ini, int increment, int digits, Context c){
 		super(c);
 		this.score = ini;
@@ -34,11 +33,6 @@ public class ScoreCounter extends RButton{
 		}
 	}
 	
-	public ScoreCounter(Context c) {//for dice
-		super(c);
-		// TODO Auto-generated constructor stub
-	}
-
 	public void adjustText(){
 		display = String.valueOf(score);
 		while(display.length() < digits){
@@ -46,17 +40,7 @@ public class ScoreCounter extends RButton{
 		}
 		setText(display);
 	}
-	public void adjustDice(int random){//for dice and coin
-		display = String.valueOf(random);
-		setText(display);
-	}
-	public void adjustCoin(String random){//for dice and coin
-		display = String.valueOf(random);
-		setText(display);
-	}
-	public void setScore(int s){//for dice and coin
-		score = s;
-	}
+	
 	@Override
 	public void onClick(View v) {
 		increment();
@@ -70,8 +54,9 @@ public class ScoreCounter extends RButton{
 		return true;
 	}
 	
-	public void setInitial(int ini){
-		initial = ini;
+	public void setScore(int ini){
+		score = ini;
+		adjustText();
 	}
 	public void increment(){
 		if((score + increment) <= max)
