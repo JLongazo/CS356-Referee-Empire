@@ -54,8 +54,9 @@ public class ScoreCounter extends RButton{
 		return true;
 	}
 	
-	public void setInitial(int ini){
-		initial = ini;
+	public void setScore(int ini){
+		score = ini;
+		adjustText();
 	}
 	public void increment(){
 		if((score + increment) <= max)

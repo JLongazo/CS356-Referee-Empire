@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
  * @author Longazo1
  *
  */
-public class Scoreboard implements Serializable {
+public class Scoreboard implements Serializable{
 
 	//LinearLayout Teams;
 	//LinearLayout Scores;
