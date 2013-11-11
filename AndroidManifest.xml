@@ -34,8 +34,8 @@
             android:label="@string/title_activity_dummy_tester" >
         </activity>
         <activity
-            android:name="com.example.cs356.ListedScoreboards"
-            android:label="@string/title_activity_listed_scoreboards" >
+            android:name="com.example.cs356.ScoreboardList"
+            android:label="@string/title_activity_scoreboard_list" >
         </activity>
     </application>
 
