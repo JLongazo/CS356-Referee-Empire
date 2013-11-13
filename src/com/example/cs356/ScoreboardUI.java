@@ -87,7 +87,25 @@ public class ScoreboardUI extends Activity {
 			}
 			sb = cd.getSb();
 			contin = true;
-		}else{
+		}
+
+		else if (type.equals("savedboard")) {
+			
+			try {
+			InputStream is = getResources().openRawResource(ScoreboardList.getFileInt());
+            ObjectInputStream ois = new ObjectInputStream(is); 
+            cd = (ContinueData) ois.readObject();
+			}
+			
+			catch(Exception e){
+				Log.v("Serialization Read Error : ",e.getMessage());
+			}
+			sb = cd.getSb();
+		}
+		
+		
+		
+		else{
 			initializeScoreboard();//load new scoreboard
 		}
 		name.setText(sb.getName());
@@ -352,7 +370,38 @@ public class ScoreboardUI extends Activity {
 	}
 	
 	public void saveGame(){
-		
+		String teams[] = sb.getTeamNames();
+		String name = sb.getName();
+		int scores[] = new int[sb.getTeams()];
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			scores[i] = sc.getScore();
+		}
+		ScoreData newScore = new ScoreData(name, teams, scores);
+		Scores s;
+		try 
+        { 
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scores.bin")); 
+            s = (Scores) ois.readObject();  
+        } 
+		catch(Exception e){
+			Log.v("Serialization Read Error : ",e.getMessage());
+			s = new Scores();
+		}
+		s.add(newScore);
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scores.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(s); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        }
 	}
 	
 	public void resetContinue(){

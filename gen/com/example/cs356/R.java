@@ -53,18 +53,23 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_scoreboard_ui=0x7f030001;
+        public static final int activity_score_list=0x7f030001;
+        public static final int activity_scoreboard_list=0x7f030002;
+        public static final int activity_scoreboard_ui=0x7f030003;
     }
     public static final class menu {
         public static final int dummy_tester=0x7f090000;
         public static final int main=0x7f090001;
-        public static final int scoreboard1=0x7f090002;
-        public static final int scoreboard_ui=0x7f090003;
-        public static final int test=0x7f090004;
+        public static final int score_list=0x7f090002;
+        public static final int scoreboard1=0x7f090003;
+        public static final int scoreboard_list=0x7f090004;
+        public static final int scoreboard_ui=0x7f090005;
+        public static final int test=0x7f090006;
     }
     public static final class raw {
         public static final int buzzer=0x7f040000;
-        public static final int whistle=0x7f040001;
+        public static final int generic=0x7f040001;
+        public static final int whistle=0x7f040002;
     }
     public static final class string {
         public static final int End=0x7f060013;
@@ -85,7 +90,9 @@ public final class R {
         public static final int testbuttonpress=0x7f06000b;
         public static final int testing=0x7f060005;
         public static final int title_activity_dummy_tester=0x7f060010;
+        public static final int title_activity_score_list=0x7f060018;
         public static final int title_activity_scoreboard1=0x7f06000e;
+        public static final int title_activity_scoreboard_list=0x7f060017;
         public static final int title_activity_scoreboard_ui=0x7f06000f;
         public static final int title_activity_test=0x7f06000d;
         public static final int viewsavedgames=0x7f060004;
