@@ -1,7 +1,14 @@
 package com.example.cs356;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.app.ListActivity;
@@ -16,13 +23,22 @@ public class ScoreboardList extends ListActivity {
 	private Scoreboard [] savedBoards = new Scoreboard[10];
 	private int current = 0;
 	private static int fname;
-	
-	private String[] games = { "Generic", "Chess", "Scrabble", "Pictionary", "Catch Phrase", "Rummy", "Continental", "Go-Fish", "Racquetball", "Ping Pong", "Football", "Golf", "Frisbee",  "Basketball"};
+	private ScoreboardData sd;
+	private String[] games = {"nothing!"};
+	//= { "Generic", "Chess", "Scrabble", "Pictionary", "Catch Phrase", "Rummy", "Continental", "Go-Fish", "Racquetball", "Ping Pong", "Football", "Golf", "Frisbee",  "Basketball"};
 
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
+        try{
+        	ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
+            sd = (ScoreboardData) ois.readObject();
+            games = sd.getSbs();
+        }
+        catch(Exception e){
+			Log.v("Serialization Read Error : ",e.getMessage());
+			sd = new ScoreboardData(games);
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, games);
         setListAdapter(adapter);    
     }
@@ -33,7 +49,7 @@ public class ScoreboardList extends ListActivity {
 		selection = selection.toLowerCase();
 		//Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
 	
-		ContinueData cd;
+		Scoreboard sb;
 		String type;
 		try 
         { 
@@ -41,7 +57,7 @@ public class ScoreboardList extends ListActivity {
 			
 			InputStream is = getResources().openRawResource(fname);
             ObjectInputStream ois = new ObjectInputStream(is); 
-            cd = (ContinueData) ois.readObject();
+            sb = (Scoreboard) ois.readObject();
             
         	Intent myIntent = new Intent(ScoreboardList.this, com.example.cs356.ScoreboardUI.class);
 			type = "savedboard";

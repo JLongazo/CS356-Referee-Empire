@@ -59,7 +59,7 @@
         android:text="@string/createtournament" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tournament"

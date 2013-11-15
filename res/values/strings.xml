@@ -35,5 +35,6 @@
     <string name="Home">Home</string>
     <string name="title_activity_scoreboard_list">ScoreboardList</string>
     <string name="title_activity_score_list">ScoreList</string>
+    <string name="title_activity_rule_sheet">RuleSheet</string>
 
 </resources>

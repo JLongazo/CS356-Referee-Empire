@@ -25,6 +25,8 @@ public class ScoreboardUI extends Activity {
 	private boolean endgame = false;
 	private Button end;
 	private Button home;
+	private Button rules;
+	private Button options;
 	private Scoreboard sb;
 	private ContinueData cd;
 	private TextView name;
@@ -57,8 +59,10 @@ public class ScoreboardUI extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scoreboard_ui);
-		end = (Button) this.findViewById(R.id.resume);
-		home = (Button) this.findViewById(R.id.select);
+		end = (Button) this.findViewById(R.id.end);
+		home = (Button) this.findViewById(R.id.home);
+		rules = (Button) this.findViewById(R.id.rules);
+		options = (Button) this.findViewById(R.id.options2);
 		name = (TextView) this.findViewById(R.id.textView1);
 		teams = (LinearLayout) this.findViewById(R.id.Teams);
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
@@ -94,13 +98,12 @@ public class ScoreboardUI extends Activity {
 			try {
 			InputStream is = getResources().openRawResource(ScoreboardList.getFileInt());
             ObjectInputStream ois = new ObjectInputStream(is); 
-            cd = (ContinueData) ois.readObject();
+            sb = (Scoreboard) ois.readObject();
 			}
 			
 			catch(Exception e){
 				Log.v("Serialization Read Error : ",e.getMessage());
 			}
-			sb = cd.getSb();
 		}
 		
 		
@@ -357,6 +360,20 @@ public class ScoreboardUI extends Activity {
 			}
 		});
 		
+		rules.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.RuleSheet.class);
+				saveContinue();
+				startActivity(myIntent);
+			}
+		});
+		
+		options.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				savePremade();
+			}
+		});
+		
 		
 		
 	}
@@ -509,13 +526,49 @@ public class ScoreboardUI extends Activity {
            ex.printStackTrace(); 
         } 
 	}
+	
+	public void savePremade(){
+		ScoreboardData sd;
+		String name = sb.getName().toLowerCase();
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(
+        		   new FileOutputStream(new File("/data/data/com.example.cs356/" + name + ".bin"))); 
+           oos.writeObject(sb); 
+           oos.flush(); 
+           oos.close();
+           ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
+           sd = (ScoreboardData) ois.readObject();
+           sd.addSb(sb.getName());
+           oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
+           oos.writeObject(sd);
+	       oos.flush();  
+	       oos.close();
+        } 
+        catch(Exception ex) 
+        { 
+        	try{
+        		String start[] = {sb.getName()};
+	        	sd = new ScoreboardData(start);
+	            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
+	            oos.writeObject(sd);
+	 	       	oos.flush();  
+	 	      	oos.close();	
+        	}
+        	catch(Exception e2){
+        		Log.v("Serialization Save Error : ",ex.getMessage()); 
+	 	      	ex.printStackTrace(); 
+        	}
+        }
+	}
 
 	public void initializeScoreboard(){
 		String names[] = {"team1", "team2", "team3", "team4"};
 		String tnames[] = {"tc1", "tc2"};
 		String bnames[] = {"tc3", "tc4"};
+		String rules[] = {"Dont cheat", "Follow these Rules", "Blah", "Blah, blah"};
 		char trow[] = {'c','t'};
-		char brow[] = {'c','t','f','m'};
+		char brow[] = {'c','t','f','d'};
 		long times[] = {50000};
 		boolean types[] = {true};
 		sb.setTopButtons(trow);
@@ -528,9 +581,10 @@ public class ScoreboardUI extends Activity {
 		sb.setTeamNames(names);
 		sb.setTimerTimes(times);
 		sb.setTimerTypes(types);
+		sb.setRules(rules);
 		sb.setTeams(4);
 		sb.setDigits(2);
-		sb.setName("test");
+		sb.setName("Generic");
 	}
 	
 	@Override

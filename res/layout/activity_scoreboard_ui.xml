@@ -17,14 +17,14 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/create"
+            android:id="@+id/options2"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Options" />
 
         <Button
-            android:id="@+id/scores"
+            android:id="@+id/rules"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="55sp"
             android:layout_height="wrap_content"
@@ -41,14 +41,14 @@
             android:textColor="@color/black" />
 
         <Button
-            android:id="@+id/resume"
+            android:id="@+id/end"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="55sp"
             android:layout_height="wrap_content"
             android:text="@string/End" />
 
         <Button
-            android:id="@+id/select"
+            android:id="@+id/home"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="55sp"
             android:layout_height="wrap_content"
