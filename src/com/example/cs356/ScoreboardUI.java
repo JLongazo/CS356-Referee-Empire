@@ -37,6 +37,7 @@ public class ScoreboardUI extends Activity {
 	private int scoreid[] = new int[4];
 	private int tbutid[] = new int[8];
 	private int bbutid[] = new int[8];
+	private int timerCount = 0;
 	
 
 	public void whistlesound(View view) 
@@ -86,7 +87,25 @@ public class ScoreboardUI extends Activity {
 			}
 			sb = cd.getSb();
 			contin = true;
-		}else{
+		}
+
+		else if (type.equals("savedboard")) {
+			
+			try {
+			InputStream is = getResources().openRawResource(ScoreboardList.getFileInt());
+            ObjectInputStream ois = new ObjectInputStream(is); 
+            cd = (ContinueData) ois.readObject();
+			}
+			
+			catch(Exception e){
+				Log.v("Serialization Read Error : ",e.getMessage());
+			}
+			sb = cd.getSb();
+		}
+		
+		
+		
+		else{
 			initializeScoreboard();//load new scoreboard
 		}
 		name.setText(sb.getName());
@@ -168,6 +187,17 @@ public class ScoreboardUI extends Activity {
 					tbutton.addView(name3,bparams);
 					tbutton.addView(tog,bparams);
 					break;
+				case 'm':
+					long start = sb.getTimerTime(timerCount);
+					boolean tType = sb.getTimerType(timerCount++);
+					RefereeTimer time = new RefereeTimer(this,start,tType);
+					if(contin){
+						time.setMillis(Long.parseLong(cd.getTButton(tcount)));
+					}
+					tbutid[tcount++]=id;
+					time.setId(id++);
+					tbutton.addView(time,bparams);
+					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
@@ -205,6 +235,17 @@ public class ScoreboardUI extends Activity {
 						name3.setId(id++);
 						bbutton.addView(name3,bparams);
 						bbutton.addView(tog,bparams);
+						break;
+					case 'm':
+						long start = sb.getTimerTime(timerCount);
+						boolean tType = sb.getTimerType(timerCount++);
+						RefereeTimer time = new RefereeTimer(this,start,tType);
+						if(contin){
+							time.setMillis(Long.parseLong(cd.getBButton(bcount)));
+						}
+						bbutid[bcount++]=id;
+						time.setId(id++);
+						bbutton.addView(time,bparams);
 						break;
 					}
 				}
@@ -246,8 +287,19 @@ public class ScoreboardUI extends Activity {
 					nbutton.addView(name3,bparams);
 					nbutton.addView(tog,bparams);
 					break;
+				case 'm':
+					long start = sb.getTimerTime(timerCount);
+					boolean tType = sb.getTimerType(timerCount++);
+					RefereeTimer time = new RefereeTimer(this,start,tType);
+					if(contin){
+						time.setMillis(Long.parseLong(cd.getBButton(i)));
+					}
+					bbutid[i]=id;
+					time.setId(id++);
+					nbutton.addView(time,bparams);
+					break;
 				case 'd':
-					DiceRoll dice = new DiceRoll(this, "", 3, 30);///////////////number of dice, and sides
+					DiceRoll dice = new DiceRoll(this, "");
 					bbutid[i]=id;
 					dice.setId(id++);
 					nbutton.addView(dice,bparams);
@@ -318,7 +370,38 @@ public class ScoreboardUI extends Activity {
 	}
 	
 	public void saveGame(){
-		
+		String teams[] = sb.getTeamNames();
+		String name = sb.getName();
+		int scores[] = new int[sb.getTeams()];
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			scores[i] = sc.getScore();
+		}
+		ScoreData newScore = new ScoreData(name, teams, scores);
+		Scores s;
+		try 
+        { 
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scores.bin")); 
+            s = (Scores) ois.readObject();  
+        } 
+		catch(Exception e){
+			Log.v("Serialization Read Error : ",e.getMessage());
+			s = new Scores();
+		}
+		s.add(newScore);
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scores.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(s); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        }
 	}
 	
 	public void resetContinue(){
@@ -359,6 +442,13 @@ public class ScoreboardUI extends Activity {
 					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
 					cd.setTButton(Boolean.toString(t.getIsOn()), tcount++);
 					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
+					String type = Boolean.toString(m.getCountUp());
+					String time = Long.toString(m.getMillis());
+					String save = type + "/" + time;
+					cd.setTButton(save,tcount++);
+					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
@@ -372,6 +462,13 @@ public class ScoreboardUI extends Activity {
 					case 't':
 						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
 						cd.setBButton(Boolean.toString(t.getIsOn()), bcount++);
+						break;
+					case 'm':
+						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
+						String type = Boolean.toString(m.getCountUp());
+						String time = Long.toString(m.getMillis());
+						String save = type + "/" + time;
+						cd.setBButton(save,bcount++);
 						break;
 					}
 				}
@@ -389,6 +486,11 @@ public class ScoreboardUI extends Activity {
 				case 't':
 					RToggle t = (RToggle) this.findViewById(bbutid[j]);
 					cd.setBButton(Boolean.toString(t.getIsOn()), j);
+					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[j]);
+					String time = Long.toString(m.getMillis());
+					cd.setBButton(time,j);
 					break;
 				}
 			}
@@ -413,15 +515,19 @@ public class ScoreboardUI extends Activity {
 		String tnames[] = {"tc1", "tc2"};
 		String bnames[] = {"tc3", "tc4"};
 		char trow[] = {'c','t'};
-		char brow[] = {'c','t','f','d'};
+		char brow[] = {'c','t','f','m', 'd'};
+		long times[] = {50000};
+		boolean types[] = {true};
 		sb.setTopButtons(trow);
 		sb.setBottomButtons(brow);
 		sb.setTCount(2);
-		sb.setBCount(4);
+		sb.setBCount(5);
 		sb.settNames(tnames);
 		sb.setbNames(bnames);
 		sb.setHasNeutral(true);
 		sb.setTeamNames(names);
+		sb.setTimerTimes(times);
+		sb.setTimerTypes(types);
 		sb.setTeams(4);
 		sb.setDigits(2);
 		sb.setName("test");

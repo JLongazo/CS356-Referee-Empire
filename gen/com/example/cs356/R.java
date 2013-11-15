@@ -32,21 +32,23 @@ public final class R {
     }
     public static final class drawable {
         public static final int bg=0x7f020000;
-        public static final int coinhead=0x7f020001;
-        public static final int cointail=0x7f020002;
-        public static final int cointoss=0x7f020003;
-        public static final int four_p=0x7f020004;
-        public static final int gear=0x7f020005;
-        public static final int head=0x7f020006;
-        public static final int ic_launcher=0x7f020007;
-        public static final int main=0x7f020008;
-        public static final int roundedbutton=0x7f020009;
-        public static final int settings=0x7f02000a;
-        public static final int singlep=0x7f02000b;
-        public static final int tail=0x7f02000c;
-        public static final int threep=0x7f02000d;
-        public static final int twop=0x7f02000e;
-        public static final int whistle=0x7f02000f;
+        public static final int blankwhite=0x7f020001;
+        public static final int coinhead=0x7f020002;
+        public static final int cointail=0x7f020003;
+        public static final int cointoss=0x7f020004;
+        public static final int four_p=0x7f020005;
+        public static final int gear=0x7f020006;
+        public static final int geara=0x7f020007;
+        public static final int head=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int main=0x7f02000a;
+        public static final int roundedbutton=0x7f02000b;
+        public static final int settings=0x7f02000c;
+        public static final int singlep=0x7f02000d;
+        public static final int tail=0x7f02000e;
+        public static final int threep=0x7f02000f;
+        public static final int twop=0x7f020010;
+        public static final int whistle=0x7f020011;
     }
     public static final class id {
         public static final int Bbuttons=0x7f0b000c;
@@ -67,19 +69,25 @@ public final class R {
     public static final class layout {
         public static final int activity_dummy_tester=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int activity_scoreboard_ui=0x7f030002;
-        public static final int activity_test=0x7f030003;
-        public static final int rbutton=0x7f030004;
+        public static final int activity_score_list=0x7f030002;
+        public static final int activity_scoreboard_list=0x7f030003;
+        public static final int activity_scoreboard_ui=0x7f030004;
+        public static final int activity_test=0x7f030005;
+        public static final int rbutton=0x7f030006;
     }
     public static final class menu {
         public static final int dummy_tester=0x7f0a0000;
         public static final int main=0x7f0a0001;
-        public static final int scoreboard1=0x7f0a0002;
-        public static final int scoreboard_ui=0x7f0a0003;
-        public static final int test=0x7f0a0004;
+        public static final int score_list=0x7f0a0002;
+        public static final int scoreboard1=0x7f0a0003;
+        public static final int scoreboard_list=0x7f0a0004;
+        public static final int scoreboard_ui=0x7f0a0005;
+        public static final int test=0x7f0a0006;
     }
     public static final class raw {
-        public static final int whistle=0x7f050000;
+        public static final int buzzer=0x7f050000;
+        public static final int generic=0x7f050001;
+        public static final int whistle=0x7f050002;
     }
     public static final class string {
         public static final int End=0x7f070013;
@@ -100,7 +108,9 @@ public final class R {
         public static final int testbuttonpress=0x7f07000b;
         public static final int testing=0x7f070005;
         public static final int title_activity_dummy_tester=0x7f070010;
+        public static final int title_activity_score_list=0x7f070018;
         public static final int title_activity_scoreboard1=0x7f07000e;
+        public static final int title_activity_scoreboard_list=0x7f070017;
         public static final int title_activity_scoreboard_ui=0x7f07000f;
         public static final int title_activity_test=0x7f07000d;
         public static final int viewsavedgames=0x7f070004;

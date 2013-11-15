@@ -33,5 +33,7 @@
     <string name="Options">Options</string>
     <string name="Rules">Rules</string>
     <string name="Home">Home</string>
+    <string name="title_activity_scoreboard_list">ScoreboardList</string>
+    <string name="title_activity_score_list">ScoreList</string>
 
 </resources>

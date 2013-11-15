@@ -73,12 +73,16 @@ public class MainActivity extends Activity {
 		
 		scores.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				scores.setText("Not Yet Implemented");					
+				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreList.class);
+				startActivity(myIntent);
 				}});
 		
 		select.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				select.setText("Not Yet Implemented");					
+				
+				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardList.class);
+				startActivity(myIntent);
+				//select.setText("Not Yet Implemented");					
 				}});
 	}
 

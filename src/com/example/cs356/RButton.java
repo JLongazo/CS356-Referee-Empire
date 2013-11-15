@@ -1,7 +1,6 @@
 package com.example.cs356;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Path.Direction;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,19 +16,11 @@ public class RButton extends Button implements OnClickListener, OnLongClickListe
 	
 	public RButton(Context c){
 		super(c);
-		setContentView(R.layout.rbutton);
 		setOnClickListener(this);
 		setOnLongClickListener(this);
 	}
 	
 	
-	private void setContentView(int activityMain) {
-		// TODO Auto-generated method stub
-		Intent intent = new Intent();
-		intent.getAction();
-	}
-
-
 	public void setName(String n){
 		name = n;		
 	}
