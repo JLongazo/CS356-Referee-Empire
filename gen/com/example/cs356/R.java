@@ -26,56 +26,79 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
+        public static final int menu=0x7f050002;
     }
     public static final class drawable {
-        public static final int bg=0x7f020000;
-        public static final int dice1=0x7f020001;
-        public static final int dice5=0x7f020002;
-        public static final int gear=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int roundedbutton=0x7f020005;
-        public static final int settings=0x7f020006;
-        public static final int whistle=0x7f020007;
+        public static final int background1=0x7f020000;
+        public static final int background2=0x7f020001;
+        public static final int background3=0x7f020002;
+        public static final int background4=0x7f020003;
+        public static final int background5=0x7f020004;
+        public static final int bg=0x7f020005;
+        public static final int counter2=0x7f020006;
+        public static final int counter3=0x7f020007;
+        public static final int counter4=0x7f020008;
+        public static final int dice1=0x7f020009;
+        public static final int dice5=0x7f02000a;
+        public static final int end=0x7f02000b;
+        public static final int gear=0x7f02000c;
+        public static final int home=0x7f02000d;
+        public static final int ic_launcher=0x7f02000e;
+        public static final int options=0x7f02000f;
+        public static final int refereelogo=0x7f020010;
+        public static final int roundedbutton=0x7f020011;
+        public static final int rules=0x7f020012;
+        public static final int settings=0x7f020013;
+        public static final int timer=0x7f020014;
+        public static final int toggleoff=0x7f020015;
+        public static final int toggleon=0x7f020016;
+        public static final int whistle=0x7f020017;
     }
     public static final class id {
-        public static final int Bbuttons=0x7f0a0013;
-        public static final int MainLayout=0x7f0a000a;
-        public static final int Menus=0x7f0a000b;
-        public static final int Scores=0x7f0a0011;
-        public static final int Tbuttons=0x7f0a0012;
-        public static final int Teams=0x7f0a0010;
-        public static final int action_settings=0x7f0a0014;
-        public static final int back=0x7f0a0008;
-        public static final int create=0x7f0a0000;
-        public static final int end=0x7f0a000e;
-        public static final int home=0x7f0a000f;
-        public static final int linearLayout1=0x7f0a0006;
-        public static final int listView1=0x7f0a0009;
-        public static final int options=0x7f0a0005;
-        public static final int options2=0x7f0a000c;
-        public static final int resume=0x7f0a0002;
-        public static final int rules=0x7f0a000d;
-        public static final int scores=0x7f0a0001;
-        public static final int select=0x7f0a0003;
-        public static final int textView1=0x7f0a0007;
-        public static final int tournament=0x7f0a0004;
+        public static final int Bbuttons=0x7f0a0017;
+        public static final int MainLayout=0x7f0a000e;
+        public static final int Menus=0x7f0a000f;
+        public static final int Scores=0x7f0a0015;
+        public static final int Tbuttons=0x7f0a0016;
+        public static final int Teams=0x7f0a0014;
+        public static final int action_settings=0x7f0a0018;
+        public static final int back=0x7f0a000c;
+        public static final int button1=0x7f0a0002;
+        public static final int button2=0x7f0a0005;
+        public static final int create=0x7f0a0006;
+        public static final int end=0x7f0a0012;
+        public static final int home=0x7f0a0013;
+        public static final int linearLayout1=0x7f0a0001;
+        public static final int listView1=0x7f0a000d;
+        public static final int options=0x7f0a000b;
+        public static final int options2=0x7f0a0010;
+        public static final int resume=0x7f0a0008;
+        public static final int rules=0x7f0a0011;
+        public static final int scores=0x7f0a0007;
+        public static final int select=0x7f0a0009;
+        public static final int textView1=0x7f0a0000;
+        public static final int textView2=0x7f0a0003;
+        public static final int textView3=0x7f0a0004;
+        public static final int tournament=0x7f0a000a;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_rule_sheet=0x7f030001;
-        public static final int activity_score_list=0x7f030002;
-        public static final int activity_scoreboard_list=0x7f030003;
-        public static final int activity_scoreboard_ui=0x7f030004;
+        public static final int activity_game_options=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_rule_sheet=0x7f030002;
+        public static final int activity_score_list=0x7f030003;
+        public static final int activity_scoreboard_list=0x7f030004;
+        public static final int activity_scoreboard_ui=0x7f030005;
     }
     public static final class menu {
         public static final int dummy_tester=0x7f090000;
-        public static final int main=0x7f090001;
-        public static final int rule_sheet=0x7f090002;
-        public static final int score_list=0x7f090003;
-        public static final int scoreboard1=0x7f090004;
-        public static final int scoreboard_list=0x7f090005;
-        public static final int scoreboard_ui=0x7f090006;
-        public static final int test=0x7f090007;
+        public static final int game_options=0x7f090001;
+        public static final int main=0x7f090002;
+        public static final int rule_sheet=0x7f090003;
+        public static final int score_list=0x7f090004;
+        public static final int scoreboard1=0x7f090005;
+        public static final int scoreboard_list=0x7f090006;
+        public static final int scoreboard_ui=0x7f090007;
+        public static final int test=0x7f090008;
     }
     public static final class raw {
         public static final int buzzer=0x7f040000;
@@ -101,6 +124,7 @@ public final class R {
         public static final int testbuttonpress=0x7f06000b;
         public static final int testing=0x7f060005;
         public static final int title_activity_dummy_tester=0x7f060010;
+        public static final int title_activity_game_options=0x7f06001a;
         public static final int title_activity_rule_sheet=0x7f060019;
         public static final int title_activity_score_list=0x7f060018;
         public static final int title_activity_scoreboard1=0x7f06000e;

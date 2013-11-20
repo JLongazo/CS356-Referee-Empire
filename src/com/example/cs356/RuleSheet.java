@@ -35,7 +35,7 @@ public class RuleSheet extends Activity {
 	private String file = "/data/data/com.example.cs356/continue.bin";
 	private Scoreboard sb;
 	private String rule[];
-	private PopupWindow pop;
+	private String ruleList[];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,11 @@ public class RuleSheet extends Activity {
 		}
 		sb = cd.getSb();
 		rule = sb.getRules();
+		ruleList = new String[rule.length];
 		for(int i = 0; i < rule.length; i++){
-			rule[i] = (i+1) + ". " + rule[i];
+			ruleList[i] = (i+1) + ". " + rule[i];
 		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, rule);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, ruleList);
         rules.setAdapter(adapter);
 		
 		back.setOnClickListener(new OnClickListener() {

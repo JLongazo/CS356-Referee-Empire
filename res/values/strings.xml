@@ -36,5 +36,6 @@
     <string name="title_activity_scoreboard_list">ScoreboardList</string>
     <string name="title_activity_score_list">ScoreList</string>
     <string name="title_activity_rule_sheet">RuleSheet</string>
+    <string name="title_activity_game_options">GameOptions</string>
 
 </resources>

@@ -60,7 +60,7 @@ public class DiceRoll extends NeutralButton{
         }
         
         public void adjustDice(String display){
-    		setText(display);
+    		//setText(display);
     	}
         
         public void setDiceSide(int ds){

@@ -11,7 +11,7 @@ public class RToggle extends RButton{
         public RToggle(Context c, String tname){
                 super(c);
                 name = tname;
-                setBackgroundColor(Color.GRAY);
+                setBackgroundResource(R.drawable.toggleoff);
         }
         public String getName() {
                 return name;
@@ -21,9 +21,9 @@ public class RToggle extends RButton{
         }
         public void changeToggle(){
                 if(getIsOn())
-                        setBackgroundColor(Color.YELLOW);
+                    setBackgroundResource(R.drawable.toggleon);
                 else
-                        setBackgroundColor(Color.GRAY);
+                	setBackgroundResource(R.drawable.toggleoff);
         }
         public void setIsOn(boolean tog){
                 isOn = tog;

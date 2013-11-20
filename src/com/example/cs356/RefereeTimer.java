@@ -1,8 +1,13 @@
 package com.example.cs356;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 public class RefereeTimer extends RButton{
 	private boolean countUp;
@@ -11,9 +16,21 @@ public class RefereeTimer extends RButton{
 	private long newTime;
 	private CountDownTimer timer;
 	private long inc = 1;
-	int min;
-	int sec;
-	int mil;
+	private int min;
+	private int sec;
+	private int mil;
+	private TextView m1;
+	private TextView m2;
+	private TextView s1;
+	private TextView s2;
+	private TextView mi1;
+	private TextView mi2;
+	private TextView c1;
+	private TextView c2;
+	private Typeface f1;
+	private LayoutParams params;
+	
+	
 	
 	public RefereeTimer(Context c, long s, boolean cu){
 		super(c);
@@ -22,6 +39,39 @@ public class RefereeTimer extends RButton{
 		if(cu){
 			startTime = 6000000;
 		}
+		setGravity(Gravity.CENTER);
+		f1 = Typeface.createFromAsset(c.getAssets(), "fonts/Athletic.TTF");
+		LayoutParams cParams = new LayoutParams(25,100);
+		params = new LayoutParams(50,100);
+		params.weight = 1;
+		params.gravity = Gravity.CENTER;
+		m1 = new TextView(c);
+		m2 = new TextView(c);
+		s1 = new TextView(c);
+		s2 = new TextView(c);
+		mi1 = new TextView(c);
+		mi2 = new TextView(c);
+		c1 = new TextView(c);
+		c2 = new TextView(c);
+		m1.setPadding(2,5,0,0);
+		m2.setPadding(2,5,0,0);
+		s1.setPadding(0,5,0,0);
+		s2.setPadding(0,5,0,0);
+		mi1.setPadding(0,5,2,0);
+		mi2.setPadding(0,5,2,0);
+		c1.setText(":");
+		c2.setText(":");
+		c2.setPadding(2,0,0,0);
+		setUp(m1);
+		setUp(m2);
+		setUp(c2);
+		c2.setLayoutParams(cParams);
+		setUp(s1);
+		setUp(s2);
+		setUp(c1);
+		c1.setLayoutParams(cParams);
+		setUp(mi2);
+		setUp(mi1);
 		newTime = startTime;
         adjustText(startTime);
     }
@@ -60,8 +110,13 @@ public class RefereeTimer extends RButton{
 		if(millis.length() == 1){
 			millis = "0" + millis;
 		}
-		String timeS = minutes + ":" + seconds + ":" + millis;
-		setText(timeS);
+		String timeS = minutes + seconds + millis;
+		m1.setText(timeS.substring(0,1));
+		m2.setText(timeS.substring(1,2));
+		s1.setText(timeS.substring(2,3));
+		s2.setText(timeS.substring(3,4));
+		mi1.setText(timeS.substring(4,5));
+		mi2.setText(timeS.substring(5,6));
 	}
 	
 	@Override
@@ -115,6 +170,15 @@ public class RefereeTimer extends RButton{
 	}
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
+	}
+	
+	private void setUp(TextView t){
+		addView(t);
+		t.setLayoutParams(params);
+		t.setTextSize(25);
+		t.setTypeface(f1);
+		t.setGravity(Gravity.CENTER);
+		t.setTextColor(Color.BLACK);
 	}
 	
 

@@ -31,7 +31,7 @@ public class CoinToss extends NeutralButton{
         }   
         
         public void adjustCoin(String display){
-    		setText(display);
+    		//setText(display);
     	}
         
         public void chooseTeam(){
