@@ -53,15 +53,16 @@ public class RefereeTimer extends RButton{
 		mi2 = new TextView(c);
 		c1 = new TextView(c);
 		c2 = new TextView(c);
-		m1.setPadding(2,5,0,0);
-		m2.setPadding(2,5,0,0);
+		m1.setPadding(5,5,0,0);
+		m2.setPadding(3,5,0,0);
 		s1.setPadding(0,5,0,0);
 		s2.setPadding(0,5,0,0);
 		mi1.setPadding(0,5,2,0);
 		mi2.setPadding(0,5,2,0);
 		c1.setText(":");
 		c2.setText(":");
-		c2.setPadding(2,0,0,0);
+		c2.setPadding(0,0,0,0);
+		c1.setPadding(5,0,0,0);
 		setUp(m1);
 		setUp(m2);
 		setUp(c2);
@@ -122,6 +123,8 @@ public class RefereeTimer extends RButton{
 	@Override
 	public void onClick(View v) {
 		if(!on){
+			MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.click);
+			mp.start();
 			timer = new CountDownTimer(newTime, inc) {
 
 			     public void onTick(long millisUntilFinished) {
@@ -130,14 +133,16 @@ public class RefereeTimer extends RButton{
 
 				     public void onFinish() {
 				    	 adjustText(0);
-				    	MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.buzzer);
-				 		mp.start();
+				    	MediaPlayer mp2 = MediaPlayer.create(getContext(), R.raw.buzzer);
+				 		mp2.start();
 				     }
 			  };
 			timer.start();
 			on = true;
 		}
 		else{
+			MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.click2);
+			mp.start();
 			timer.cancel();
 			newTime = (min*1000*60) + (sec*1000) + mil;
 			if(countUp){
@@ -148,6 +153,8 @@ public class RefereeTimer extends RButton{
 	}
 	
 	public boolean onLongClick(View v){
+		MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.click2);
+		mp.start();
 		reset();
 		return true;
 	}

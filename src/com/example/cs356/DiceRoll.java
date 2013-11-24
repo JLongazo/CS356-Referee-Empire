@@ -13,55 +13,57 @@ public class DiceRoll extends NeutralButton{
         private int diceNum;
         private String name;
         private boolean rolled = false;
-        private boolean check = false;
         private CountDownTimer ct;
+        private Random r;
         
         public DiceRoll(Context c, String name){
                 super(c);
                 this.name = name;
-                adjustDice("dice");
+                diceSides = 6;
+                setBackgroundResource(R.drawable.dice6);
         }
         public String getName() {
                 return name;
         }
         public void setName(String name) {
                 this.name = name;
-        }
-        public void roll(){
-                Random generator = new Random();
-                int random = generator.nextInt(diceSides) + 1;                
-                if(rolled)
-                        setBackgroundColor(Color.CYAN);
-                else
-                        setBackgroundColor(Color.MAGENTA);//WILL BE replaced by image
-                adjustDice(Integer.toString(random));
-                rolled = !rolled;
-        }   
+        }  
         
         public void animateDice(){
-        	long time = 6000;
+        	long time = 2000;
         	long inc = 50;
+        	r = new Random();
+            
         	ct = new CountDownTimer(time,inc) {
 			     public void onTick(long millisUntilFinished) {
-				        if(check){
+			    	 int random = r.nextInt(diceSides) + 1;
+				        switch(random){
+				        case 1:
 				        	setBackgroundResource(R.drawable.dice1);
-				        } else {
+				        	break;
+				        case 2:
+				        	setBackgroundResource(R.drawable.dice2);
+				        	break;
+				        case 3:
+				        	setBackgroundResource(R.drawable.dice3);
+				        	break;
+				        case 4:
+				        	setBackgroundResource(R.drawable.dice4);
+				        	break;
+				        case 5:
 				        	setBackgroundResource(R.drawable.dice5);
+				        	break;
+				        case 6:
+				        	setBackgroundResource(R.drawable.dice6);
+				        	break;
 				        }
-				        check = !check;
 				     }
 
 				     public void onFinish() {
-				    	MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.buzzer);
-				 		mp.start();
 			}};
 			ct.start();
 				     
         }
-        
-        public void adjustDice(String display){
-    		//setText(display);
-    	}
         
         public void setDiceSide(int ds){
                 diceSides = ds;
@@ -77,8 +79,8 @@ public class DiceRoll extends NeutralButton{
         }
         @Override
         public void onClick(View arg0) {
-                diceSides = 6;
-                roll();
-               // animateDice();
+        	MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.dice);
+        	mp.start();
+            animateDice();
         }
 }

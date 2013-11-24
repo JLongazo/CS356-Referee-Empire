@@ -4,6 +4,7 @@ import java.util.Scanner;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -89,12 +90,16 @@ public class SpecialCounter extends RButton{
 	
 	@Override
 	public void onClick(View v) {
+		MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.click);
+		mp.start();
 		increment();
 		adjustText();
 	}
 	
 	@Override
 	public boolean onLongClick(View arg0) {
+		MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.click2);
+		mp.start();
 		decrement();
 		adjustText();
 		return true;

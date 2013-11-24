@@ -24,7 +24,6 @@ import java.io.*;
 
 public class ScoreboardUI extends Activity {
 	
-	Button whistle;
 	private boolean endgame = false;
 	private Button end;
 	private Button home;
@@ -45,19 +44,6 @@ public class ScoreboardUI extends Activity {
 	private int timerCount = 0;
 	private Typeface f1;
 	private Typeface f2;
-	
-
-	public void whistlesound(View view) 
-	{
-		
-        MediaPlayer mp = MediaPlayer.create(this, R.raw.whistle);
-
-		mp.start();
-		//Intent whistle = new Intent(ScoreboardUI.this, com.example.cs356.DummyTester.class);
-		//MainActivity.this.startActivity(myIntent);
-		//startActivity(whistle);
-		//setContentView(R.layout.scoreboard);
-	}
 	
 
 	@Override
@@ -127,11 +113,13 @@ public class ScoreboardUI extends Activity {
 		name.setTextSize(30);
 		name.setTextColor(Color.WHITE);
 		name.setGravity(Gravity.CENTER);
-		LayoutParams counter = new LayoutParams(100,100);
-		LayoutParams toggle = new LayoutParams(100,100);
-		LayoutParams timerP = new LayoutParams(350,100);
-		LayoutParams diceP = new LayoutParams(100,100);
-		LayoutParams coinP = new LayoutParams(100,100);
+		final float scale = this.getResources().getDisplayMetrics().density;
+		//int pixels = (int) (dps * scale + 0.5f);
+		LayoutParams counter = new LayoutParams(90,90);
+		LayoutParams toggle = new LayoutParams(90,90);
+		LayoutParams timerP = new LayoutParams(360,90);
+		LayoutParams diceP = new LayoutParams(90,90);
+		LayoutParams coinP = new LayoutParams(90,90);
 		//Build Scoreboard Sequence
 		int teamCount = sb.getTeams();
 		String teamNames[] = sb.getTeamNames();
@@ -405,26 +393,22 @@ public class ScoreboardUI extends Activity {
 					coin.setLayoutParams(coinP);
 					nbutton.addView(coin);
 					break;
+				case 'w':
+					Whistle w = new Whistle(this);
+					bbutid[i] = id;
+					w.setId(id++);
+					w.setLayoutParams(coinP);
+					nbutton.addView(w);
+					break;
 				}
 			
 		}
 	}
 		
-		
-		/**
-		whistle = (Button) this.findViewById(R.id.Whistle);
-
-		
-		whistle.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//whistle.setText("You Clicked Me");
-				//setContentView(R.layout.tototo);
-					
-				}});
-		*/
-		
 		end.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
 				try {
 					FileOutputStream fos = new FileOutputStream("fafae");
 					ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -446,6 +430,8 @@ public class ScoreboardUI extends Activity {
 		
 		home.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
 				saveContinue();
 				startActivity(myIntent);
@@ -454,6 +440,8 @@ public class ScoreboardUI extends Activity {
 		
 		rules.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.RuleSheet.class);
 				saveContinue();
 				startActivity(myIntent);
@@ -462,6 +450,8 @@ public class ScoreboardUI extends Activity {
 		
 		options.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
 				//savePremade();
 				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.GameOptions.class);
 				saveContinue();
@@ -660,16 +650,16 @@ public class ScoreboardUI extends Activity {
 	public void initializeScoreboard(){
 		String names[] = {"Joe", "team2", "team3", "team4"};
 		String tnames[] = {"tc1", "tc2"};
-		String bnames[] = {"tc3", "tc4",""};
+		String bnames[] = {"tc3", "tc4","","","",""};
 		String rules[] = {"Dont cheat", "Follow these Rules", "Blah", "Blah, blah"};
 		char trow[] = {'c','t'};
-		char brow[] = {'c','t','m'};
+		char brow[] = {'c','t','m','d','f','w'};
 		long times[] = {50000};
 		boolean types[] = {true};
 		sb.setTopButtons(trow);
 		sb.setBottomButtons(brow);
 		sb.setTCount(2);
-		sb.setBCount(3);
+		sb.setBCount(6);
 		sb.settNames(tnames);
 		sb.setbNames(bnames);
 		sb.setHasNeutral(true);
@@ -677,7 +667,7 @@ public class ScoreboardUI extends Activity {
 		sb.setTimerTimes(times);
 		sb.setTimerTypes(types);
 		sb.setRules(rules);
-		sb.setTeams(4);
+		sb.setTeams(2);
 		sb.setDigits(3);
 		sb.setName("Generic");
 	}

@@ -3,7 +3,9 @@ package com.example.cs356;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -33,6 +36,8 @@ public class MainActivity extends Activity {
 
 		create.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
 				String type = "null";
 				myIntent.putExtra("TYPE",type);
@@ -43,6 +48,8 @@ public class MainActivity extends Activity {
 		
 		resume.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.click);
+				mp.start();
 				ContinueData cd;
 				String type;
 				try 
@@ -58,7 +65,7 @@ public class MainActivity extends Activity {
 						startActivity(myIntent);
 		            }
 		            else{
-		            	resume.setText("No Game Saved");
+		            	Toast.makeText(MainActivity.this, "No Saved Game!", Toast.LENGTH_LONG).show();
 		            }
 		            
 		        } 
@@ -73,13 +80,16 @@ public class MainActivity extends Activity {
 		
 		scores.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreList.class);
 				startActivity(myIntent);
 				}});
 		
 		select.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardList.class);
 				startActivity(myIntent);
 				//select.setText("Not Yet Implemented");					

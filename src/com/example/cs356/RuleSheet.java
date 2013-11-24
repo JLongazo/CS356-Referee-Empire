@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,19 +34,28 @@ public class RuleSheet extends Activity {
 	private LinearLayout background;
 	private Button back;
 	private ListView rules;
+	private TextView head;
 	private ContinueData cd;
 	private String file = "/data/data/com.example.cs356/continue.bin";
 	private Scoreboard sb;
 	private String rule[];
 	private String ruleList[];
+	private Typeface f1;
+	private Typeface f2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rule_sheet);
-		background = (LinearLayout) this.findViewById(R.id.linearLayout1);
+		f1 = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
+		f2 = Typeface.createFromAsset(getAssets(), "fonts/Athletic.TTF");
+		background = (LinearLayout) this.findViewById(R.id.rulebar);
 		back = (Button) this.findViewById(R.id.back);
 		rules = (ListView) this.findViewById(R.id.listView1);
+		head = (TextView) this.findViewById(R.id.textView1);
+		head.setTypeface(f1);
+		head.setTextSize(30);
+		head.setTextColor(Color.WHITE);
 		try 
         { 
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file)); 
@@ -58,11 +70,13 @@ public class RuleSheet extends Activity {
 		for(int i = 0; i < rule.length; i++){
 			ruleList[i] = (i+1) + ". " + rule[i];
 		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, ruleList);
+		RAdapter adapter = new RAdapter(this,android.R.layout.simple_list_item_1, ruleList,f2);
         rules.setAdapter(adapter);
 		
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(RuleSheet.this, R.raw.click);
+				mp.start();
 				cd.setSb(sb);
 				try 
 			    { 
