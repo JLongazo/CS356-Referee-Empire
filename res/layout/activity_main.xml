@@ -50,7 +50,7 @@
         android:text="@string/selectscoreboard" />
 
     <Button
-        android:id="@+id/tournament"
+        android:id="@+id/tournamentID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/select"
@@ -62,9 +62,9 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tournament"
-        android:layout_alignRight="@+id/tournament"
-        android:layout_below="@+id/tournament"
+        android:layout_alignLeft="@+id/tournamentID"
+        android:layout_alignRight="@+id/tournamentID"
+        android:layout_below="@+id/tournamentID"
         android:text="@string/option" />
 
 </RelativeLayout>

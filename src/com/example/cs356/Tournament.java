@@ -1,112 +1,137 @@
 package com.example.cs356;
 
-import java.util.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
 
-public class Tournament  extends JFrame implements ActionListener {
+import java.util.Arrays;
+import java.util.Collections;
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
-    JPanel pnl1, pnl2;
-    JPanel[] pnls, mainPnls;
-    JRadioButton[] teams, shfldTeams;
-    JRadioButton extra = new JRadioButton("extra", true);
-    JButton shfl;
-    ButtonGroup[] bg;
-    int mpcount = 1;
-    final int teamNum = 16;
-    String[] trnmntTeams = {"Empire", "CA", "LA", "CPP", "TA", "MN", "OL",
-        "AB", "CD", "EF", "GH", "BO", "CHEVY", "FORD", "TX", "AR"};
-    int altI = 0;
 
-    Tournament2() {
-        setSize(450, 300);
-        setLocationRelativeTo(null);
-        shfl = new JButton("press to shuffle");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Tournament");
-        int tmp = teamNum;//num of teams
-        while (tmp >= 1) {//number of panel levels
-            mpcount++;
-            tmp /= 2;
-        }
-        setLayout(new GridLayout(mpcount, 0));
-        mainPnls = new JPanel[mpcount];
-        mainPnls[0] = new JPanel();
-        mainPnls[0].add(shfl);
-        shfl.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                makeShuffle();
-            }
-        });
-        add(mainPnls[0]);
+public class Tournament extends Activity {
+	RelativeLayout layout1;
+	LinearLayout[] mainPnls;
+	RelativeLayout[] pnls;
+	RelativeLayout.LayoutParams brdrs;
 
-        int tn = teamNum;
+	int mpcount = 1;
 
-        teams = new JRadioButton[2 * tn - 1];
-        for (int altI = 0; altI < 2 * tn - 1; altI++) {
-            teams[altI] = new JRadioButton();
-            teams[altI].setVerticalTextPosition(SwingConstants.TOP);
-            teams[altI].setHorizontalTextPosition(SwingConstants.CENTER);
-            teams[altI].setActionCommand("" + altI);
-            teams[altI].addActionListener(this);
-        }
-        altI = 0;
-        for (int mpan = 1; mpan < mpcount; mpan++) {
-            pnls = new JPanel[tn];
-            bg = new ButtonGroup[tn];
-            mainPnls[mpan] = new JPanel();
-            int j = 0;
-            for (int i = 0; i < tn; i++) {
-                teams[altI].setText("t" + (i + 1));
-                if (i % 2 == 0) {
-                    bg[j] = new ButtonGroup();
-                    bg[j].add(teams[altI]);
-                    if (tn > 1) {
-                        bg[j].add(teams[altI + 1]);
-                    }
-                    pnls[j] = new JPanel(new GridLayout(1, 2));
-                    pnls[j].add(teams[altI]);
-                    if (tn > 1) {
-                        pnls[j].add(teams[altI + 1]);
-                    }
-                    pnls[j].setBorder(BorderFactory.createEtchedBorder());
-                    mainPnls[mpan].add(pnls[j]);
-                }
-                j++;
-                altI++;
-            }
-            tn /= 2;
-            add(mainPnls[mpan]);
-        }
-        setVisible(true);
-    }
+	RadioGroup[] bg;
+	RadioButton rb1, rb2;
+	Button shfl;
+	final int teamNum = 16;
+	RadioButton[] teams;
+	String[] trnmntTeams = { "Empire", "CA", "LA", "CPP", "TA", "MN", "OL",
+			"AB", "CD", "EF", "GH", "BO", "CHEVY", "FORD", "TX", "AR" };
+	private LinearLayout mainFrame;
+	int altI = 0;
 
-    public void actionPerformed(ActionEvent ae) {
-        int input = Integer.parseInt(ae.getActionCommand());
-        if (input != altI - 1) {
-            teams[teamNum + input / 2].setText(teams[input].getText());
-        } else {
-            shfl.setText("the Winner is " + teams[input].getText());
-        }
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    public String[] makeShuffle() {
-        shfl.setText("shuffled");
-        shfl.setEnabled(false);
-        Collections.shuffle(Arrays.asList(trnmntTeams));
-        for (int i = 0; i < teamNum; i++) {
-            teams[i].setText(trnmntTeams[i]);
-        }
-        repaint();
-        return trnmntTeams;
-    }
+		shfl = new Button(this);
+		shfl.setText("shuffle");
+		shfl.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				makeShuffle();
+			}
+		});
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Tournament2();
-            }
-        });
-    }
+		int tmp = teamNum;// num of teams
+		while (tmp >= 1) {// number of panel levels
+			mpcount++;
+			tmp /= 2;
+		}
+
+		mainPnls = new LinearLayout[mpcount];
+		mainPnls[0] = new LinearLayout(this);
+		mainPnls[0].setOrientation(LinearLayout.VERTICAL);
+		mainPnls[0].addView(shfl);
+
+		mainFrame = new LinearLayout(this);
+		mainFrame.setOrientation(LinearLayout.HORIZONTAL);
+
+		mainFrame.addView(mainPnls[0]);
+
+		int tn = teamNum;
+		int j = 0;
+
+		teams = new RadioButton[2 * tn - 1];
+		for (altI = 0; altI < 2 * tn - 1; altI++) {
+			teams[altI] = new RadioButton(this);
+			teams[altI].setTag("" + altI);
+			teams[altI].setOnClickListener(rbuttons);
+		}
+		altI = 0;
+		boolean chng = true;
+		for (int mpan = 1; mpan < mpcount; mpan++) {
+			pnls = new RelativeLayout[tn];
+			bg = new RadioGroup[tn];
+			mainPnls[mpan] = new LinearLayout(this);
+			mainPnls[mpan].setOrientation(LinearLayout.VERTICAL);
+			j = 0;
+			chng = !chng;
+			for (int i = 0; i < tn; i++) {
+				teams[altI].setText("t"+(i+1));
+				if (i % 2 == 0) {
+					bg[j] = new RadioGroup(this);
+					bg[j].addView(teams[altI]);
+					if (tn > 1) {
+						bg[j].addView(teams[altI + 1]);
+					}
+					pnls[j] = new RelativeLayout(this);
+					pnls[j].addView(bg[j]);
+					if(chng)
+						pnls[j].setBackgroundColor(Color.MAGENTA);
+					else
+						pnls[j].setBackgroundColor(Color.RED);
+					mainPnls[mpan].addView(pnls[j]);	
+				}
+				chng = !chng;
+				j++;
+				altI++;
+			}
+			tn /= 2;
+			
+			mainFrame.addView(mainPnls[mpan]);
+			mainFrame.setGravity(Gravity.CENTER_HORIZONTAL);
+			mainFrame.setGravity(Gravity.CENTER_VERTICAL);
+			mainFrame.setBackgroundColor(Color.BLUE);
+		}
+		setContentView(mainFrame);
+	}
+
+	public String[] makeShuffle() {
+		shfl.setText("shuffled");
+		shfl.setEnabled(false);
+		Collections.shuffle(Arrays.asList(trnmntTeams));
+		for (int i = 0; i < teamNum; i++) {
+			teams[i].setText(trnmntTeams[i]);
+		}
+		return trnmntTeams;
+	}
+
+	private OnClickListener rbuttons = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+	       int input = Integer.parseInt(v.getTag().toString());
+	        if (input != altI - 1) {
+	            teams[teamNum + input / 2].setText(teams[input].getText().toString());
+	        } else {
+	            shfl.setText("the Winner is " + teams[input].getText().toString());
+	        }
+
+		}
+	};
 }

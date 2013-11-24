@@ -16,15 +16,16 @@ public class CoinToss extends NeutralButton{
         public CoinToss(Context c, String name){
                 super(c);
                 this.name = name;
-                adjustCoin("Coin");
+                setBackgroundResource(R.drawable.blankwhite);
         }
         public void toss(){
                 Random generator = new Random();
-                int random = generator.nextInt(2) + 1;        
+                int random = generator.nextInt(2);        
                 if(random == 1)
-                        adjustCoin("H");
+                	setBackgroundResource(R.drawable.head);
+
                 else
-                        adjustCoin("T");
+                	setBackgroundResource(R.drawable.tail);
         }   
         
         public void adjustCoin(String display){
@@ -45,7 +46,7 @@ public class CoinToss extends NeutralButton{
 				     }
 
 				     public void onFinish() {
-				    	 setBackgroundResource(R.drawable.blankwhite);
+				    //	 setBackgroundResource(R.drawable.blankwhite);//
 				    	 toss();
 
 				  //  	MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.buzzer);
