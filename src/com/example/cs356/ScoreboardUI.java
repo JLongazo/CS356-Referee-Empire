@@ -3,24 +3,34 @@ package com.example.cs356;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.*;
+import java.util.ArrayList;
 
 public class ScoreboardUI extends Activity {
 	
@@ -29,6 +39,8 @@ public class ScoreboardUI extends Activity {
 	private Button home;
 	private Button rules;
 	private Button options;
+	private Button round;
+	private Button bet;
 	private Scoreboard sb;
 	private ContinueData cd;
 	private TextView name;
@@ -41,10 +53,16 @@ public class ScoreboardUI extends Activity {
 	private int scoreid[] = new int[4];
 	private int tbutid[] = new int[8];
 	private int bbutid[] = new int[8];
+	private String teamNames[];
 	private int timerCount = 0;
 	private Typeface f1;
 	private Typeface f2;
-	
+	private int height;
+	private int width;
+	private boolean contin;
+	private RoundData rounds;
+	private int betNum = 0;
+	private EditText et;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,29 +70,23 @@ public class ScoreboardUI extends Activity {
 		setContentView(R.layout.activity_scoreboard_ui);
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-		int height = displaymetrics.heightPixels;
-		int width = displaymetrics.widthPixels;
+		height = displaymetrics.heightPixels;
+		width = displaymetrics.widthPixels;
 		end = (Button) this.findViewById(R.id.end);
 		home = (Button) this.findViewById(R.id.home);
 		rules = (Button) this.findViewById(R.id.rules);
+		round = (Button) this.findViewById(R.id.rounds);
+		bet = (Button) this.findViewById(R.id.bet);
 		options = (Button) this.findViewById(R.id.options2);
 		name = (TextView) this.findViewById(R.id.textView1);
 		teams = (LinearLayout) this.findViewById(R.id.Teams);
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
 		tbuttons = (LinearLayout) this.findViewById(R.id.Tbuttons);
 		bbuttons = (LinearLayout) this.findViewById(R.id.Bbuttons);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.gravity = Gravity.CENTER;
-		params.weight = 1;
-		LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		bparams.gravity = Gravity.CENTER;
-		f1 = Typeface.createFromAsset(getAssets(), "fonts/Athletic.TTF");
-		f2 = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
-		//get scoreboard file and continue data
 		Bundle extras = getIntent().getExtras();
 		String file = extras.getString("FILE");
 		String type = extras.getString("TYPE");
-		boolean contin = false;
+		contin = false;
 		sb = new Scoreboard();
 		if(type.equals("continue")){
 			//load continue data
@@ -108,11 +120,440 @@ public class ScoreboardUI extends Activity {
 		else{
 			initializeScoreboard();//load new scoreboard
 		}
+		rounds = new RoundData();
+		build();
+		
+		round.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				CharSequence teams[] = teamNames;
+				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+				builder.setTitle("CHOSE ROUND WINNER");
+				builder.setItems(teams, new DialogInterface.OnClickListener() {
+		               public void onClick(DialogInterface dialog, int which) {
+		                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
+		                   rounds.nextRound(winner);
+		                   round.setText("ROUND: " + rounds.getRoundCount());
+		                   reset();
+		               }
+		        });
+				builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      //dialog dismissed
+	                   }
+				});
+				builder.create();
+				builder.show();
+			}
+		});
+		
+		round.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View arg0) {
+				CharSequence data[] = new CharSequence[rounds.getRoundCount()-1];
+				data = rounds.getData().toArray(data);
+				if(data.length == 0){
+					data[0] = "None";
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+				builder.setTitle("ROUND WINNERS");
+				builder.setItems(data, new DialogInterface.OnClickListener() {
+		               public void onClick(DialogInterface dialog, int which) {
+		               }
+		        });
+				builder.setNegativeButton("EXIT", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      //dialog dismissed
+	                   }
+				});
+				builder.create();
+				builder.show();
+				return true;
+			}
+		});
+		
+		bet.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+				builder.setTitle("SET BET AMOUNT");
+				builder.setMessage("Enter a number less than 4 digits.");
+				et = new EditText(ScoreboardUI.this);
+				et.setInputType(InputType.TYPE_CLASS_NUMBER);
+				builder.setView(et);
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   int check = Integer.parseInt(et.getText().toString());
+	                	   if(check <= 999){
+	                		   betNum = check;
+	                		   bet.setText("BET: $" + check);
+	                	   }else{
+	                		   Toast.makeText(ScoreboardUI.this, "Invalid Entry!", Toast.LENGTH_LONG).show();
+	                	   }  
+		               }
+					});
+				builder.setNegativeButton("EXIT", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      //dialog dismissed
+	                   }
+				});
+				builder.create();
+				builder.show();
+			}
+		});
+		
+		end.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
+				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+				builder.setTitle("END GAME AND SAVE SCORES?");
+				builder.setMessage("You can no longer continue the" +
+						"game afterwards.");
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   	saveGame();
+	       					resetContinue();
+	       					endgame = true;
+	       					Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
+	       					startActivity(myIntent);
+		               }
+					});
+				builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      //dialog dismissed
+	                   }
+				});
+				builder.create();
+				builder.show();
+			}
+		});
+		
+		home.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
+				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+				builder.setTitle("EXIT TO MAIN MENU?");
+				builder.setMessage("This score board will save for later.");
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
+	       					saveContinue();
+	       					startActivity(myIntent);
+		               }
+					});
+				builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      //dialog dismissed
+	                   }
+				});
+				builder.create();
+				builder.show();
+			}
+		});
+		
+		rules.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
+				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.RuleSheet.class);
+				saveContinue();
+				startActivity(myIntent);
+			}
+		});
+		
+		options.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
+				//savePremade();
+				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.GameOptions.class);
+				saveContinue();
+				startActivity(myIntent);
+			}
+		});
+		
+		
+		
+	}
+	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		if(!endgame){
+			saveContinue();
+		}
+	}
+	
+	public void saveGame(){
+		String teams[] = sb.getTeamNames();
+		String name = sb.getName();
+		int scores[] = new int[sb.getTeams()];
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			scores[i] = sc.getScore();
+		}
+		ScoreData newScore = new ScoreData(name, teams, scores);
+		Scores s;
+		try 
+        { 
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scores.bin")); 
+            s = (Scores) ois.readObject();  
+        } 
+		catch(Exception e){
+			Log.v("Serialization Read Error : ",e.getMessage());
+			s = new Scores();
+		}
+		s.add(newScore);
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scores.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(s); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        }
+	}
+	
+	public void resetContinue(){
+		ContinueData cd = new ContinueData();
+		cd.setCheck(false);
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/continue.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(cd); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        }
+	}
+	
+	public void saveContinue(){
+		ContinueData cd = new ContinueData();
+		cd.setSb(sb);
+		cd.setCheck(true);
+		int tcount = 0;
+		int bcount = 0;
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			cd.setScore(sc.getScore(),i);
+			for(int j = 0; j < sb.getTCount(); j++){
+				char check[] = sb.getTopButtons();
+				switch(check[j]){
+				case 'c':
+					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[tcount]);
+					cd.setTButton(Integer.toString(c.getSpScore()), tcount++);
+					break;
+				case 't':
+					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
+					cd.setTButton(Boolean.toString(t.getIsOn()), tcount++);
+					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
+					String type = Boolean.toString(m.getCountUp());
+					String time = Long.toString(m.getMillis());
+					String save = type + "/" + time;
+					cd.setTButton(save,tcount++);
+					break;
+				}
+			}
+			if(!sb.isHasNeutral()){
+				for(int j = 0; j < sb.getBCount(); j++){
+					char check[] = sb.getBottomButtons();
+					switch(check[j]){
+					case 'c':
+						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount]);
+						cd.setBButton(Integer.toString(c.getSpScore()), bcount++);
+						break;
+					case 't':
+						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
+						cd.setBButton(Boolean.toString(t.getIsOn()), bcount++);
+						break;
+					case 'm':
+						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
+						String type = Boolean.toString(m.getCountUp());
+						String time = Long.toString(m.getMillis());
+						String save = type + "/" + time;
+						cd.setBButton(save,bcount++);
+						break;
+					}
+				}
+			
+			}
+		}
+		if(sb.isHasNeutral()){
+			for(int j = 0; j < sb.getBCount(); j++){
+				char check[] = sb.getBottomButtons();
+				switch(check[j]){
+				case 'c':
+					SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[j]);
+					cd.setBButton(Integer.toString(c.getSpScore()), j);
+					break;
+				case 't':
+					RToggle t = (RToggle) this.findViewById(bbutid[j]);
+					cd.setBButton(Boolean.toString(t.getIsOn()), j);
+					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[j]);
+					String time = Long.toString(m.getMillis());
+					cd.setBButton(time,j);
+					break;
+				}
+			}
+		}
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/continue.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(cd); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        } 
+	}
+	
+	public void savePremade(){
+		ScoreboardData sd;
+		String name = sb.getName().toLowerCase();
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(
+        		   new FileOutputStream(new File("/data/data/com.example.cs356/" + name + ".bin"))); 
+           oos.writeObject(sb); 
+           oos.flush(); 
+           oos.close();
+           ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
+           sd = (ScoreboardData) ois.readObject();
+           sd.addSb(sb.getName());
+           oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
+           oos.writeObject(sd);
+	       oos.flush();  
+	       oos.close();
+        } 
+        catch(Exception ex) 
+        { 
+        	try{
+        		String start[] = {sb.getName()};
+	        	sd = new ScoreboardData(start);
+	            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
+	            oos.writeObject(sd);
+	 	       	oos.flush();  
+	 	      	oos.close();	
+        	}
+        	catch(Exception e2){
+        		Log.v("Serialization Save Error : ",ex.getMessage()); 
+	 	      	ex.printStackTrace(); 
+        	}
+        }
+	}
+	
+	public void reset(){
+		int bcount = 0;
+		int tcount = 0;
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			sc.setScore(0);
+			for(int j = 0; j < sb.getTCount(); j++){
+				char check[] = sb.getTopButtons();
+				switch(check[j]){
+				case 'c':
+					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[tcount]);
+					c.setCount(0);
+					break;
+				case 't':
+					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
+					t.setIsOn(false);
+					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
+					m.reset();
+					break;
+				}
+				tcount++;
+			}
+			if(!sb.isHasNeutral()){
+				for(int j = 0; j < sb.getBCount(); j++){
+					char check[] = sb.getBottomButtons();
+					switch(check[j]){
+					case 'c':
+						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount]);
+						c.setCount(0);
+						break;
+					case 't':
+						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
+						t.setIsOn(false);
+						break;
+					case 'm':
+						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
+						m.reset();
+						break;
+					}
+					bcount++;
+				}
+			}
+		}
+		if(sb.isHasNeutral()){
+			for(int j = 0; j < sb.getBCount(); j++){
+				char check[] = sb.getBottomButtons();
+				switch(check[j]){
+				case 'c':
+					SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[j]);
+					c.setCount(0);
+					break;
+				case 't':
+					RToggle t = (RToggle) this.findViewById(bbutid[j]);
+					t.setIsOn(false);
+					break;
+				case 'm':
+					RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[j]);
+					m.reset();
+					break;
+				}
+			}
+		}
+	}
+	
+	public void build(){
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.gravity = Gravity.CENTER;
+		params.weight = 1;
+		LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		bparams.gravity = Gravity.CENTER;
+		if(contin){
+			betNum = cd.getBet();
+			rounds = cd.getRounds();
+		}
+		f1 = Typeface.createFromAsset(getAssets(), "fonts/Athletic.TTF");
+		f2 = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
+		round.setText("ROUND: " + rounds.getRoundCount());
+		round.setTypeface(f2);
+		round.setTextSize(15);
+		round.setTextColor(Color.WHITE);
+		round.setGravity(Gravity.CENTER);
+		bet.setText("BET: $" + betNum);
+		bet.setTypeface(f2);
+		bet.setTextSize(15);
+		bet.setTextColor(Color.WHITE);
+		bet.setGravity(Gravity.CENTER);
 		name.setText(sb.getName());
 		name.setTypeface(f2);
-		name.setTextSize(30);
+		name.setTextSize(26);
 		name.setTextColor(Color.WHITE);
 		name.setGravity(Gravity.CENTER);
+		
 		final float scale = this.getResources().getDisplayMetrics().density;
 		//int pixels = (int) (dps * scale + 0.5f);
 		LayoutParams counter = new LayoutParams(90,90);
@@ -122,7 +563,7 @@ public class ScoreboardUI extends Activity {
 		LayoutParams coinP = new LayoutParams(90,90);
 		//Build Scoreboard Sequence
 		int teamCount = sb.getTeams();
-		String teamNames[] = sb.getTeamNames();
+		teamNames = sb.getTeamNames();
 		int tcount = 0;
 		int bcount = 0;
 		for(int j = 0; j < teamCount; j++){
@@ -404,247 +845,6 @@ public class ScoreboardUI extends Activity {
 			
 		}
 	}
-		
-		end.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
-				mp.start();
-				try {
-					FileOutputStream fos = new FileOutputStream("fafae");
-					ObjectOutputStream os = new ObjectOutputStream(fos);
-					os.writeObject(sb);
-					os.flush();
-					os.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				saveGame();
-				resetContinue();
-				endgame = true;
-				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
-				startActivity(myIntent);
-			}
-		});
-		
-		home.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
-				mp.start();
-				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
-				saveContinue();
-				startActivity(myIntent);
-			}
-		});
-		
-		rules.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
-				mp.start();
-				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.RuleSheet.class);
-				saveContinue();
-				startActivity(myIntent);
-			}
-		});
-		
-		options.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
-				mp.start();
-				//savePremade();
-				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.GameOptions.class);
-				saveContinue();
-				startActivity(myIntent);
-			}
-		});
-		
-		
-		
-	}
-	
-	@Override
-	protected void onDestroy(){
-		super.onDestroy();
-		if(!endgame){
-			saveContinue();
-		}
-	}
-	
-	public void saveGame(){
-		String teams[] = sb.getTeamNames();
-		String name = sb.getName();
-		int scores[] = new int[sb.getTeams()];
-		for(int i = 0; i < sb.getTeams(); i++){
-			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
-			scores[i] = sc.getScore();
-		}
-		ScoreData newScore = new ScoreData(name, teams, scores);
-		Scores s;
-		try 
-        { 
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scores.bin")); 
-            s = (Scores) ois.readObject();  
-        } 
-		catch(Exception e){
-			Log.v("Serialization Read Error : ",e.getMessage());
-			s = new Scores();
-		}
-		s.add(newScore);
-		try 
-        { 
-           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scores.bin"))); 
-           //Select where you wish to save the file... 
-           oos.writeObject(s); // write the class as an 'object' 
-           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
-           oos.close();// close the stream 
-        } 
-        catch(Exception ex) 
-        { 
-           Log.v("Serialization Save Error : ",ex.getMessage()); 
-           ex.printStackTrace(); 
-        }
-	}
-	
-	public void resetContinue(){
-		ContinueData cd = new ContinueData();
-		cd.setCheck(false);
-		try 
-        { 
-           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/continue.bin"))); 
-           //Select where you wish to save the file... 
-           oos.writeObject(cd); // write the class as an 'object' 
-           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
-           oos.close();// close the stream 
-        } 
-        catch(Exception ex) 
-        { 
-           Log.v("Serialization Save Error : ",ex.getMessage()); 
-           ex.printStackTrace(); 
-        }
-	}
-	
-	public void saveContinue(){
-		ContinueData cd = new ContinueData();
-		cd.setSb(sb);
-		cd.setCheck(true);
-		int tcount = 0;
-		int bcount = 0;
-		for(int i = 0; i < sb.getTeams(); i++){
-			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
-			cd.setScore(sc.getScore(),i);
-			for(int j = 0; j < sb.getTCount(); j++){
-				char check[] = sb.getTopButtons();
-				switch(check[j]){
-				case 'c':
-					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[tcount]);
-					cd.setTButton(Integer.toString(c.getSpScore()), tcount++);
-					break;
-				case 't':
-					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
-					cd.setTButton(Boolean.toString(t.getIsOn()), tcount++);
-					break;
-				case 'm':
-					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
-					String type = Boolean.toString(m.getCountUp());
-					String time = Long.toString(m.getMillis());
-					String save = type + "/" + time;
-					cd.setTButton(save,tcount++);
-					break;
-				}
-			}
-			if(!sb.isHasNeutral()){
-				for(int j = 0; j < sb.getBCount(); j++){
-					char check[] = sb.getBottomButtons();
-					switch(check[j]){
-					case 'c':
-						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount]);
-						cd.setBButton(Integer.toString(c.getSpScore()), bcount++);
-						break;
-					case 't':
-						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
-						cd.setBButton(Boolean.toString(t.getIsOn()), bcount++);
-						break;
-					case 'm':
-						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
-						String type = Boolean.toString(m.getCountUp());
-						String time = Long.toString(m.getMillis());
-						String save = type + "/" + time;
-						cd.setBButton(save,bcount++);
-						break;
-					}
-				}
-			
-			}
-		}
-		if(sb.isHasNeutral()){
-			for(int j = 0; j < sb.getBCount(); j++){
-				char check[] = sb.getBottomButtons();
-				switch(check[j]){
-				case 'c':
-					SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[j]);
-					cd.setBButton(Integer.toString(c.getSpScore()), j);
-					break;
-				case 't':
-					RToggle t = (RToggle) this.findViewById(bbutid[j]);
-					cd.setBButton(Boolean.toString(t.getIsOn()), j);
-					break;
-				case 'm':
-					RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[j]);
-					String time = Long.toString(m.getMillis());
-					cd.setBButton(time,j);
-					break;
-				}
-			}
-		}
-		try 
-        { 
-           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/continue.bin"))); 
-           //Select where you wish to save the file... 
-           oos.writeObject(cd); // write the class as an 'object' 
-           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
-           oos.close();// close the stream 
-        } 
-        catch(Exception ex) 
-        { 
-           Log.v("Serialization Save Error : ",ex.getMessage()); 
-           ex.printStackTrace(); 
-        } 
-	}
-	
-	public void savePremade(){
-		ScoreboardData sd;
-		String name = sb.getName().toLowerCase();
-		try 
-        { 
-           ObjectOutputStream oos = new ObjectOutputStream(
-        		   new FileOutputStream(new File("/data/data/com.example.cs356/" + name + ".bin"))); 
-           oos.writeObject(sb); 
-           oos.flush(); 
-           oos.close();
-           ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
-           sd = (ScoreboardData) ois.readObject();
-           sd.addSb(sb.getName());
-           oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
-           oos.writeObject(sd);
-	       oos.flush();  
-	       oos.close();
-        } 
-        catch(Exception ex) 
-        { 
-        	try{
-        		String start[] = {sb.getName()};
-	        	sd = new ScoreboardData(start);
-	            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
-	            oos.writeObject(sd);
-	 	       	oos.flush();  
-	 	      	oos.close();	
-        	}
-        	catch(Exception e2){
-        		Log.v("Serialization Save Error : ",ex.getMessage()); 
-	 	      	ex.printStackTrace(); 
-        	}
-        }
 	}
 
 	public void initializeScoreboard(){
@@ -667,7 +867,7 @@ public class ScoreboardUI extends Activity {
 		sb.setTimerTimes(times);
 		sb.setTimerTypes(types);
 		sb.setRules(rules);
-		sb.setTeams(2);
+		sb.setTeams(4);
 		sb.setDigits(3);
 		sb.setName("Generic");
 	}

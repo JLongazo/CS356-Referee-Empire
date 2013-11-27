@@ -13,6 +13,10 @@ public class ContinueData implements Serializable{
 	
 	private boolean check;
 	
+	private RoundData rounds;
+	
+	private int betNum;
+	
 	private int scores[] = new int[4];
 	
 	private String tButtons[] = new String[8];
@@ -35,6 +39,22 @@ public class ContinueData implements Serializable{
 		bButtons = new String[8];
 	}
 
+	public void setRounds(RoundData r){
+		rounds = r;
+	}
+	
+	public RoundData getRounds(){
+		return rounds;
+	}
+	
+	public void setBet(int b){
+		betNum = b;
+	}
+	
+	public int getBet(){
+		return betNum;
+	}
+	
 	public Scoreboard getSb() {
 		return sb;
 	}

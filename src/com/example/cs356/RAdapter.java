@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.StateListDrawable;
 
 public class RAdapter extends ArrayAdapter<String>{
 	
@@ -42,6 +43,12 @@ public class RAdapter extends ArrayAdapter<String>{
 	    tv.setTextSize(20);
 	    tv.setPadding(20,0,20,0);
 	    tv.setBackgroundResource(R.drawable.background5);
+	    StateListDrawable states = new StateListDrawable();
+		states.addState(new int[] {android.R.attr.state_pressed},
+		    c.getResources().getDrawable(R.drawable.background52));
+		states.addState(new int[] { },
+		    c.getResources().getDrawable(R.drawable.background5));
+		tv.setBackgroundDrawable(states);
 	    return tv;
 	}
 

@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
 		        } 
 				catch(Exception e){
 					Log.v("Serialization Read Error : ",e.getMessage());
-					resume.setText("No Game Saved");
+					Toast.makeText(MainActivity.this, "No Saved Game!", Toast.LENGTH_LONG).show();
 				}
 					
 				}});

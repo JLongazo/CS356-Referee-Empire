@@ -40,5 +40,6 @@ public class RToggle extends RButton{
                 setIsOn(!getIsOn());
                 changeToggle();        
         }
+		
 
 }

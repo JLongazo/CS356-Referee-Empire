@@ -79,7 +79,7 @@ public class ScoreboardList extends Activity {
 	    		String selection = l.getItemAtPosition(arg2).toString();
 	    		selection = selection.toLowerCase();
 	    		//Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
-	    	
+	    		
 	    		Scoreboard sb;
 	    		String type;
 	    		try 

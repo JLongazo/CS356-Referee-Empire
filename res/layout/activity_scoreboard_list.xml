@@ -28,7 +28,7 @@
             android:id="@+id/buttonB"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/back" />
+            android:background="@drawable/backs" />
     </LinearLayout>
 
     <ListView
