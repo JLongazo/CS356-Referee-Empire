@@ -56,7 +56,7 @@
         android:layout_alignLeft="@+id/select"
         android:layout_alignRight="@+id/select"
         android:layout_below="@+id/select"
-        android:text="@string/createtournament" />
+        android:text="Tournament" />
 
     <Button
         android:id="@+id/button5"

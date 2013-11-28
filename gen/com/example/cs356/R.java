@@ -47,8 +47,9 @@ public final class R {
         public static final int singlep=0x7f02000d;
         public static final int tail=0x7f02000e;
         public static final int threep=0x7f02000f;
-        public static final int twop=0x7f020010;
-        public static final int whistle=0x7f020011;
+        public static final int tourback=0x7f020010;
+        public static final int twop=0x7f020011;
+        public static final int whistle=0x7f020012;
     }
     public static final class id {
         public static final int Bbuttons=0x7f0b000c;
@@ -75,7 +76,6 @@ public final class R {
         public static final int activity_scoreboard_ui=0x7f030004;
         public static final int activity_test=0x7f030005;
         public static final int radiobutton=0x7f030006;
-        public static final int rbutton=0x7f030007;
     }
     public static final class menu {
         public static final int dummy_tester=0x7f0a0000;

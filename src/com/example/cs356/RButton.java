@@ -39,6 +39,10 @@ public class RButton extends Button implements OnClickListener, OnLongClickListe
 	public int getGrid(){
 		return grid;		
 	}
+	public void setLaout(){
+		//	
+	}
+	
 
 
 	@Override
