@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -21,10 +24,11 @@ import java.io.*;
 
 public class ScoreboardUI extends Activity {
 	
-	Button whistle;
 	private boolean endgame = false;
 	private Button end;
 	private Button home;
+	private Button rules;
+	private Button options;
 	private Scoreboard sb;
 	private ContinueData cd;
 	private TextView name;
@@ -38,27 +42,22 @@ public class ScoreboardUI extends Activity {
 	private int tbutid[] = new int[8];
 	private int bbutid[] = new int[8];
 	private int timerCount = 0;
-	
-
-	public void whistlesound(View view) 
-	{
-		
-        MediaPlayer mp = MediaPlayer.create(this, R.raw.whistle);
-
-		mp.start();
-		//Intent whistle = new Intent(ScoreboardUI.this, com.example.cs356.DummyTester.class);
-		//MainActivity.this.startActivity(myIntent);
-		//startActivity(whistle);
-		//setContentView(R.layout.scoreboard);
-	}
+	private Typeface f1;
+	private Typeface f2;
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scoreboard_ui);
-		end = (Button) this.findViewById(R.id.resume);
-		home = (Button) this.findViewById(R.id.select);
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int height = displaymetrics.heightPixels;
+		int width = displaymetrics.widthPixels;
+		end = (Button) this.findViewById(R.id.end);
+		home = (Button) this.findViewById(R.id.home);
+		rules = (Button) this.findViewById(R.id.rules);
+		options = (Button) this.findViewById(R.id.options2);
 		name = (TextView) this.findViewById(R.id.textView1);
 		teams = (LinearLayout) this.findViewById(R.id.Teams);
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
@@ -69,6 +68,8 @@ public class ScoreboardUI extends Activity {
 		params.weight = 1;
 		LinearLayout.LayoutParams bparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		bparams.gravity = Gravity.CENTER;
+		f1 = Typeface.createFromAsset(getAssets(), "fonts/Athletic.TTF");
+		f2 = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
 		//get scoreboard file and continue data
 		Bundle extras = getIntent().getExtras();
 		String file = extras.getString("FILE");
@@ -94,35 +95,81 @@ public class ScoreboardUI extends Activity {
 			try {
 			InputStream is = getResources().openRawResource(ScoreboardList.getFileInt());
             ObjectInputStream ois = new ObjectInputStream(is); 
-            cd = (ContinueData) ois.readObject();
+            sb = (Scoreboard) ois.readObject();
 			}
 			
 			catch(Exception e){
 				Log.v("Serialization Read Error : ",e.getMessage());
 			}
-			sb = cd.getSb();
 		}
 		
 		
 		
 		else{
-			initializeScoreboard();//load new scoreboard
+			
+
+			try {
+	            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/create.bin")); 
+
+            sb = (Scoreboard) ois.readObject();
+			}
+			
+			catch(Exception e){
+				Log.v("Serialization Read Error : ",e.getMessage());
+			}
+			
+			
+			
+			
+			//initializeScoreboard();//load new scoreboard
 		}
 		name.setText(sb.getName());
+		name.setTypeface(f2);
+		name.setTextSize(30);
+		name.setTextColor(Color.WHITE);
+		name.setGravity(Gravity.CENTER);
+		final float scale = this.getResources().getDisplayMetrics().density;
+		//int pixels = (int) (dps * scale + 0.5f);
+		LayoutParams counter = new LayoutParams(90,90);
+		LayoutParams toggle = new LayoutParams(90,90);
+		LayoutParams timerP = new LayoutParams(360,90);
+		LayoutParams diceP = new LayoutParams(90,90);
+		LayoutParams coinP = new LayoutParams(90,90);
 		//Build Scoreboard Sequence
 		int teamCount = sb.getTeams();
 		String teamNames[] = sb.getTeamNames();
 		int tcount = 0;
 		int bcount = 0;
 		for(int j = 0; j < teamCount; j++){
+			int background = 0;
+			switch(j+1){
+			case 1:
+				background = R.drawable.background1;
+				break;
+			case 2:
+				background = R.drawable.background2;
+				break;
+			case 3:
+				background = R.drawable.background3;
+				break;
+			case 4:
+				background = R.drawable.background4;
+				break;
+			}
 			LinearLayout team = new LinearLayout(this);
 			team.setId(id++);
+			team.setBackgroundResource(background);
 			LinearLayout score = new LinearLayout(this);
 			score.setId(id++);
+			score.setBackgroundResource(background);
 			LinearLayout trow = new LinearLayout(this);
 			trow.setId(id++);
+			trow.setBackgroundResource(background);
 			LinearLayout brow = new LinearLayout(this);
 			brow.setId(id++);
+			if(sb.isHasNeutral()){
+				brow.setBackgroundResource(background);
+			}
 			team.setOrientation(LinearLayout.VERTICAL);
 			score.setOrientation(LinearLayout.VERTICAL);
 			teams.addView(team,params);
@@ -140,17 +187,34 @@ public class ScoreboardUI extends Activity {
 			scoreid[j]=id;
 			scoreC.setId(id++);
 			TextView name1 = new TextView(this);
+			name1.setTypeface(f2);
+			team.setGravity(Gravity.CENTER);
+			name1.setWidth(width/teamCount);
+			name1.setGravity(Gravity.CENTER);
 			teamid[j]=id;
 			name1.setId(id++);
-			name1.setText(teamNames[j]);
-			name1.setTextColor(Color.RED);
+			String name = teamNames[j];
+			name1.setText(name);
+			name1.setTextColor(Color.WHITE);
             name1.setTextSize(25);
-            scoreC.setBackgroundColor(Color.YELLOW);
-            scoreC.setWidth(150);
-            scoreC.setHeight(150);
-            scoreC.setTextSize(30);
+            int dcount = 70 * sb.getDigits();
+            LinearLayout.LayoutParams scoreCount = new LinearLayout.LayoutParams(dcount, 125);
+            scoreCount.setMargins(1,1,1,1);
+            scoreCount.gravity = Gravity.CENTER;
+            scoreC.setLayoutParams(scoreCount);
+            switch(sb.getDigits()){
+            case 2:
+            	scoreC.setBackgroundResource(R.drawable.counter2);
+            	break;
+            case 3:
+            	scoreC.setBackgroundResource(R.drawable.counter3);
+            	break;
+            case 4:
+            	scoreC.setBackgroundResource(R.drawable.counter4);
+            	break;
+            }
 			team.addView(name1,params);
-			score.addView(scoreC,params);
+			score.addView(scoreC);
 			char tbuttons[] = sb.getTopButtons();
 			String tnames[] = sb.gettNames();
 			for(int i = 0; i < sb.getTCount(); i++){
@@ -165,13 +229,18 @@ public class ScoreboardUI extends Activity {
 					if(contin){
 						sp.setCount(Integer.parseInt(cd.getTButton(tcount)));
 					}
+					sp.setBackgroundResource(R.drawable.counter2);
+					sp.setLayoutParams(counter);
+					//sp.setTypeface(f1);
 					TextView name2 = new TextView(this);
-					name2.setText(sp.getName());
+					name2.setText(sp.getName().toUpperCase());
+					name2.setTypeface(f1);
 					tbutid[tcount++]=id;
 					sp.setId(id++);
 					name2.setId(id++);
+					name2.setTextColor(Color.WHITE);
 					tbutton.addView(name2,bparams);
-					tbutton.addView(sp,bparams);
+					tbutton.addView(sp);
 					break;
 				
 				case 't':
@@ -179,13 +248,16 @@ public class ScoreboardUI extends Activity {
 					if(contin){
 						tog.setIsOn(Boolean.parseBoolean(cd.getTButton(tcount)));
 					}
+					tog.setLayoutParams(toggle);
 					TextView name3 = new TextView(this);
-					name3.setText(tog.getName());
+					name3.setText(tog.getName().toUpperCase());
+					name3.setTypeface(f1);
 					tbutid[tcount++]=id;
 					tog.setId(id++);
 					name3.setId(id++);
+					name3.setTextColor(Color.WHITE);
 					tbutton.addView(name3,bparams);
-					tbutton.addView(tog,bparams);
+					tbutton.addView(tog);
 					break;
 				case 'm':
 					long start = sb.getTimerTime(timerCount);
@@ -194,9 +266,12 @@ public class ScoreboardUI extends Activity {
 					if(contin){
 						time.setMillis(Long.parseLong(cd.getTButton(tcount)));
 					}
+					time.setLayoutParams(timerP);
+					//time.setTypeface(f1);
 					tbutid[tcount++]=id;
 					time.setId(id++);
-					tbutton.addView(time,bparams);
+					time.setBackgroundResource(R.drawable.timer);
+					tbutton.addView(time);
 					break;
 				}
 			}
@@ -215,26 +290,34 @@ public class ScoreboardUI extends Activity {
 						if(contin){
 							sp.setCount(Integer.parseInt(cd.getTButton(bcount)));
 						}
+						sp.setBackgroundResource(R.drawable.counter2);
+						sp.setLayoutParams(counter);
+						//sp.setTypeface(f1);
 						TextView name2 = new TextView(this);
-						name2.setText(sp.getName());
+						name2.setText(sp.getName().toUpperCase());
+						name2.setTypeface(f1);
 						bbutid[bcount++]=id;
 						sp.setId(id++);
 						name2.setId(id++);
+						name2.setTextColor(Color.WHITE);
 						bbutton.addView(name2,bparams);
-						bbutton.addView(sp,bparams);
+						bbutton.addView(sp);
 						break;
 					case 't':
 						RToggle tog = new RToggle(this,bnames[i]);
 						if(contin){
 							tog.setIsOn(Boolean.parseBoolean(cd.getBButton(bcount)));
 						}
+						tog.setLayoutParams(toggle);
 						TextView name3 = new TextView(this);
-						name3.setText(tog.getName());
+						name3.setText(tog.getName().toUpperCase());
+						name3.setTypeface(f1);
 						bbutid[bcount++]=id;
 						tog.setId(id++);
 						name3.setId(id++);
+						name3.setTextColor(Color.WHITE);
 						bbutton.addView(name3,bparams);
-						bbutton.addView(tog,bparams);
+						bbutton.addView(tog);
 						break;
 					case 'm':
 						long start = sb.getTimerTime(timerCount);
@@ -243,9 +326,11 @@ public class ScoreboardUI extends Activity {
 						if(contin){
 							time.setMillis(Long.parseLong(cd.getBButton(bcount)));
 						}
+						time.setLayoutParams(timerP);
+						time.setBackgroundResource(R.drawable.timer);
 						bbutid[bcount++]=id;
 						time.setId(id++);
-						bbutton.addView(time,bparams);
+						bbutton.addView(time);
 						break;
 					}
 				}
@@ -254,6 +339,7 @@ public class ScoreboardUI extends Activity {
 		if(sb.isHasNeutral()){
 			char nbuttons[] = sb.getBottomButtons();
 			String nnames[] = sb.getbNames();
+			bbuttons.setBackgroundResource(R.drawable.background5);
 			for(int i = 0; i < sb.getBCount(); i++){
 				LinearLayout nbutton = new LinearLayout(this);
 				nbutton.setId(id++);
@@ -266,26 +352,34 @@ public class ScoreboardUI extends Activity {
 					if(contin){
 						sp.setCount(Integer.parseInt(cd.getBButton(i)));
 					}
+					sp.setBackgroundResource(R.drawable.counter2);
+					sp.setLayoutParams(counter);
+					//sp.setTypeface(f1);
 					TextView name2 = new TextView(this);
-					name2.setText(sp.getName());
+					name2.setText(sp.getName().toUpperCase());
+					name2.setTypeface(f1);
 					bbutid[i]=id;
 					sp.setId(id++);
 					name2.setId(id++);
+					name2.setTextColor(Color.WHITE);
 					nbutton.addView(name2,bparams);
-					nbutton.addView(sp,bparams);
+					nbutton.addView(sp);
 					break;
 				case 't':
 					RToggle tog = new RToggle(this,nnames[i]);
 					if(contin){
 						tog.setIsOn(Boolean.parseBoolean(cd.getBButton(i)));
 					}
+					tog.setLayoutParams(toggle);
 					TextView name3 = new TextView(this);
-					name3.setText(tog.getName());
+					name3.setText(tog.getName().toUpperCase());
+					name3.setTypeface(f1);
 					bbutid[i]=id;
 					tog.setId(id++);
 					name3.setId(id++);
+					name3.setTextColor(Color.WHITE);
 					nbutton.addView(name3,bparams);
-					nbutton.addView(tog,bparams);
+					nbutton.addView(tog);
 					break;
 				case 'm':
 					long start = sb.getTimerTime(timerCount);
@@ -294,42 +388,42 @@ public class ScoreboardUI extends Activity {
 					if(contin){
 						time.setMillis(Long.parseLong(cd.getBButton(i)));
 					}
+					time.setLayoutParams(timerP);
+					time.setBackgroundResource(R.drawable.timer);
 					bbutid[i]=id;
 					time.setId(id++);
-					nbutton.addView(time,bparams);
+					nbutton.addView(time);
 					break;
 				case 'd':
 					DiceRoll dice = new DiceRoll(this, "");
 					bbutid[i]=id;
 					dice.setId(id++);
-					nbutton.addView(dice,bparams);
+					dice.setLayoutParams(diceP);
+					nbutton.addView(dice);
 					break;
 				case 'f':
 					CoinToss coin = new CoinToss(this, "");
 					bbutid[i]=id;
 					coin.setId(id++);
-					nbutton.addView(coin,bparams);
+					coin.setLayoutParams(coinP);
+					nbutton.addView(coin);
+					break;
+				case 'w':
+					Whistle w = new Whistle(this);
+					bbutid[i] = id;
+					w.setId(id++);
+					w.setLayoutParams(coinP);
+					nbutton.addView(w);
 					break;
 				}
 			
 		}
 	}
 		
-		
-		/**
-		whistle = (Button) this.findViewById(R.id.Whistle);
-
-		
-		whistle.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//whistle.setText("You Clicked Me");
-				//setContentView(R.layout.tototo);
-					
-				}});
-		*/
-		
 		end.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
 				try {
 					FileOutputStream fos = new FileOutputStream("fafae");
 					ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -351,7 +445,30 @@ public class ScoreboardUI extends Activity {
 		
 		home.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
+				saveContinue();
+				startActivity(myIntent);
+			}
+		});
+		
+		rules.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
+				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.RuleSheet.class);
+				saveContinue();
+				startActivity(myIntent);
+			}
+		});
+		
+		options.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
+				mp.start();
+				//savePremade();
+				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.GameOptions.class);
 				saveContinue();
 				startActivity(myIntent);
 			}
@@ -370,7 +487,38 @@ public class ScoreboardUI extends Activity {
 	}
 	
 	public void saveGame(){
-		
+		String teams[] = sb.getTeamNames();
+		String name = sb.getName();
+		int scores[] = new int[sb.getTeams()];
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			scores[i] = sc.getScore();
+		}
+		ScoreData newScore = new ScoreData(name, teams, scores);
+		Scores s;
+		try 
+        { 
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scores.bin")); 
+            s = (Scores) ois.readObject();  
+        } 
+		catch(Exception e){
+			Log.v("Serialization Read Error : ",e.getMessage());
+			s = new Scores();
+		}
+		s.add(newScore);
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scores.bin"))); 
+           //Select where you wish to save the file... 
+           oos.writeObject(s); // write the class as an 'object' 
+           oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin' 
+           oos.close();// close the stream 
+        } 
+        catch(Exception ex) 
+        { 
+           Log.v("Serialization Save Error : ",ex.getMessage()); 
+           ex.printStackTrace(); 
+        }
 	}
 	
 	public void resetContinue(){
@@ -478,28 +626,65 @@ public class ScoreboardUI extends Activity {
            ex.printStackTrace(); 
         } 
 	}
+	
+	public void savePremade(){
+		ScoreboardData sd;
+		String name = sb.getName().toLowerCase();
+		try 
+        { 
+           ObjectOutputStream oos = new ObjectOutputStream(
+        		   new FileOutputStream(new File("/data/data/com.example.cs356/" + name + ".bin"))); 
+           oos.writeObject(sb); 
+           oos.flush(); 
+           oos.close();
+           ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
+           sd = (ScoreboardData) ois.readObject();
+           sd.addSb(sb.getName());
+           oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
+           oos.writeObject(sd);
+	       oos.flush();  
+	       oos.close();
+        } 
+        catch(Exception ex) 
+        { 
+        	try{
+        		String start[] = {sb.getName()};
+	        	sd = new ScoreboardData(start);
+	            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
+	            oos.writeObject(sd);
+	 	       	oos.flush();  
+	 	      	oos.close();	
+        	}
+        	catch(Exception e2){
+        		Log.v("Serialization Save Error : ",ex.getMessage()); 
+	 	      	ex.printStackTrace(); 
+        	}
+        }
+	}
 
 	public void initializeScoreboard(){
-		String names[] = {"team1", "team2", "team3", "team4"};
-		String tnames[] = {"tc1", "tc2"};
-		String bnames[] = {"tc3", "tc4"};
-		char trow[] = {'c','t'};
-		char brow[] = {'c','t','f','m'};
+		String names[] = {"Joe", "team2", "team3", "team4"};
+		String tnames[] = {"tc1", "tc2", "tc3"};
+		String bnames[] = {"tc3", "tc4","","","",""};
+		String rules[] = {"Dont cheat", "Follow these Rules", "Blah", "Blah, blah"};
+		char trow[] = {'c','t','t'};
+		char brow[] = {'c','t','m','d','f','w'};
 		long times[] = {50000};
 		boolean types[] = {true};
-		sb.setTopButtons(trow);
-		sb.setBottomButtons(brow);
-		sb.setTCount(2);
-		sb.setBCount(4);
-		sb.settNames(tnames);
-		sb.setbNames(bnames);
-		sb.setHasNeutral(true);
-		sb.setTeamNames(names);
-		sb.setTimerTimes(times);
-		sb.setTimerTypes(types);
-		sb.setTeams(4);
-		sb.setDigits(2);
-		sb.setName("test");
+		sb.setTopButtons(trow);//
+		sb.setBottomButtons(brow);//
+		sb.setTCount(2);//
+		sb.setBCount(6);//
+		sb.settNames(tnames);//
+		sb.setbNames(bnames);//
+		sb.setHasNeutral(true);//
+		sb.setTeamNames(names);//
+		sb.setTimerTimes(times);//
+		sb.setTimerTypes(types);//
+		sb.setRules(rules);//
+		sb.setTeams(2);//
+		sb.setDigits(3);//
+		sb.setName("Generic");//
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package com.example.cs356;
 
+import java.io.Serializable;
+
 /**
  * 
  */
@@ -8,16 +10,23 @@ package com.example.cs356;
  * @author Longazo1
  *
  */
-public class ScoreData {
+public class ScoreData implements Serializable{
 
-	public ScoreData(){}
+	public ScoreData(String n, String t[], int s[]){
+		name = n;
+		teams = t;
+		scores = s;
+	}
 	
+	private String name;
 	private String teams[];
 	private int scores[];
-	private int counters[];
-	private int times[];
 	
 	public String getData(){
-		return null;
+		String result = name + ": ";
+		for(int i = 0; i < teams.length; i++){
+			result += teams[i] + "- " + scores[i] + " ";
+		}
+		return result;
 	}
 }

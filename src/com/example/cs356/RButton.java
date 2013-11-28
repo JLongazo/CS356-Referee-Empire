@@ -8,8 +8,9 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-public class RButton extends Button implements OnClickListener, OnLongClickListener{
+public class RButton extends LinearLayout implements OnClickListener, OnLongClickListener{
 	private String name;
 	private ImageView image;
 	private int grid;

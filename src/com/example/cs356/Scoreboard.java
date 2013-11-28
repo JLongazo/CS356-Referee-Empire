@@ -41,7 +41,7 @@ public class Scoreboard implements Serializable{
 	private char[] bottomButtons = new char[16];
 	private long[] timerTimes = new long [16];
 	private boolean[] timerTypes = new boolean[16];
-	public RuleSheet rules;
+	public String[] rules;
 	
 	
 	/**
@@ -59,6 +59,8 @@ public class Scoreboard implements Serializable{
 		//Teams.addView(dummy);
 	}
 	*/
+	
+	
 	
 	public void saveScore(){}
 	
@@ -180,5 +182,13 @@ public class Scoreboard implements Serializable{
 
 	public void setbNames(String[] bNames) {
 		this.bNames = bNames;
+	}
+	
+	public String[] getRules(){
+		return rules;
+	}
+	
+	public void setRules(String r[]){
+		rules = r;
 	}
 }

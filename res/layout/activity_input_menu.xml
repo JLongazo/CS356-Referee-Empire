@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/numTeams"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Enter Number of Teams"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/mainsc"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Main Score Counter Digits"
+        android:textSize="30dp" >
+
+    </Button>
+    
+	<Button
+        android:id="@+id/teamNames"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Team Names"
+        android:textSize="30dp" >
+
+    </Button>
+    
+	<Button
+        android:id="@+id/nameGame"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Enter the Name of the Game"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/neutral"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Neutral Bar Option"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/toprow"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Top Row Options"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/botrow"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Bottom Row Options"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/ruleinput"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Game Rules"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/csb"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Start Game"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    
+    
+    
+
+</LinearLayout>
+ </ScrollView>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CS356</string>
+    <string name="app_name">Referee</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="createscoreboard">Create Scoreboard</string>
@@ -34,5 +34,19 @@
     <string name="Rules">Rules</string>
     <string name="Home">Home</string>
     <string name="title_activity_scoreboard_list">ScoreboardList</string>
+    <string name="title_activity_score_list">ScoreList</string>
+    <string name="title_activity_rule_sheet">RuleSheet</string>
+    <string name="title_activity_game_options">GameOptions</string>
+    <string name="Create">CREATE</string>
+    <string name="Continue">CONTINUE</string>
+    <string name="Scores">SCORES</string>
+    <string name="Play">PLAY</string>
+    <string name="Referee">Referee</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_input_menu">InputMenu</string>
+    <string name="title_activity_name_teams">NameTeams</string>
+    <string name="title_activity_spinner_and_dialog">SpinnerAndDialog</string>
 
 </resources>
