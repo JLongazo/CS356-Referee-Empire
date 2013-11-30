@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -24,10 +25,10 @@ public class SpecialCounter extends RButton{
 		super(c);
 		name = "   " + n + "   ";
 		f1 = Typeface.createFromAsset(c.getAssets(), "fonts/Athletic.TTF");
-		LayoutParams params = new LayoutParams(50,100);
+		LayoutParams params = new LayoutParams(pxtodp(ScoreboardUI.BUTTON_W)/2,pxtodp(ScoreboardUI.BUTTON_H));
 		params.weight = 1;
 		params.gravity = Gravity.CENTER;
-		setPadding(1,9,0,1);
+		setPadding(pxtodp(2),pxtodp(18),pxtodp(0),pxtodp(2));
 		d1 = new TextView(c);
 		d2 = new TextView(c);
 		d1.setLayoutParams(params);
@@ -103,5 +104,11 @@ public class SpecialCounter extends RButton{
 		decrement();
 		adjustText();
 		return true;
+	}
+	
+	public int pxtodp(int px){
+		DisplayMetrics displayMetrics = SpecialCounter.this.getResources().getDisplayMetrics();
+	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+	    return dp;
 	}
 }

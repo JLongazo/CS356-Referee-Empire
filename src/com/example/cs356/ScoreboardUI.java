@@ -34,11 +34,11 @@ import java.util.ArrayList;
 
 public class ScoreboardUI extends Activity {
 	
-	private static int SCORE_DIGIT = 70;
-	private static int SCORE_H = 125;
-	private static int BUTTON_H = 90;
-	private static int BUTTON_W = 90;
-	private static int TIMER_W = 360;
+	static int SCORE_DIGIT = 140;
+	static int SCORE_H = 250;
+	static int BUTTON_H = 180;
+	static int BUTTON_W = 180;
+	static int TIMER_W = 720;
 	
 	private boolean endgame = false;
 	private Button end;
@@ -574,11 +574,11 @@ public class ScoreboardUI extends Activity {
 		
 		final float scale = this.getResources().getDisplayMetrics().density;
 		//int pixels = (int) (dps * scale + 0.5f);
-		LayoutParams counter = new LayoutParams(90,90);
-		LayoutParams toggle = new LayoutParams(90,90);
-		LayoutParams timerP = new LayoutParams(360,90);
-		LayoutParams diceP = new LayoutParams(90,90);
-		LayoutParams coinP = new LayoutParams(90,90);
+		LayoutParams counter = new LayoutParams(pxtodp(BUTTON_W),pxtodp(BUTTON_H));
+		LayoutParams toggle = new LayoutParams(pxtodp(BUTTON_W),pxtodp(BUTTON_H));
+		LayoutParams timerP = new LayoutParams(pxtodp(TIMER_W), pxtodp(BUTTON_H));
+		LayoutParams diceP = new LayoutParams(pxtodp(BUTTON_W),pxtodp(BUTTON_H));
+		LayoutParams coinP = new LayoutParams(pxtodp(BUTTON_W),pxtodp(BUTTON_H));
 		//Build Scoreboard Sequence
 		int teamCount = sb.getTeams();
 		teamNames = sb.getTeamNames();
@@ -641,8 +641,8 @@ public class ScoreboardUI extends Activity {
 			name1.setText(name);
 			name1.setTextColor(Color.WHITE);
             name1.setTextSize(25);
-            int dcount = 70 * sb.getDigits();
-            LinearLayout.LayoutParams scoreCount = new LinearLayout.LayoutParams(dcount, 125);
+            int dcount = pxtodp(SCORE_DIGIT) * sb.getDigits();
+            LinearLayout.LayoutParams scoreCount = new LinearLayout.LayoutParams(dcount, pxtodp(SCORE_H));
             scoreCount.setMargins(1,1,1,1);
             scoreCount.gravity = Gravity.CENTER;
             scoreC.setLayoutParams(scoreCount);
@@ -902,6 +902,12 @@ public class ScoreboardUI extends Activity {
 		sb.setTeams(4);
 		sb.setDigits(3);
 		sb.setName("Generic");
+	}
+	
+	public int pxtodp(int px){
+		DisplayMetrics displayMetrics = ScoreboardUI.this.getResources().getDisplayMetrics();
+	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+	    return dp;
 	}
 	
 	@Override
