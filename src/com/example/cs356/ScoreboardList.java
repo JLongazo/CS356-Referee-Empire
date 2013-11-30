@@ -13,13 +13,17 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,6 +40,9 @@ public class ScoreboardList extends Activity {
 	private Button back;
 	private TextView header;
 	private String[] games = {"nothing!"};
+	private String[] newGames = new String[20];
+	private String[] premades = {"Generic"};
+	private Typeface f;
 	//= { "Generic", "Chess", "Scrabble", "Pictionary", "Catch Phrase", "Rummy", "Continental", "Go-Fish", "Racquetball", "Ping Pong", "Football", "Golf", "Frisbee",  "Basketball"};
 
 	
@@ -48,21 +55,25 @@ public class ScoreboardList extends Activity {
         try{
         	ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
             sd = (ScoreboardData) ois.readObject();
-            games = sd.getSbs();
         }
         catch(Exception e){
 			Log.v("Serialization Read Error : ",e.getMessage());
 			sd = new ScoreboardData(games);
         }
-        String[] newGames = new String[20];
-        for(int i = 0; i < 20; i++){
+        int check = 0;
+        games = sd.getSbs();
+        for(int i = 0; i < premades.length; i++){
+        	newGames[i] = premades[i];
+        	check++;
+        }
+        for(int i = check; i < 20; i++){
         	if(i < games.length){
         		newGames[i] = games[i];
         	}else{
         		newGames[i] = "";
         	}
         }
-        Typeface f = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
+        f = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
         RAdapter adapter = new RAdapter(this,android.R.layout.simple_list_item_1, newGames,f);
         header.setTypeface(f);
         header.setText("GAMES");
@@ -101,6 +112,56 @@ public class ScoreboardList extends Activity {
 	    				Log.v("Serialization Read Error : ",e.getMessage());
 	    			}		
 	        	}
+			
+			});
+        gameList.setOnItemLongClickListener(new OnItemLongClickListener(){
+        	@Override
+			public boolean onItemLongClick(final AdapterView<?> arg0, View arg1, final int arg2,
+					long arg3) {
+				MediaPlayer mp = MediaPlayer.create(ScoreboardList.this, R.raw.click);
+	    		mp.start();
+	    		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardList.this, R.style.RefStyle));
+				builder.setTitle("DELETE SCORE BOARD?");
+				builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+		                      sd.remove(arg2);
+		                      games = sd.getSbs();
+		                      newGames = new String[20];
+		                      for(int i = 0; i < 20; i++){
+		                      	if(i < games.length){
+		                      		newGames[i] = games[i];
+		                      	}else{
+		                      		newGames[i] = "";
+		                      	}
+		                      }
+		                      RAdapter adapter = new RAdapter(ScoreboardList.this,android.R.layout.simple_list_item_1, newGames,f);
+		                      gameList.setAdapter(adapter); 
+		                      try{
+		                      	ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/data/data/com.example.cs356/scoreboards.bin")); 
+		                        oos.writeObject(sd);
+		                        oos.flush();
+		                        oos.close();
+		                      }
+		                      catch(Exception e){
+		              			Log.v("Serialization Read Error : ",e.getMessage());
+		              			sd = new ScoreboardData(games);
+		                      }
+		                      	ListView l = (ListView) arg0;
+		                      	String selection = l.getItemAtPosition(arg2).toString();
+		      	    			selection = selection.toLowerCase();
+		      	    			File file = new File("/data/data/com.example.cs356/" + selection + ".bin");
+		      	    			file.delete();
+		                   }
+					});
+				builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      //dialog dismissed
+	                   }
+				});
+				builder.create();
+				builder.show();
+				return true;
+        	}
 			
 			});
         

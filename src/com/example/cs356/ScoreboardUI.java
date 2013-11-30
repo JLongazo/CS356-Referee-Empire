@@ -34,6 +34,12 @@ import java.util.ArrayList;
 
 public class ScoreboardUI extends Activity {
 	
+	private static int SCORE_DIGIT = 70;
+	private static int SCORE_H = 125;
+	private static int BUTTON_H = 90;
+	private static int BUTTON_W = 90;
+	private static int TIMER_W = 360;
+	
 	private boolean endgame = false;
 	private Button end;
 	private Button home;
@@ -59,10 +65,12 @@ public class ScoreboardUI extends Activity {
 	private Typeface f2;
 	private int height;
 	private int width;
+	private int wins[] = new int[]{0,0,0,0};
 	private boolean contin;
 	private RoundData rounds;
 	private int betNum = 0;
 	private EditText et;
+	private ArrayList<String> roundData = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +139,9 @@ public class ScoreboardUI extends Activity {
 				builder.setItems(teams, new DialogInterface.OnClickListener() {
 		               public void onClick(DialogInterface dialog, int which) {
 		                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
+		                   saveScore();
 		                   rounds.nextRound(winner);
+		                   wins[which]++;
 		                   round.setText("ROUND: " + rounds.getRoundCount());
 		                   reset();
 		               }
@@ -206,7 +216,7 @@ public class ScoreboardUI extends Activity {
 				mp.start();
 				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
 				builder.setTitle("END GAME AND SAVE SCORES?");
-				builder.setMessage("You can no longer continue the" +
+				builder.setMessage("You can no longer continue the " +
 						"game afterwards.");
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
@@ -284,15 +294,23 @@ public class ScoreboardUI extends Activity {
 		}
 	}
 	
+	public void saveScore(){
+		String data = rounds.getRoundCount() + ". ";
+		for(int i = 0; i < sb.getTeams(); i++){
+			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
+			int score = sc.getScore();
+			data += teamNames[i] + " - " + score + "  ";
+		}
+		roundData.add(data);
+	}
+	
 	public void saveGame(){
 		String teams[] = sb.getTeamNames();
 		String name = sb.getName();
-		int scores[] = new int[sb.getTeams()];
-		for(int i = 0; i < sb.getTeams(); i++){
-			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
-			scores[i] = sc.getScore();
-		}
-		ScoreData newScore = new ScoreData(name, teams, scores);
+		String details[] = new String[rounds.getRoundCount()];
+		saveScore();
+		details = roundData.toArray(details);
+		ScoreData newScore = new ScoreData(name, teams, wins, details);
 		Scores s;
 		try 
         { 
@@ -699,6 +717,13 @@ public class ScoreboardUI extends Activity {
 					time.setBackgroundResource(R.drawable.timer);
 					tbutton.addView(time);
 					break;
+				case 'd':
+					DiceRoll dice = new DiceRoll(this, "");
+					tbutid[i]=id;
+					dice.setId(id++);
+					dice.setLayoutParams(diceP);
+					tbutton.addView(dice);
+					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
@@ -757,6 +782,13 @@ public class ScoreboardUI extends Activity {
 						bbutid[bcount++]=id;
 						time.setId(id++);
 						bbutton.addView(time);
+						break;
+					case 'd':
+						DiceRoll dice = new DiceRoll(this, "");
+						bbutid[i]=id;
+						dice.setId(id++);
+						dice.setLayoutParams(diceP);
+						bbutton.addView(dice);
 						break;
 					}
 				}

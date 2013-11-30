@@ -45,5 +45,8 @@
     <string name="title_activity_splash">Splash</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_input_menu">InputMenu</string>
+    <string name="title_activity_name_teams">NameTeams</string>
+    <string name="title_activity_spinner_and_dialog">SpinnerAndDialog</string>
 
 </resources>

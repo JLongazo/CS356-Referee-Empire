@@ -38,11 +38,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.click);
 				mp.start();
-				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardUI.class);
-				String type = "null";
-				myIntent.putExtra("TYPE",type);
-				String file = "null";
-				myIntent.putExtra("FILE",file);
+				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.InputMenu.class);
 				startActivity(myIntent);					
 				}});
 		

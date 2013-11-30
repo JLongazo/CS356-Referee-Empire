@@ -56,6 +56,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.cs356.InputMenu"
+            android:label="@string/title_activity_input_menu" >
+        </activity>
+        <activity
+            android:name="com.example.cs356.NameTeams"
+            android:label="@string/title_activity_name_teams" >
+        </activity>
     </application>
 
 </manifest>

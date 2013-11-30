@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background6"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/nameGame"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="GAME NAME"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/numTeams"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="NUMBER OF TEAMS"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/mainsc"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="SCORE COUNTER"
+        android:textSize="30dp" >
+
+    </Button>
+    
+	<Button
+	    android:id="@+id/teamNames"
+	    android:layout_width="300dp"
+	    android:layout_height="75dp"
+	    android:layout_gravity="center_vertical|center_horizontal"
+	    android:layout_margin="10dp"
+	    android:background="@drawable/roundedbutton"
+	    android:text="TEAM NAMES"
+	    android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/neutral"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="NEUTRAL BAR"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/toprow"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="BUTTON ROW 1"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/botrow"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="BUTTON ROW 2"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/ruleinput"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="RULES"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    <Button
+        android:id="@+id/csb"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/roundedbutton"
+        android:text="SAVE GAME"
+        android:textSize="30dp" >
+
+    </Button>
+    
+    
+    
+    
+
+</LinearLayout>
+ </ScrollView>
