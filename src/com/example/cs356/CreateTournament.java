@@ -195,7 +195,7 @@ public class CreateTournament extends Activity {
 				saveOptions();
 				*/
 				
-				TournamentInitializer sb2 = new TournamentInitializer(4, names, 1);
+				TournamentInitializer sb2 = new TournamentInitializer(nmbrTeams, names, mnlStt);
 				Intent myIntent = new Intent(CreateTournament.this, com.example.cs356.Tournament.class);
 /*				String type = "null";
 				myIntent.putExtra("TYPE",type);
