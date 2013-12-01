@@ -161,7 +161,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_scoreboard_list=0x7f030006;
         public static final int activity_scoreboard_ui=0x7f030007;
         public static final int activity_splash=0x7f030008;
-        public static final int betsetter=0x7f030009;
+        public static final int activity_tournament=0x7f030009;
+        public static final int betsetter=0x7f03000a;
     }
     public static final class menu {
         public static final int dummy_tester=0x7f090000;
@@ -209,7 +210,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tNames=0x7f080011;
         public static final int testbuttonpress=0x7f08000b;
         public static final int testing=0x7f080005;
-        public static final int title_activity_dummy_tester=0x7f080010;
         public static final int title_activity_game_options=0x7f08001a;
         public static final int title_activity_input_menu=0x7f080023;
         public static final int title_activity_name_teams=0x7f080024;
@@ -221,6 +221,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_spinner_and_dialog=0x7f080025;
         public static final int title_activity_splash=0x7f080020;
         public static final int title_activity_test=0x7f08000d;
+        public static final int title_activity_tournament=0x7f080010;
         public static final int viewsavedgames=0x7f080004;
         public static final int viewscores=0x7f080008;
     }

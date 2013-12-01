@@ -71,6 +71,7 @@ public class ScoreboardUI extends Activity {
 	private int betNum = 0;
 	private EditText et;
 	private ArrayList<String> roundData = new ArrayList<String>();
+	private String type;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class ScoreboardUI extends Activity {
 		bbuttons = (LinearLayout) this.findViewById(R.id.Bbuttons);
 		Bundle extras = getIntent().getExtras();
 		String file = extras.getString("FILE");
-		String type = extras.getString("TYPE");
+		type = extras.getString("TYPE");
 		contin = false;
 		sb = new Scoreboard();
 		if(type.equals("continue")){
@@ -113,15 +114,31 @@ public class ScoreboardUI extends Activity {
 		else if (type.equals("savedboard")) {
 			
 			try {
-			InputStream is = getResources().openRawResource(ScoreboardList.getFileInt());
-            ObjectInputStream ois = new ObjectInputStream(is); 
-            sb = (Scoreboard) ois.readObject();
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));  
+				sb = (Scoreboard) ois.readObject();
 			}
 			
 			catch(Exception e){
 				Log.v("Serialization Read Error : ",e.getMessage());
 			}
 		}
+		
+		else if (type.equals("tournament")) {
+					
+			try {
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));  
+				sb = (Scoreboard) ois.readObject();
+			}
+					
+			catch(Exception e){
+				Log.v("Serialization Read Error : ",e.getMessage());
+			}
+			String teams = extras.getString("TEAMS");
+			String tTeams[] = teams.split(",");
+			sb.setTeamNames(tTeams);
+			round.setEnabled(false);
+			bet.setEnabled(false);
+		}	
 		
 		
 		
@@ -220,11 +237,48 @@ public class ScoreboardUI extends Activity {
 						"game afterwards.");
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
-	                	   	saveGame();
-	       					resetContinue();
-	       					endgame = true;
-	       					Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
-	       					startActivity(myIntent);
+	                	   if(type.equals("tournament")){
+	                		    CharSequence teams[] = teamNames;
+	                		   	final Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.Tournament.class);
+	                		   	AlertDialog.Builder builder2 = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+		       					builder2.setTitle("CHOSE ROUND WINNER");
+		       					builder2.setItems(teams, new DialogInterface.OnClickListener() {
+		       			               public void onClick(DialogInterface dialog, int which) {
+		       			                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
+		       			                   myIntent.putExtra("WIN",winner);
+		    			                   startActivity(myIntent);
+		       			               }
+		       			        });
+		       					builder2.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+		       		                   public void onClick(DialogInterface dialog, int id) {
+		       		                      //dialog dismissed
+		       		                   }
+		       					});
+		       					builder2.create();
+		       					builder2.show();
+	                	   }else {
+		       					resetContinue();
+		       					endgame = true;
+		       					CharSequence teams[] = teamNames;
+		       					AlertDialog.Builder builder2 = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
+		       					builder2.setTitle("CHOSE ROUND WINNER");
+		       					builder2.setItems(teams, new DialogInterface.OnClickListener() {
+		       			               public void onClick(DialogInterface dialog, int which) {
+		       			                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
+		       			                   wins[which]++;
+		       			                   saveGame();
+		       			                   Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
+		       			                   startActivity(myIntent);
+		       			               }
+		       			        });
+		       					builder2.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+		       		                   public void onClick(DialogInterface dialog, int id) {
+		       		                      //dialog dismissed
+		       		                   }
+		       					});
+		       					builder2.create();
+		       					builder2.show();
+	                	   }
 		               }
 					});
 				builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

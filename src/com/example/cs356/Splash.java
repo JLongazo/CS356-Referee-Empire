@@ -11,7 +11,7 @@ import android.view.View;
 
 
 public class Splash extends Activity {
-	private final int SPLASH_DISPLAY_LENGHT = 3000;
+	private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,6 @@ public class Splash extends Activity {
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
             }
-        }, SPLASH_DISPLAY_LENGHT);
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }

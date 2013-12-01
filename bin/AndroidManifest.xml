@@ -27,8 +27,8 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.example.cs356.DummyTester"
-            android:label="@string/title_activity_dummy_tester" >
+            android:name="com.example.cs356.Tournament"
+            android:label="@string/title_activity_tournament" >
         </activity>
         <activity
             android:name="com.example.cs356.ScoreboardList"

@@ -67,8 +67,8 @@ public class ScoreboardList extends Activity {
         	check++;
         }
         for(int i = check; i < 20; i++){
-        	if(i < games.length){
-        		newGames[i] = games[i];
+        	if(i-check < games.length){
+        		newGames[i] = games[i-check];
         	}else{
         		newGames[i] = "";
         	}
@@ -87,24 +87,22 @@ public class ScoreboardList extends Activity {
 				MediaPlayer mp = MediaPlayer.create(ScoreboardList.this, R.raw.click);
 	    		mp.start();
 	    		ListView l = (ListView) arg0;
-	    		String selection = l.getItemAtPosition(arg2).toString();
-	    		selection = selection.toLowerCase();
+	    		String selection = newGames[arg2].toLowerCase();
 	    		//Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
 	    		
-	    		Scoreboard sb;
 	    		String type;
 	    		try 
 	            { 
-	    			fname = getResources().getIdentifier(selection, "raw", ScoreboardList.this.getPackageName());
+	    			//fname = getResources().getIdentifier(selection, "raw", ScoreboardList.this.getPackageName());
 	    			
-	    			InputStream is = getResources().openRawResource(fname);
-	                ObjectInputStream ois = new ObjectInputStream(is); 
-	                sb = (Scoreboard) ois.readObject();
+	    			//InputStream is = getResources().openRawResource(fname);
+	                //ObjectInputStream ois = new ObjectInputStream(is); 
+	                //sb = (Scoreboard) ois.readObject();
 	                
 	            	Intent myIntent = new Intent(ScoreboardList.this, com.example.cs356.ScoreboardUI.class);
 	    			type = "savedboard";
 	    			myIntent.putExtra("TYPE",type);
-	    			String file = "android.resource://" + getPackageName() + "/raw/" + selection;
+	    			String file = "/data/data/com.example.cs356/" + selection + ".bin";
 	    			myIntent.putExtra("FILE",file);
 	    			startActivity(myIntent); 
 	            } 

@@ -13,14 +13,16 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	Button create;
-	Button scores;
-	Button resume;
-	Button select;
+	private Button create;
+	private Button scores;
+	private Button resume;
+	private Button select;
+	private ImageView logo;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,14 @@ public class MainActivity extends Activity {
 		create = (Button) this.findViewById(R.id.create);
 		scores = (Button) this.findViewById(R.id.scores);
 		select = (Button) this.findViewById(R.id.select);
+		logo = (ImageView) this.findViewById(R.id.logo);
+		
+		logo.setOnClickListener(new OnClickListener() {
+			public void onClick(View v){
+				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.Tournament.class);
+				startActivity(myIntent);
+			}
+		});
 
 
 
