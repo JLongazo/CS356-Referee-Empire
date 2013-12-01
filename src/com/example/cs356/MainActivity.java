@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 	Button scores;
 	Button resume;
 	Button select;
-	Button tournament;
+	Button createTournament;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +29,7 @@ public class MainActivity extends Activity {
 		create = (Button) this.findViewById(R.id.create);
 		scores = (Button) this.findViewById(R.id.scores);
 		select = (Button) this.findViewById(R.id.select);
-		tournament = (Button) this.findViewById(R.id.tournamentID);
-
-
+		createTournament = (Button) this.findViewById(R.id.createTournamentID);
 
 		create.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -67,11 +65,8 @@ public class MainActivity extends Activity {
 				catch(Exception e){
 					Log.v("Serialization Read Error : ",e.getMessage());
 					resume.setText("No Game Saved");
-				}
-					
+				}	
 				}});
-
-		
 		
 		scores.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -84,22 +79,13 @@ public class MainActivity extends Activity {
 				
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.ScoreboardList.class);
 				startActivity(myIntent);
-				//select.setText("Not Yet Implemented");					
 				}});
 	
-	tournament.setOnClickListener(new OnClickListener() {
+		createTournament.setOnClickListener(new OnClickListener() {
 		public void onClick(View v) {
-			Intent myIntent = new Intent(MainActivity.this, com.example.cs356.Tournament.class);
+			Intent myIntent = new Intent(MainActivity.this, com.example.cs356.CreateTournament.class);
 			startActivity(myIntent);
 			}});
 	}
-
-
-/*	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}*/
 
 }

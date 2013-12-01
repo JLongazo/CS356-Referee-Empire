@@ -18,10 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 public class Tournament extends Activity {
 	LinearLayout[] mainPnls;
 	RelativeLayout[] pnls;
+	ScrollView scroll;
 
 	int mpcount = 1;
 
@@ -29,12 +31,19 @@ public class Tournament extends Activity {
 	RButton[] dbleTeams;
 	Button shfl, back, save, cntin, outPut, mnlBtn;
 	RadioButton[] teams;
-	// //////////////////////////////////////////////////////// from tournament builder
-	private int teamNum = 16;
-	String[] trnmntTeams = { "Empire", "CA", "LA", "CPP", "TA", "MN", "OL",
-			"AB", "CD", "EF", "GH", "BO", "CHEVY", "FORD", "TX", "AR" };
-	private boolean manualState ;
-	// /////////////////////////////////////////////////////// from tournament builder
+	// //////////////////////////////////////////////////////// from tournament
+	// builder
+	private int teamNum ; // = 32;
+	String[] trnmntTeams ;/*
+						  = { "Empire", "CA", "LA", "CPP", "TA", "MN", "OL",
+						  "AB", "CD", "EF", "GH", "BO", "CHEVY", "FORD", "TX",
+						  "AR", "Empire", "CA", "LA", "CPP", "TA", "MN", "OL",
+						  "AB", "CD", "EF", "GH", "BO", "CHEVY", "FORD", "TX",
+						  "AR" };*/
+						 
+	private boolean manualState;// = false;
+	// /////////////////////////////////////////////////////// from tournament
+	// builder
 	private LinearLayout mainFrame;
 	int altI = 0;
 	int j = 0;
@@ -46,8 +55,20 @@ public class Tournament extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
-		manualState = false;//gets from outside from tournament builder
 		
+		
+		teamNum = TournamentInitializer.teamNumIni;
+		trnmntTeams = TournamentInitializer.trnmntTeamsIni;
+		manualState = TournamentInitializer.manualStateIni;
+
+
+
+		scroll = new ScrollView(this);
+		scroll.setVerticalScrollBarEnabled(true);
+		scroll.setHorizontalScrollBarEnabled(true);
+
+	//	manualState = false;// gets from outside from tournament builder
+
 		shfl = new Button(this);
 		shfl.setText("Shuffle");
 		shfl.setOnClickListener(new OnClickListener() {
@@ -60,8 +81,8 @@ public class Tournament extends Activity {
 		back.setText("Back");
 
 		outPut = new Button(this);
-		outPut.setText("outPut");
-
+		outPut.setText("Output");
+		
 		cntin = new Button(this);
 		cntin.setText("Continue");
 
@@ -139,36 +160,54 @@ public class Tournament extends Activity {
 			mainFrame.setGravity(Gravity.CENTER_VERTICAL);
 			mainFrame.setBackgroundColor(Color.BLUE);
 		}
-		setContentView(mainFrame);
+		scroll.addView(mainFrame);
+		setContentView(scroll);
 	}
+	
 
-	private int getTeamNum() {
+	public int getTeams() {
 		return teamNum;
 	}
 
-	private void setTeamNum(int teamNum) {
+	public void setTeams(int teamNum) {
 		this.teamNum = teamNum;
 	}
 
-	private String[] getTrnmntTeams() {
+	public String[] getTrnmntTeams() {
 		return trnmntTeams;
 	}
 
-	private void setTrnmntTeams(String[] trnmntTeams) {
+	public void setTeamNames(String[] trnmntTeams) {
 		this.trnmntTeams = trnmntTeams;
 	}
 
-	private boolean isManualState() {
+	public boolean isManualState() {
 		return manualState;
 	}
 
-	private void setManualState(boolean manualState) {
-		this.manualState = true;
+	public void setManualState(int mn) {
+		if (mn == 1)
+			this.manualState = true;
+		else
+			manualState = false;
+	}
+
+	public void setName(String gameName) {
+
+	}
+
+	public String getName() {
+		return "name";
 	}
 
 	public String[] makeShuffle() {
 		shfl.setText("shuffled");
 		shfl.setEnabled(false);
+		
+		String ar[] = new String[4];
+		for(int i = 0; i<4; i++)
+			ar[i] = TournamentInitializer.trnmntTeamsIni[i];
+		
 		Collections.shuffle(Arrays.asList(trnmntTeams));
 		for (int i = 0; i < teamNum; i++) {
 			teams[i].setText(trnmntTeams[i]);
@@ -210,7 +249,8 @@ public class Tournament extends Activity {
 	private void autoFromScoreBoard(int input) {
 		if (input != altI - 1) {
 			teams[teamNum + input / 2].setEnabled(true);
-			teams[teamNum + input / 2].setText(teams[input].getText().toString());
+			teams[teamNum + input / 2].setText(teams[input].getText()
+					.toString());
 			teams[input].setEnabled(false);
 			dbleTeams[(teamNum + input / 2) / 2].setEnabled(true);
 			if (input % 2 == 0)
@@ -237,10 +277,10 @@ public class Tournament extends Activity {
 			}
 
 			outPut.setText(tm1 + " " + tm2);// to score builder
-			// (input*2) and (input*2 +1)  go to score builder, the winner
+			// (input*2) and (input*2 +1) go to score builder, the winner
 			// (input) returns back to enable radiobutton
-			// enabled	teams[teamNum + input / 2].setEnabled(true);
-		
+			// enabled teams[teamNum + input / 2].setEnabled(true);
+
 		}
 	};
 }

@@ -41,6 +41,9 @@
             android:name="com.example.cs356.Tournament" >
         </activity>
         <activity
+            android:name="com.example.cs356.CreateTournament" >
+        </activity>  
+        <activity
             android:name="com.example.cs356.ScoreList"
             android:label="@string/title_activity_score_list"
             android:parentActivityName="android.app.ListActivity" >

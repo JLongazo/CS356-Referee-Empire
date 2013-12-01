@@ -50,21 +50,21 @@
         android:text="@string/selectscoreboard" />
 
     <Button
-        android:id="@+id/tournamentID"
+        android:id="@+id/createTournamentID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/select"
         android:layout_alignRight="@+id/select"
         android:layout_below="@+id/select"
-        android:text="Tournament" />
+        android:text="Create Tournament" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tournamentID"
-        android:layout_alignRight="@+id/tournamentID"
-        android:layout_below="@+id/tournamentID"
+        android:layout_alignLeft="@+id/createTournamentID"
+        android:layout_alignRight="@+id/createTournamentID"
+        android:layout_below="@+id/createTournamentID"
         android:text="@string/option" />
 
 </RelativeLayout>
