@@ -60,8 +60,6 @@ public class Scoreboard implements Serializable{
 	}
 	*/
 	
-	
-	
 	public void saveScore(){}
 	
 	public void endGame(){
@@ -153,7 +151,11 @@ public class Scoreboard implements Serializable{
 	}
 
 	public String[] getTeamNames() {
-		return teamNames;
+		String[] tn = new String[teams];
+		for(int i = 0; i< tn.length; i++){
+			tn[i] = teamNames[i];
+		}
+		return tn;
 	}
 
 	public void setTeamNames(String[] teamNames) {

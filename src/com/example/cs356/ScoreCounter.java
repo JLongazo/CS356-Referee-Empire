@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,10 +29,10 @@ public class ScoreCounter extends RButton{
 		this.digits = digits;	
 		this.increment = increment;
 		f1 = Typeface.createFromAsset(c.getAssets(), "fonts/Athletic.TTF");
-		LayoutParams params = new LayoutParams(75,150);
+		LayoutParams params = new LayoutParams(pxtodp(ScoreboardUI.SCORE_DIGIT),pxtodp(ScoreboardUI.SCORE_H));
 		params.weight = 1;
 		params.gravity = Gravity.CENTER;
-		setPadding(1,13,0,1);
+		setPadding(pxtodp(2),pxtodp(26),pxtodp(0),pxtodp(2));
 		setGravity(Gravity.CENTER);
 		d1 = new TextView(c);
 		d2 = new TextView(c);
@@ -156,5 +157,11 @@ public class ScoreCounter extends RButton{
 	}
 	public int getIncrement(){
 		return increment;
+	}
+	
+	public int pxtodp(int px){
+		DisplayMetrics displayMetrics = ScoreCounter.this.getResources().getDisplayMetrics();
+	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+	    return dp;
 	}
 }

@@ -12,21 +12,27 @@ import java.io.Serializable;
  */
 public class ScoreData implements Serializable{
 
-	public ScoreData(String n, String t[], int s[]){
+	public ScoreData(String n, String t[], int w[], String d[]){
 		name = n;
 		teams = t;
-		scores = s;
+		wins = w;
+		details = d;
 	}
 	
 	private String name;
 	private String teams[];
-	private int scores[];
+	private int wins[];
+	private String details[];
 	
 	public String getData(){
 		String result = name + ": ";
 		for(int i = 0; i < teams.length; i++){
-			result += teams[i] + "- " + scores[i] + " ";
+			result += teams[i] + "- " + wins[i] + " ";
 		}
 		return result;
+	}
+	
+	public String[] getDetails(){
+		return details;
 	}
 }

@@ -32,7 +32,7 @@
                 android:id="@+id/button1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/back"
+                android:background="@drawable/backs"
                 android:text=" " />
         </LinearLayout>
 
@@ -64,7 +64,7 @@
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/background5"
+            android:background="@drawable/back5s"
             android:gravity="center_vertical|center_horizontal"
             android:text="Save Names" />
 

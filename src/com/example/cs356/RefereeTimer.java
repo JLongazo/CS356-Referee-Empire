@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -41,8 +42,8 @@ public class RefereeTimer extends RButton{
 		}
 		setGravity(Gravity.CENTER);
 		f1 = Typeface.createFromAsset(c.getAssets(), "fonts/Athletic.TTF");
-		LayoutParams cParams = new LayoutParams(25,100);
-		params = new LayoutParams(50,100);
+		LayoutParams cParams = new LayoutParams(pxtodp(ScoreboardUI.BUTTON_W)/4,pxtodp(ScoreboardUI.BUTTON_H));
+		params = new LayoutParams(pxtodp(ScoreboardUI.BUTTON_W)/2,pxtodp(ScoreboardUI.BUTTON_H));
 		params.weight = 1;
 		params.gravity = Gravity.CENTER;
 		m1 = new TextView(c);
@@ -53,16 +54,16 @@ public class RefereeTimer extends RButton{
 		mi2 = new TextView(c);
 		c1 = new TextView(c);
 		c2 = new TextView(c);
-		m1.setPadding(5,5,0,0);
-		m2.setPadding(3,5,0,0);
-		s1.setPadding(0,5,0,0);
-		s2.setPadding(0,5,0,0);
-		mi1.setPadding(0,5,2,0);
-		mi2.setPadding(0,5,2,0);
+		m1.setPadding(pxtodp(6),pxtodp(10),0,0);
+		m2.setPadding(pxtodp(6),pxtodp(10),0,0);
+		s1.setPadding(pxtodp(6),pxtodp(10),0,0);
+		s2.setPadding(pxtodp(6),pxtodp(10),0,0);
+		mi1.setPadding(pxtodp(3),pxtodp(10),0,0);
+		mi2.setPadding(pxtodp(3),pxtodp(10),0,0);
 		c1.setText(":");
 		c2.setText(":");
-		c2.setPadding(0,0,0,0);
-		c1.setPadding(5,0,0,0);
+		c2.setPadding(pxtodp(6),0,0,0);
+		c1.setPadding(pxtodp(3),0,0,0);
 		setUp(m1);
 		setUp(m2);
 		setUp(c2);
@@ -188,5 +189,10 @@ public class RefereeTimer extends RButton{
 		t.setTextColor(Color.BLACK);
 	}
 	
+	public int pxtodp(int px){
+		DisplayMetrics displayMetrics = RefereeTimer.this.getResources().getDisplayMetrics();
+	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+	    return dp;
+	}
 
 }
