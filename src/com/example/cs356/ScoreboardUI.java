@@ -544,19 +544,21 @@ public class ScoreboardUI extends Activity {
 				char check[] = sb.getTopButtons();
 				switch(check[j]){
 				case 'c':
-					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[j]);
+					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[tcount]);
 					c.setCount(0);
 					break;
 				case 't':
-					RToggle t = (RToggle) this.findViewById(tbutid[j]);
+					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
 					t.setIsOn(false);
+					tcount++;
 					break;
+					
 				case 'm':
-					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[j]);
+					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
 					m.reset();
 					break;
 				}
-				tcount++;
+				
 				
 			}
 			if(!sb.isHasNeutral()){
@@ -564,15 +566,15 @@ public class ScoreboardUI extends Activity {
 					char check[] = sb.getBottomButtons();
 					switch(check[j]){
 					case 'c':
-						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[j]);
+						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount]);
 						c.setCount(0);
 						break;
 					case 't':
-						RToggle t = (RToggle) this.findViewById(bbutid[j]);
+						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
 						t.setIsOn(false);
 						break;
 					case 'm':
-						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[j]);
+						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
 						m.reset();
 						break;
 					}
@@ -776,7 +778,7 @@ public class ScoreboardUI extends Activity {
 					break;
 				case 'd':
 					DiceRoll dice = new DiceRoll(this, "");
-					tbutid[i]=id;
+					//tbutid[i]=id;
 					dice.setId(id++);
 					dice.setLayoutParams(diceP);
 					tbutton.addView(dice);
@@ -961,21 +963,22 @@ public class ScoreboardUI extends Activity {
 		sb.setName("Generic");
 	}
 	
-	
+	/*
 	public int pxtodp(int px){
 		DisplayMetrics displayMetrics = ScoreboardUI.this.getResources().getDisplayMetrics();
-		float dp = px / (displayMetrics.densityDpi / 320f);
+		float dp = px / (displayMetrics.densityDpi / 80f);
 	    //int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 	    return (int) dp;
 	}
 	
-	/*
+	*/
 	public int pxtodp(int px){
 		DisplayMetrics displayMetrics = ScoreboardUI.this.getResources().getDisplayMetrics();
 	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 	    return dp;
 	}
-	*/
+	
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

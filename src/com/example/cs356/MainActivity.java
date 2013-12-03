@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 		
 		logo.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
-				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.Tournament.class);
+				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.CreateTournament.class);
 				startActivity(myIntent);
 			}
 		});
