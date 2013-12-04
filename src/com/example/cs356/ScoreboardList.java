@@ -93,7 +93,7 @@ public class ScoreboardList extends Activity {
 	    		//Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
 	    		
 	    		String type;
-	    		if (selection != "") {
+	    		if (selection != "" && selection != "nothing!") {
 	    		try 
 	            { 
 	    			//fname = getResources().getIdentifier(selection, "raw", ScoreboardList.this.getPackageName());
@@ -130,6 +130,9 @@ public class ScoreboardList extends Activity {
 				builder.setTitle("DELETE SCORE BOARD?");
 				builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
+	                	   ListView l = (ListView) arg0;
+	                	   String selection = l.getItemAtPosition(arg2).toString();
+	                	   if (selection != "") {
 		                      sd.remove(arg2);
 		                      games = sd.getSbs();
 		                      newGames = new String[20];
@@ -152,12 +155,16 @@ public class ScoreboardList extends Activity {
 		              			Log.v("Serialization Read Error : ",e.getMessage());
 		              			sd = new ScoreboardData(games);
 		                      }
-		                      	ListView l = (ListView) arg0;
-		                      	String selection = l.getItemAtPosition(arg2).toString();
+		                      	
+		                      	
 		      	    			selection = selection.toLowerCase();
 		      	    			File file = new File("/data/data/com.example.cs356/" + selection + ".bin");
 		      	    			file.delete();
 		                   }
+	                       else 
+	  	                	 Toast.makeText(ScoreboardList.this, "No Scoreboard to Delete" , Toast.LENGTH_LONG).show();
+	                   }
+	            
 					});
 				builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {

@@ -99,6 +99,7 @@ public class GameOptions extends Activity {
 			team.setTextColor(Color.WHITE);
 			teamNames.addView(team);
 			EditText newName = new EditText(this);
+			newName.setTextSize(12);
 			newName.setLayoutParams(oparams);
 			fieldIds[i] = id;
 			newName.setId(id++);

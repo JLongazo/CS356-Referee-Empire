@@ -78,7 +78,7 @@ public class ScoreList extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
         		
-        		if (scores[arg2]  != " ") {
+        		if (scores[arg2]  != " " && scores[arg2] != "No Scores Saved!") {
         		
 				MediaPlayer mp = MediaPlayer.create(ScoreList.this, R.raw.click);
 	    		mp.start();
@@ -101,27 +101,7 @@ public class ScoreList extends Activity {
         	}
 			
 			});
-        scoreList.setOnItemLongClickListener(new OnItemLongClickListener(){
-        	@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				MediaPlayer mp = MediaPlayer.create(ScoreList.this, R.raw.click);
-	    		mp.start();
-	    		CharSequence[] ind = details.get(arg2);
-	    		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreList.this, R.style.RefStyle));
-				builder.setTitle("ROUND BREAKDOWN");
-				builder.setItems(ind, null);
-				builder.setNegativeButton("EXIT", new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                      //dialog dismissed
-	                   }
-				});
-				builder.create();
-				builder.show();
-				return true;
-        	}
-			
-			});
+
         
         
         back.setOnClickListener(new OnClickListener() {

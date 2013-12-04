@@ -438,6 +438,11 @@ public class ScoreboardUI extends Activity {
 					String save = type + "/" + time;
 					cd.setTButton(save,tcount++);
 					break;
+				case 'f':
+					break;
+				default:
+					tcount++;
+					break;
 				}
 			}
 			if(!sb.isHasNeutral()){
@@ -546,6 +551,7 @@ public class ScoreboardUI extends Activity {
 				case 'c':
 					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[tcount]);
 					c.setCount(0);
+					tcount++;
 					break;
 				case 't':
 					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
@@ -556,8 +562,14 @@ public class ScoreboardUI extends Activity {
 				case 'm':
 					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
 					m.reset();
+					tcount++;
 					break;
+				case 'f':
+					break;
+				default:
+					tcount++;
 				}
+				
 				
 				
 			}
@@ -568,17 +580,20 @@ public class ScoreboardUI extends Activity {
 					case 'c':
 						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount]);
 						c.setCount(0);
+						bcount++;
 						break;
 					case 't':
 						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
 						t.setIsOn(false);
+						bcount++;
 						break;
 					case 'm':
 						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
 						m.reset();
+						bcount++;
 						break;
 					}
-					bcount++;
+					
 				}
 			}
 		}
@@ -762,23 +777,10 @@ public class ScoreboardUI extends Activity {
 					tbutton.addView(name3,bparams);
 					tbutton.addView(tog);
 					break;
-				case 'm':
-					long start = sb.getTimerTime(timerCount);
-					boolean tType = sb.getTimerType(timerCount++);
-					RefereeTimer time = new RefereeTimer(this,start,tType);
-					if(contin){
-						time.setMillis(Long.parseLong(cd.getTButton(tcount)));
-					}
-					time.setLayoutParams(timerP);
-					//time.setTypeface(f1);
-					tbutid[tcount++]=id;
-					time.setId(id++);
-					time.setBackgroundResource(R.drawable.timer);
-					tbutton.addView(time);
-					break;
+
 				case 'd':
 					DiceRoll dice = new DiceRoll(this, "");
-					//tbutid[i]=id;
+					tbutid[tcount++]=id;
 					dice.setId(id++);
 					dice.setLayoutParams(diceP);
 					tbutton.addView(dice);
@@ -798,7 +800,7 @@ public class ScoreboardUI extends Activity {
 					case 'c':
 						SpecialCounter sp = new SpecialCounter(this,bnames[i]);
 						if(contin){
-							sp.setCount(Integer.parseInt(cd.getTButton(bcount)));
+							sp.setCount(Integer.parseInt(cd.getBButton(bcount)));
 						}
 						sp.setBackgroundResource(R.drawable.counter2);
 						sp.setLayoutParams(counter);
@@ -844,7 +846,7 @@ public class ScoreboardUI extends Activity {
 						break;
 					case 'd':
 						DiceRoll dice = new DiceRoll(this, "");
-						bbutid[i]=id;
+						bbutid[bcount++]=id;
 						dice.setId(id++);
 						dice.setLayoutParams(diceP);
 						bbutton.addView(dice);

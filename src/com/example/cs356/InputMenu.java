@@ -353,7 +353,7 @@ public class InputMenu extends Activity {
 												public void onClick(DialogInterface dialog, final int selection) {
 													
 													
-													final String[] items = { "Special Counter", "Toggle","Dice", "Coin"};
+													final String[] items = { "Special Counter", "Toggle","Dice"};
 													AlertDialog.Builder listBuilder2 = new AlertDialog.Builder(InputMenu.this);
 													listBuilder2.setTitle("Select the type of Button");
 													listBuilder2.setItems(items,
