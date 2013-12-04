@@ -62,10 +62,12 @@ public class ScoreboardList extends Activity {
         }
         int check = 0;
         games = sd.getSbs();
+        /*
         for(int i = 0; i < premades.length; i++){
         	newGames[i] = premades[i];
         	check++;
         }
+        */
         for(int i = check; i < 20; i++){
         	if(i-check < games.length){
         		newGames[i] = games[i-check];
@@ -91,6 +93,7 @@ public class ScoreboardList extends Activity {
 	    		//Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
 	    		
 	    		String type;
+	    		if (selection != "") {
 	    		try 
 	            { 
 	    			//fname = getResources().getIdentifier(selection, "raw", ScoreboardList.this.getPackageName());
@@ -108,7 +111,12 @@ public class ScoreboardList extends Activity {
 	            } 
 	    			catch(Exception e){
 	    				Log.v("Serialization Read Error : ",e.getMessage());
-	    			}		
+	    			}	
+	    		}
+	    		
+	    		else 
+	    			Toast.makeText(ScoreboardList.this, "Not a valid Selection" , Toast.LENGTH_LONG).show();
+	    		
 	        	}
 			
 			});

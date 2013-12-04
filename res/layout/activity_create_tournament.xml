@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:background="@drawable/background6"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/numTeams"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/back5s"
+        android:text="TEAM NUMBER"
+        android:textSize="30dp" >
+    </Button>
+
+    <Button
+        android:id="@+id/teamNames"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/background1"
+        android:text="TEAM NAMES"
+        android:textSize="30dp" >
+    </Button>
+
+    <Button
+        android:id="@+id/nameGame"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/background1"
+        android:text="SELECT GAME"
+        android:textSize="30dp" >
+    </Button>
+
+    <Button
+        android:id="@+id/mnlAoutState"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/background1"
+        android:text="AUTO SETTINGS"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/namet"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/background1"
+        android:text="NAME TOURNAMENT"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/strtTrnmnt"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/background1"
+        android:text="START"
+        android:textSize="30dp" >
+    </Button>
+</LinearLayout>
+
+ </ScrollView>

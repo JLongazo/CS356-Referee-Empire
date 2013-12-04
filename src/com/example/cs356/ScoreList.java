@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -54,7 +55,7 @@ public class ScoreList extends Activity {
 			Log.v("Serialization Read Error : ",e.getMessage());
 			s = new Scores();
 		}
-		String scores[] = new String[10];
+		final String scores[] = new String[10];
 		final ArrayList<String[]> details = new ArrayList<String[]>();
 		scores[0] = "No Scores Saved!";
 		for(int i = 1; i < 10; i++){
@@ -76,6 +77,9 @@ public class ScoreList extends Activity {
         	@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+        		
+        		if (scores[arg2]  != " ") {
+        		
 				MediaPlayer mp = MediaPlayer.create(ScoreList.this, R.raw.click);
 	    		mp.start();
 	    		CharSequence[] ind = details.get(arg2);
@@ -89,6 +93,11 @@ public class ScoreList extends Activity {
 				});
 				builder.create();
 				builder.show();
+        		}
+        		
+        		
+	    		else 
+	    			Toast.makeText(ScoreList.this, "Not a valid Selection" , Toast.LENGTH_LONG).show();
         	}
 			
 			});

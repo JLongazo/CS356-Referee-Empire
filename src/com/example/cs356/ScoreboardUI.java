@@ -92,7 +92,7 @@ public class ScoreboardUI extends Activity {
 		scores = (LinearLayout) this.findViewById(R.id.Scores);
 		tbuttons = (LinearLayout) this.findViewById(R.id.Tbuttons);
 		bbuttons = (LinearLayout) this.findViewById(R.id.Bbuttons);
-		Bundle extras = getIntent().getExtras();
+		final Bundle extras = getIntent().getExtras();
 		String file = extras.getString("FILE");
 		type = extras.getString("TYPE");
 		contin = false;
@@ -152,7 +152,7 @@ public class ScoreboardUI extends Activity {
 			public void onClick(View v) {
 				CharSequence teams[] = teamNames;
 				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
-				builder.setTitle("CHOSE ROUND WINNER");
+				builder.setTitle("CHOOSE ROUND WINNER");
 				builder.setItems(teams, new DialogInterface.OnClickListener() {
 		               public void onClick(DialogInterface dialog, int which) {
 		                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
@@ -244,8 +244,10 @@ public class ScoreboardUI extends Activity {
 		       					builder2.setTitle("CHOSE ROUND WINNER");
 		       					builder2.setItems(teams, new DialogInterface.OnClickListener() {
 		       			               public void onClick(DialogInterface dialog, int which) {
-		       			                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
+		       			                   String winner = teamNames[which];
 		       			                   myIntent.putExtra("WIN",winner);
+		       			                   myIntent.putExtra("FROM","scoreboard");
+		       			                   myIntent.putExtra("INPUT",extras.getString("INPUT"));
 		    			                   startActivity(myIntent);
 		       			               }
 		       			        });
@@ -264,11 +266,10 @@ public class ScoreboardUI extends Activity {
 		       					builder2.setTitle("CHOSE ROUND WINNER");
 		       					builder2.setItems(teams, new DialogInterface.OnClickListener() {
 		       			               public void onClick(DialogInterface dialog, int which) {
-		       			                   String winner = rounds.getRoundCount() + ". " + teamNames[which] + " - $" + betNum;
-		       			                   wins[which]++;
-		       			                   saveGame();
-		       			                   Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
-		       			                   startActivity(myIntent);
+			       			                   wins[which]++;
+			       			                   saveGame();
+			       			                   Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
+			       			                   startActivity(myIntent);
 		       			               }
 		       			        });
 		       					builder2.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -413,6 +414,8 @@ public class ScoreboardUI extends Activity {
 		ContinueData cd = new ContinueData();
 		cd.setSb(sb);
 		cd.setCheck(true);
+		cd.setBet(betNum);
+		cd.setRounds(rounds);
 		int tcount = 0;
 		int bcount = 0;
 		for(int i = 0; i < sb.getTeams(); i++){
@@ -534,7 +537,6 @@ public class ScoreboardUI extends Activity {
 	
 	public void reset(){
 		int bcount = 0;
-		int tcount = 0;
 		for(int i = 0; i < sb.getTeams(); i++){
 			ScoreCounter sc = (ScoreCounter) this.findViewById(scoreid[i]);
 			sc.setScore(0);
@@ -542,38 +544,39 @@ public class ScoreboardUI extends Activity {
 				char check[] = sb.getTopButtons();
 				switch(check[j]){
 				case 'c':
-					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[tcount]);
+					SpecialCounter c = (SpecialCounter) this.findViewById(tbutid[j]);
 					c.setCount(0);
 					break;
 				case 't':
-					RToggle t = (RToggle) this.findViewById(tbutid[tcount]);
+					RToggle t = (RToggle) this.findViewById(tbutid[j]);
 					t.setIsOn(false);
 					break;
+					
 				case 'm':
-					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[tcount]);
+					RefereeTimer m = (RefereeTimer) this.findViewById(tbutid[j]);
 					m.reset();
 					break;
 				}
-				tcount++;
+				
+				
 			}
 			if(!sb.isHasNeutral()){
 				for(int j = 0; j < sb.getBCount(); j++){
 					char check[] = sb.getBottomButtons();
 					switch(check[j]){
 					case 'c':
-						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount]);
+						SpecialCounter c = (SpecialCounter) this.findViewById(bbutid[bcount++]);
 						c.setCount(0);
 						break;
 					case 't':
-						RToggle t = (RToggle) this.findViewById(bbutid[bcount]);
+						RToggle t = (RToggle) this.findViewById(bbutid[bcount++]);
 						t.setIsOn(false);
 						break;
 					case 'm':
-						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount]);
+						RefereeTimer m = (RefereeTimer) this.findViewById(bbutid[bcount++]);
 						m.reset();
 						break;
 					}
-					bcount++;
 				}
 			}
 		}
@@ -773,7 +776,7 @@ public class ScoreboardUI extends Activity {
 					break;
 				case 'd':
 					DiceRoll dice = new DiceRoll(this, "");
-					tbutid[i]=id;
+					tbutid[tcount++]=id;
 					dice.setId(id++);
 					dice.setLayoutParams(diceP);
 					tbutton.addView(dice);
@@ -839,7 +842,7 @@ public class ScoreboardUI extends Activity {
 						break;
 					case 'd':
 						DiceRoll dice = new DiceRoll(this, "");
-						bbutid[i]=id;
+						bbutid[bcount++]=id;
 						dice.setId(id++);
 						dice.setLayoutParams(diceP);
 						bbutton.addView(dice);
@@ -958,11 +961,22 @@ public class ScoreboardUI extends Activity {
 		sb.setName("Generic");
 	}
 	
+	/*
+	public int pxtodp(int px){
+		DisplayMetrics displayMetrics = ScoreboardUI.this.getResources().getDisplayMetrics();
+		float dp = px / (displayMetrics.densityDpi / 80f);
+	    //int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+	    return (int) dp;
+	}
+	
+	*/
 	public int pxtodp(int px){
 		DisplayMetrics displayMetrics = ScoreboardUI.this.getResources().getDisplayMetrics();
 	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 	    return dp;
 	}
+	
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
