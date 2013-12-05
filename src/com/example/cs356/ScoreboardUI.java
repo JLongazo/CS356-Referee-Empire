@@ -232,9 +232,13 @@ public class ScoreboardUI extends Activity {
 				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
 				mp.start();
 				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
-				builder.setTitle("END GAME AND SAVE SCORES?");
-				builder.setMessage("You can no longer continue the " +
-						"game afterwards.");
+				if(type.equals("tournament")){
+					builder.setTitle("END GAME AND CONTINUE TOURNAMENT?");
+				}else{
+					builder.setTitle("END GAME AND SAVE SCORES?");
+					builder.setMessage("You can no longer continue the " +
+							"game afterwards.");
+				}
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                	   if(type.equals("tournament")){
@@ -297,13 +301,25 @@ public class ScoreboardUI extends Activity {
 				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
 				mp.start();
 				AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ScoreboardUI.this, R.style.RefStyle));
-				builder.setTitle("EXIT TO MAIN MENU?");
-				builder.setMessage("This score board will save for later.");
+				if(type.equals("tournament")){
+					builder.setTitle("EXIT TO TOURNAMENT SCREEN?");
+					builder.setMessage("This score board will NOT be saved.");
+				}else{
+					builder.setTitle("EXIT TO MAIN MENU?");
+					builder.setMessage("This score board will save for later.");
+				}
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
-	                	   Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
-	       					saveContinue();
-	       					startActivity(myIntent);
+	                	   if(type.equals("tournament")){
+	                		   	Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.Tournament.class);
+	                		   	myIntent.putExtra("FROM","continue");
+	                	   		saveContinue();
+	                	   		startActivity(myIntent);
+	                	   }else{
+	                	   		Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.MainActivity.class);
+	                	   		saveContinue();
+	                	   		startActivity(myIntent);
+	                	   }
 		               }
 					});
 				builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -331,9 +347,28 @@ public class ScoreboardUI extends Activity {
 				MediaPlayer mp = MediaPlayer.create(ScoreboardUI.this, R.raw.click);
 				mp.start();
 				//savePremade();
-				Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.GameOptions.class);
-				saveContinue();
-				startActivity(myIntent);
+				if(type.equals("tournament")){
+					Toast.makeText(ScoreboardUI.this, "Cannot Access Options in Tournament Mode!", Toast.LENGTH_LONG).show();
+				}else{
+					Intent myIntent = new Intent(ScoreboardUI.this, com.example.cs356.GameOptions.class);
+					saveContinue();
+					ScoreCounter check = (ScoreCounter) ScoreboardUI.this.findViewById(scoreid[0]);
+					int d = check.getDigits();
+					int max = 0;
+					switch(d){
+					case 2:
+						max = 99;
+						break;
+					case 3:
+						max = 999;
+						break;
+					case 4:
+						max = 9999;
+						break;
+					}
+					myIntent.putExtra("MAXS",Integer.toString(max));
+					startActivity(myIntent);
+				}
 			}
 		});
 		
@@ -625,7 +660,7 @@ public class ScoreboardUI extends Activity {
 		bet.setGravity(Gravity.CENTER);
 		name.setText(sb.getName());
 		name.setTypeface(f2);
-		name.setTextSize(26);
+		name.setTextSize(23);
 		name.setTextColor(Color.WHITE);
 		name.setGravity(Gravity.CENTER);
 		
@@ -684,6 +719,7 @@ public class ScoreboardUI extends Activity {
 			ScoreCounter scoreC = new ScoreCounter(0,1,sb.getDigits(),this);
 			if(contin){
 				scoreC.setScore(cd.getScore(j));
+				scoreC.setIncrement(cd.getIncr());
 			}
 			scoreid[j]=id;
 			scoreC.setId(id++);

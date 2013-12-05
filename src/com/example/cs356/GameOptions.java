@@ -31,10 +31,13 @@ public class GameOptions extends Activity {
 	private LinearLayout teamNames;
 	private Button back;
 	private Button save;
+	private Button savei;
 	private TextView options;
 	private TextView op1;
 	private TextView op12;
+	private TextView op2;
 	private ContinueData cd;
+	private EditText iE;
 	private String file = "/data/data/com.example.cs356/continue.bin";
 	private Scoreboard sb;
 	private String rule[];
@@ -45,6 +48,8 @@ public class GameOptions extends Activity {
 	private String[] names;
 	private Typeface f1;
 	private Typeface f2;
+	private int inc;
+	private Bundle extras;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +61,24 @@ public class GameOptions extends Activity {
 		teamNames = (LinearLayout) this.findViewById(R.id.nameChange);
 		back = (Button) this.findViewById(R.id.button1);
 		save = (Button) this.findViewById(R.id.button2);
+		savei = (Button) this.findViewById(R.id.saveinc);
+		op2 = (TextView) this.findViewById(R.id.option2t);
+		iE = (EditText) this.findViewById(R.id.incedit);
 		f1 = Typeface.createFromAsset(getAssets(), "fonts/CFMontrealHighSchool-Regula.ttf");
 		f2 = Typeface.createFromAsset(getAssets(), "fonts/Athletic.TTF");
 		options.setTypeface(f1);
 		options.setTextSize(30);
 		options.setTextColor(Color.WHITE);
+		extras = getIntent().getExtras();
 		CharSequence o1 = "CHANGE TEAM NAMES";
 		op1.setText(o1);
 		op1.setTypeface(f1);
 		op1.setTextColor(Color.WHITE);
+		CharSequence o3 = "CHANGE SCORE COUNTER INCREMENT";
+		op2.setText(o3);
+		op2.setTextSize(10);
+		op2.setTypeface(f1);
+		op2.setTextColor(Color.WHITE);
 		CharSequence o2 = "7 CHARACTERS MAX";
 		op12.setText(o2);
 		op12.setTypeface(f2);
@@ -73,6 +87,10 @@ public class GameOptions extends Activity {
 		save.setTextColor(Color.WHITE);
 		save.setText("SAVE NAMES");
 		save.setTextSize(20);
+		savei.setTypeface(f2);
+		savei.setTextColor(Color.WHITE);
+		savei.setText("SAVE INCREMENT");
+		savei.setTextSize(20);
 		try 
         { 
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file)); 
@@ -150,6 +168,23 @@ public class GameOptions extends Activity {
 				
 				sb.setTeamNames(newNames);
 				Toast.makeText(GameOptions.this, "Names Changed", Toast.LENGTH_LONG).show();
+			}
+		});
+		
+		savei.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				MediaPlayer mp = MediaPlayer.create(GameOptions.this, R.raw.click);
+				mp.start();
+				int max = Integer.parseInt(extras.getString("MAXS"));
+				inc = Integer.parseInt(iE.getText().toString());
+				if(inc < max){
+					cd.setIncr(inc);
+					Toast.makeText(GameOptions.this, "Increment Changed", Toast.LENGTH_LONG).show();
+				}else{
+					iE.setText("");
+					Toast.makeText(GameOptions.this, "Number Too Large", Toast.LENGTH_LONG).show();
+				}
+				
 			}
 		});
 		

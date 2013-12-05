@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -107,6 +108,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 1){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					final String[] items = { "1", "2", "3","4"};
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(InputMenu.this);
 					listBuilder.setTitle("Select the Number of Teams");
@@ -137,6 +140,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 2){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					final String[] items = { "1", "2", "3","4"};
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(
 							InputMenu.this);
@@ -167,6 +172,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 3){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(InputMenu.this);
 					listBuilder.setTitle("Enter Team Names");
 					listBuilder.setMessage("7 characters maximum.");
@@ -222,8 +229,11 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 0){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(InputMenu.this);
 					listBuilder.setTitle("Enter the Name of the Game");
+					listBuilder.setTitle("Maximum 9 characters");
 					LinearLayout nameGames = new LinearLayout(InputMenu.this);
 					nameGames.setOrientation(1);
 	
@@ -236,6 +246,9 @@ public class InputMenu extends Activity {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							
 							String gameName = ed[0].getText().toString();
+							if(gameName.length() > 9){
+								gameName = gameName.substring(0,9);
+							}
 							sb2.setName(gameName);
 							nameGame.setText("GAME NAME: " + gameName.toUpperCase());
 							nameGame.setBackgroundResource(R.drawable.background3);
@@ -303,6 +316,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 5){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					int iter = 0;
 					if (sb2.getTeams() == 1)
 						iter = 8;
@@ -496,7 +511,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 6){
-
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 
 					String n[] = { "1", "2", "3","4", "5", "6", "7", "8"};
 					if(sb2.isHasNeutral()){
@@ -704,6 +720,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 7){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(InputMenu.this);
 					listBuilder.setTitle("Enter Game Rules");
 					LinearLayout teamNames = new LinearLayout(InputMenu.this);
@@ -764,6 +782,8 @@ public class InputMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonCount == 8){
+					MediaPlayer mp = MediaPlayer.create(InputMenu.this, R.raw.click);
+		    		mp.start();
 					long times2[] = new long[times.size()];
 					boolean types2[] = new boolean[types.size()];
 					

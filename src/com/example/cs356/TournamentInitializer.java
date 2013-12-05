@@ -14,6 +14,7 @@ public class TournamentInitializer implements Serializable{
 	public String[] label;
 	public boolean[] wins;
 	public String name;
+	public boolean cont = false;
 
 	public TournamentInitializer() {
 		

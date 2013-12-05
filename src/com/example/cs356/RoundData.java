@@ -1,8 +1,9 @@
 package com.example.cs356;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RoundData {
+public class RoundData implements Serializable{
 
 	public RoundData(){
 		rounds = new ArrayList<CharSequence>();

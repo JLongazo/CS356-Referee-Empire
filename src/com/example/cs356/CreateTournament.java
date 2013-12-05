@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 public class CreateTournament extends Activity {
+	private Button continuet;
 	private Button numTeams;
 	private Button teamNamers;
 	private Button nameGame;
@@ -44,7 +46,7 @@ public class CreateTournament extends Activity {
 	private String games[];
 	private TournamentInitializer ti;
 	private int buttonC = 0;	
-
+	private boolean cont = false;
 	private EditText ed[] ;
 
 //	static Tournament sb2 = new Tournament();
@@ -53,6 +55,8 @@ public class CreateTournament extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_tournament);
 		f1 = Typeface.createFromAsset(getAssets(), "fonts/Athletic.TTF");
+		continuet = (Button) this.findViewById(R.id.continuet);
+		setUp(continuet);
 		numTeams = (Button) this.findViewById(R.id.numTeams);
 		setUp(numTeams);
 		numTeams.setBackgroundResource(R.drawable.back5s);
@@ -77,10 +81,56 @@ public class CreateTournament extends Activity {
 		teamNames = new LinearLayout(CreateTournament.this);
 		teamNames.setOrientation(LinearLayout.VERTICAL);
 		
+		try{ 
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/tournament.bin")); 
+            TournamentInitializer ti2 = (TournamentInitializer) ois.readObject(); 
+            if(ti2.cont){
+            	continuet.setBackgroundResource(R.drawable.back5s);
+            	cont = true;
+            }
+            else{
+            	cont = false;
+            }
+        } 
+		catch(Exception e){
+			Log.v("Serialization Read Error : ",e.getMessage());
+			cont = false;
+		}
+		
+		continuet.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(cont){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
+					AlertDialog.Builder listBuilder = new AlertDialog.Builder(CreateTournament.this);
+					listBuilder.setTitle("Continue Last Saved Tournament?");
+					listBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							Intent myIntent = new Intent(CreateTournament.this, com.example.cs356.Tournament.class);
+							myIntent.putExtra("FROM","continue");			
+							startActivity(myIntent);
+						  }
+						});
+						listBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+							  public void onClick(DialogInterface dialog, int whichButton) {
+								  //cancel
+							  }
+							});
+					AlertDialog alertList = listBuilder.create();
+					alertList.show();
+				}else{
+					Toast.makeText(CreateTournament.this, "No Tournament Saved!", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
 		numTeams.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(buttonC == 0){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
 					final String[] items = { "4", "8", "16", "32"};
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(CreateTournament.this);
 					listBuilder.setTitle("Select the Number of Teams");
@@ -106,8 +156,11 @@ public class CreateTournament extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonC == 1){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(CreateTournament.this);
 					listBuilder.setTitle("Enter Team Names");
+					listBuilder.setMessage("Maximum 7 characters. Leave field blank for default name.");
 					ed = new EditText[nmbrTeams];  
 					for (int i = 0; i < nmbrTeams; i++) {
 						TextView spacer = new TextView(CreateTournament.this);
@@ -122,7 +175,14 @@ public class CreateTournament extends Activity {
 						public void onClick(DialogInterface dialog, int whichButton) {	
 							names = new String[nmbrTeams];
 							for(int i = 0; i < nmbrTeams; i++){
-								 names[i] = ed[i].getText().toString();
+								String in = ed[i].getText().toString();
+								if(in.length() > 7){
+									in = in.substring(0,7);
+								}
+								if(in.equals("")){
+									in = "Team " + (i+1);
+								}
+								 names[i] = in;
 							}
 					//		sb2.setTeamNames(names);
 							teamNamers.setText("TEAM NAMES: SET");
@@ -131,6 +191,7 @@ public class CreateTournament extends Activity {
 							nameGame.setBackgroundResource(R.drawable.back5s);
 						  }
 						});
+					
 	
 						listBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 						  public void onClick(DialogInterface dialog, int whichButton) {
@@ -152,6 +213,8 @@ public class CreateTournament extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonC == 2){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(CreateTournament.this);
 					listBuilder.setTitle("Choose Game");
 					ScoreboardData sd;
@@ -165,6 +228,23 @@ public class CreateTournament extends Activity {
 						sd = new ScoreboardData(games);
 			        }
 					games = sd.getSbs();
+					ArrayList<String> temp = new ArrayList<String>();
+					for(int i = 0; i < games.length; i++){
+						String file = "/data/data/com.example.cs356/" + games[i].toLowerCase() + ".bin";
+						Scoreboard check;
+						try {
+							ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));  
+							check = (Scoreboard) ois.readObject();
+							if(check.getTeams() == 2){
+								temp.add(check.getName());
+							}
+						}
+						
+						catch(Exception e){
+							Log.v("Serialization Read Error : ",e.getMessage());
+						}
+					}
+					games = temp.toArray(games);
 					listBuilder.setItems(games,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int item) {
@@ -202,6 +282,8 @@ public class CreateTournament extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonC == 3){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(CreateTournament.this);
 					listBuilder.setTitle("Automatic or Manual Tournament?");
 					listBuilder.setPositiveButton("AUTOMATIC", new DialogInterface.OnClickListener() {
@@ -238,8 +320,11 @@ public class CreateTournament extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonC == 4){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
 					AlertDialog.Builder listBuilder = new AlertDialog.Builder(CreateTournament.this);
 					listBuilder.setTitle("Enter the Name of the Tournament");
+					listBuilder.setMessage("Maximum 9 characters. Leave field blank for default name.");
 					LinearLayout nameGames = new LinearLayout(CreateTournament.this);
 					nameGames.setOrientation(1);
 	
@@ -252,6 +337,12 @@ public class CreateTournament extends Activity {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							
 							String gameName = ed[0].getText().toString();
+							if(gameName.length() > 9){
+								gameName = gameName.substring(0,9);
+							}
+							if(gameName.equals("")){
+								gameName = "DEFAULT";
+							}
 							ti.name = gameName;
 							namet.setText("TOURNAMENT NAME: " + gameName.toUpperCase());
 							namet.setBackgroundResource(R.drawable.background3);
@@ -279,6 +370,8 @@ public class CreateTournament extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(buttonC == 5){
+					MediaPlayer mp = MediaPlayer.create(CreateTournament.this, R.raw.click);
+		    		mp.start();
 					ti.sb = sb;
 					ti.teamNumIni = nmbrTeams;
 					ti.trnmntTeamsIni = names;
@@ -326,39 +419,6 @@ public class CreateTournament extends Activity {
 		
 	}
 	
-	public void saveOptions(){
-		//ScoreboardData sd;
-		
-		try 
-        { 
-           ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/create.bin"))); 
-     //      oos.writeObject(sb2); 
-           oos.flush(); 
-           oos.close();
-           //ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/data/data/com.example.cs356/scoreboards.bin")); 
-           //sd = (ScoreboardData) ois.readObject();
-           //sd.addSb(sb2.getName());
-           //oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
-           //oos.writeObject(sd);
-	       //oos.flush();  
-	       //oos.close();
-        } 
-        catch(Exception ex) 
-        { 
-        	try{
-      //  		String start[] = {sb2.getName()};
-	        	//sd = new ScoreboardData(start);
-	            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/data/data/com.example.cs356/scoreboards.bin")));
-	            //oos.writeObject(sd);
-	 	       	oos.flush();  
-	 	      	oos.close();	
-        	}
-        	catch(Exception e2){
-        		Log.v("Serialization Save Error : ",ex.getMessage()); 
-	 	      	ex.printStackTrace(); 
-        	}
-        }
-	}
 	
 	public void setUp(Button b){
 		b.setTypeface(f1);

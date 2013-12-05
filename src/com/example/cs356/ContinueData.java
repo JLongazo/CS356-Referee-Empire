@@ -17,6 +17,8 @@ public class ContinueData implements Serializable{
 	
 	private int betNum;
 	
+	private int incr = 1;
+	
 	private int scores[] = new int[4];
 	
 	private String tButtons[] = new String[8];
@@ -85,5 +87,13 @@ public class ContinueData implements Serializable{
 
 	public void setSb(Scoreboard sb) {
 		this.sb = sb;
+	}
+
+	public int getIncr() {
+		return incr;
+	}
+
+	public void setIncr(int incr) {
+		this.incr = incr;
 	}
 }

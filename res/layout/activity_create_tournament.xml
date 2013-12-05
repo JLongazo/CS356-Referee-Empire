@@ -12,6 +12,15 @@
     android:orientation="vertical" >
 
     <Button
+        android:id="@+id/continuet"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/back5s"
+        android:text="CONTINUE"
+        android:textSize="30dp" />
+
+    <Button
         android:id="@+id/numTeams"
         android:layout_width="300dp"
         android:layout_height="75dp"

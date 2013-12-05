@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
 	private Button scores;
 	private Button resume;
 	private Button select;
+	private Button tournament;
 	private ImageView logo;
 	
 	
@@ -33,10 +34,13 @@ public class MainActivity extends Activity {
 		create = (Button) this.findViewById(R.id.create);
 		scores = (Button) this.findViewById(R.id.scores);
 		select = (Button) this.findViewById(R.id.select);
+		tournament = (Button) this.findViewById(R.id.tournament);
 		logo = (ImageView) this.findViewById(R.id.logo);
 		
-		logo.setOnClickListener(new OnClickListener() {
+		tournament.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.click);
+				mp.start();
 				Intent myIntent = new Intent(MainActivity.this, com.example.cs356.CreateTournament.class);
 				startActivity(myIntent);
 			}
